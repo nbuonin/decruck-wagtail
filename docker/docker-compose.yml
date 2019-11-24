@@ -1,0 +1,17 @@
+version: "3"
+services:
+  db:
+    image: postgres:11-alpine  
+  web:
+    build: ../
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: 'decruck.settings.dev'
+    volumes:
+      - ./local.py:/app/decruck/settings/local.py
+      - ./wait-for-postgres.sh:/app/wait-for-postgres.sh
+    command: ["pipenv", "run", "./manage.py", "test"]
+  

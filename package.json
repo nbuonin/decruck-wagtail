@@ -1,0 +1,24 @@
+{
+  "name": "fernande-breilh-decruck",
+  "version": "0.1.0",
+  "description": "Website Fernande Breilh Decruckj",
+  "license": "GPL-2.0+",
+  "scripts": {
+    "test": "mocha",
+    "build-scss": "node-sass --output decruck/static/decruck/css decruck/static/decruck/scss/styles.scss --output-style compressed --source-map true",
+    "watch-scss": "nodemon --watch decruck/static/decruck/scss --verbose -e scss -x 'npm run build-scss'"
+  },
+  "devDependencies": {
+    "eslint": "~6.5.1",
+    "eslint-plugin-no-unsafe-innerhtml": "~1.0.16",
+    "eslint-plugin-scanjs-rules": "~0.2.1",
+    "eslint-plugin-security": "~1.4.0",
+    "mocha": "~6.2.1",
+    "requirejs": "~2.3.2",
+    "sinon": "~7.5.0",
+    "autoprefixer": "~9.6.5",
+    "node-sass": "~4.12.0",
+    "nodemon": "~1.19.1",
+    "postcss-cli": "~6.1.3"
+  }
+}

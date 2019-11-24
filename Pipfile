@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+wagtail = "==2.6.1"
+wagtail-autocomplete = "==0.3.1"
+faker = "==2.0.1"
+factory-boy = "==2.12.0"
+wagtail-factories = "==2.0.0"
+gunicorn = "==19.9.0"
+django-el-pagination = "==3.2.4"
+wagtailmenus = "==2.13.1"
+psycopg2-binary = "==2.8.3"
+django-paypal = "==1.0.0"
+django-storages = "==1.7.1"
+boto3 = "==1.9.199"
+opencv-python-headless = "==4.1.0.25"
+pylint = "==2.3.1"
+flake8 = "==3.7.8"
+pylint-django = "==2.0.11"
+wagtail-metadata = "==2.0.1"
+sentry-sdk = "==0.11.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
