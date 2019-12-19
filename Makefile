@@ -13,7 +13,7 @@ $(JS_SENTINAL):
 	touch $@
 
 clean:
-	-rm -rf .venv node_modules
+	-rm -rf .venv node_modules media/build
 
 runserver: $(PY_SENTINAL)
 	pipenv run ./manage.py runserver
@@ -33,8 +33,8 @@ shell: $(PY_SENTINAL)
 test: $(PY_SENTINAL)
 	pipenv run ./manage.py test
 
-scss: $(JS_SENTINAL)
-	npm run watch-scss
+webpack: $(JS_SENTINAL)
+	npm run dev 
 
 docker-image:
 	docker build -t nbuonin/decruck:`git log -n 1 --pretty="%h"` .

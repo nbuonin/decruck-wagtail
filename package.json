@@ -1,24 +1,39 @@
 {
   "name": "fernande-breilh-decruck",
   "version": "0.1.0",
-  "description": "Website Fernande Breilh Decruckj",
+  "description": "Website Fernande Breilh Decruck",
   "license": "GPL-2.0+",
   "scripts": {
-    "test": "mocha",
-    "build-scss": "node-sass --output decruck/static/decruck/css decruck/static/decruck/scss/styles.scss --output-style compressed --source-map true",
-    "watch-scss": "nodemon --watch decruck/static/decruck/scss --verbose -e scss -x 'npm run build-scss'"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack -d --watch",
+    "build": "webpack"
   },
   "devDependencies": {
-    "eslint": "~6.5.1",
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "autoprefixer": "^9.7.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.3.2",
+    "eslint": "~6.7.2",
     "eslint-plugin-no-unsafe-innerhtml": "~1.0.16",
     "eslint-plugin-scanjs-rules": "~0.2.1",
     "eslint-plugin-security": "~1.4.0",
-    "mocha": "~6.2.1",
+    "mini-css-extract-plugin": "^0.8.2",
+    "mocha": "~6.2.2",
+    "node-sass": "^4.13.0",
+    "postcss-loader": "^3.0.0",
     "requirejs": "~2.3.2",
+    "sass-loader": "^8.0.0",
     "sinon": "~7.5.0",
-    "autoprefixer": "~9.6.5",
-    "node-sass": "~4.12.0",
-    "nodemon": "~1.19.1",
-    "postcss-cli": "~6.1.3"
+    "style-loader": "^1.0.1",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.0",
+    "precss": "^4.0.0"
   }
 }
