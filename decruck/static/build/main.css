@@ -1,6 +1,4 @@
-h1 {
-  color: red; }
-
+@import url(https://fonts.googleapis.com/css?family=Abhaya+Libre:700|Lato:400,400i,700,700i,900,900i&display=swap);
 *,
 *::before,
 *::after {
@@ -17,13 +15,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Lato", "sans-serif";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
+  color: #37332e;
   text-align: left;
-  background-color: #fff; }
+  background-color: #d1c6b0; }
 
 [tabindex="-1"]:focus:not(.focus-visible) {
   outline: 0 !important; }
@@ -276,10 +274,10 @@ h1, .h1 {
   font-size: 2.5rem; }
 
 h2, .h2 {
-  font-size: 2rem; }
+  font-size: 1.25rem; }
 
 h3, .h3 {
-  font-size: 1.75rem; }
+  font-size: 1.125rem; }
 
 h4, .h4 {
   font-size: 1.5rem; }
@@ -364,7 +362,7 @@ mark,
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: #fff;
+  background-color: #d1c6b0;
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
   max-width: 100%;
@@ -1287,6 +1285,76 @@ pre {
   .offset-xl-11 {
     margin-left: 91.66667%; } }
 
-* {
-  color: blue; }
+body {
+  padding-top: 2em; }
+
+html {
+  letter-spacing: 0.02em; }
+
+h1, .h1 {
+  font-family: "Abhaye Libre", "serif";
+  text-transform: uppercase;
+  letter-spacing: 0.1em; }
+
+h2, .h2 {
+  font-family: "Lato", "sans-serif";
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em; }
+
+h3, .h3 {
+  font-family: "Lato", "sans-serif";
+  font-weight: 700;
+  letter-spacing: 0.02em; }
+
+.nav-container--home-page {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row nowrap;
+  -webkit-box-pack: center;
+          justify-content: center;
+  margin-bottom: 50px; }
+
+.nav > ul {
+  list-style-type: none;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row nowrap; }
+
+.nav > ul > li {
+  margin-right: 1em;
+  padding-right: 1em;
+  border-right: solid 1px #FFFFFF;
+  text-transform: uppercase; }
+  .nav > ul > li:last-of-type {
+    margin-right: 0em;
+    padding-right: 0em;
+    border-right: none; }
+
+.logo {
+  fill: #FFFFFF;
+  max-width: 816px; }
+
+.site-title--home-page {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-flow: column nowrap;
+  -webkit-box-align: center;
+          align-items: center; }
+
+.site-subtitle {
+  font-family: "Abhaye Libre", "serif";
+  text-transform: uppercase;
+  padding-top: 1em;
+  border-top: solid 1px #37332e; }
+
+.footer {
+  background-color: #37332e;
+  color: #d1c6b0; }
 

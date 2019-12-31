@@ -1,0 +1,17 @@
+.logo {
+    fill: #FFFFFF;
+    max-width: 816px;
+}
+
+.site-title--home-page {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.site-subtitle {
+    font-family: $font-family-serif;
+    text-transform: uppercase;
+    padding-top: 1em;
+    border-top: solid 1px $dark-brown;
+}

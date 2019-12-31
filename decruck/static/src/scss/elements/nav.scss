@@ -1,0 +1,25 @@
+.nav-container--home-page {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.nav > ul {
+    list-style-type: none;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.nav > ul > li {
+    margin-right: 1em;
+    padding-right: 1em;
+    border-right: solid 1px #FFFFFF;
+    text-transform: uppercase;
+
+    &:last-of-type {
+        margin-right: 0em;
+        padding-right: 0em;
+        border-right: none;
+    }
+}

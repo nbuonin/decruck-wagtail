@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block nav %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 nav-container--home-page">
+            {% include 'nav.html' %}
+        </div>
+        <div class="col-md-12 site-title--home-page">
+            {% include 'logo.html' %}
+            <div class="site-subtitle">
+                {% trans "The Life and Works of Fernande Breilh-Decruck" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Yo Nick B</h1>
+<h2>This is a Heading Level 2</h2>
+<h3>This is a Heading Level 3</h3>
+<p>Consectetur consequatur quisquam ex maiores vitae mollitia Ipsam id obcaecati consectetur accusamus suscipit, magni Rerum eaque unde expedita natus repudiandae. Excepturi sequi laborum voluptatibus ab rem. Sed placeat dolor tenetur.
+</p>
+{% endblock %}

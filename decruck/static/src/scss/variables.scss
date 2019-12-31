@@ -1,0 +1,18 @@
+// Redeclare Bootstrap variables 
+
+$font-family-sans-serif: "Lato", "sans-serif";
+$font-family-serif: "Abhaye Libre", "serif";
+
+// Redeclare the base size
+$font-size-base: 1rem;
+
+$h2-font-size: $font-size-base * 1.25;
+$h3-font-size: $font-size-base * 1.125;
+
+// Color
+// Note: These colors don't appear in Bootstrap's color scheme
+$dark-brown: #37332e;
+$light-brown: #d1c6b0;
+
+$body-bg: $light-brown;
+$body-color: $dark-brown;

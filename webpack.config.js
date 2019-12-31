@@ -5,11 +5,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: {
-        main: './media/src/main.js',
+        main: './decruck/static/src/main.js',
     },
     mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
     output: {
-        path: path.resolve(__dirname, 'media/build'),
+        path: path.resolve(__dirname, 'decruck/static/build'),
         filename: 'bundle.js'
     },
     resolve: {
@@ -19,7 +19,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(js)$/,
-                include: path.resolve(__dirname, 'media/src'),
+                include: path.resolve(__dirname, 'decruck/static/src'),
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',

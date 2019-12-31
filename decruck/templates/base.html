@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static wagtailuserbar %}
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/decruck.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'build/main.css' %}">
 
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
@@ -28,10 +29,37 @@
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
+        {% block nav %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 site-title">
+                        {% include 'logo.html' %}
+                        <div class="site-subtitle">
+                            {% trans "The Life and Works of Fernande Breilh-Decruck" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        {% include 'nav.html' %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
         {% block content %}{% endblock %}
 
+        {% block footer %}
+            <footer class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            things go here
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
         {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/decruck.js' %}"></script>
+        <script type="text/javascript" src="{% static 'build/bundle.js' %}"></script>
 
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}

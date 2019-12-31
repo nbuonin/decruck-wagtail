@@ -1,0 +1,25 @@
+// Load fonts before setting variables
+@import url('https://fonts.googleapis.com/css?family=Abhaya+Libre:700|Lato:400,400i,700,700i,900,900i&display=swap');
+
+@import "./variables";
+
+// Bootstrap: Required
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+// Bootstrap: Optional
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/code";
+@import "~bootstrap/scss/grid";
+
+// Decruck
+body {
+    padding-top: 2em;
+}
+@import "./type";
+@import "./elements/nav";
+@import "./elements/logo";
+@import "./elements/footer";
