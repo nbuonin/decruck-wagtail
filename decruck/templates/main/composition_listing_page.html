@@ -18,19 +18,55 @@
                     <form action="#" method="get" accept-charset="utf-8">
                         <div class="form-row">
                             <div class="form-group col">
-                                <label class="composition-search__form-label" for="keyword">Keyword</label>
+                                <label class="composition-search__form-label" for="keyword">{% trans "Keyword" %}</label>
                                 <input class="form-control" type="text" name="keyword" id="keyword" value="">
                             </div>
                             <div class="form-group col">
-                                <label class="composition-search__form-label" for="year">Year</label>
+                                <label class="composition-search__form-label" for="year">{% trans "Year" %}</label>
                                 <input class="form-control" type="text" name="year" id="year" value="">
                             </div>
                             <div class="form-group col">
-                                <input type="submit" class="btn composition-search__form-button" value="Submit"/>
+                                <input type="submit" class="btn composition-search__form-button" value="{% trans "Submit" %}"/>
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table composition-search-table">
+                    <thead>
+                        <tr>
+                            <th class="composition-search-table__cell" scope="col">
+                                {% trans "Genre" %}
+                            </th>
+                            <th class="composition-search-table__cell" scope="col">
+                                {% trans "Title" %}
+                            </th>
+                            <th class="composition-search-table__cell" scope="col">
+                                {% trans "Year" %}
+                            </th>
+                            <th class="composition-search-table__cell" scope="col">
+                                {% trans "Instrumentation" %}
+                            </th>
+                            <th class="composition-search-table__cell" scope="col">
+                                {% trans "Duration" %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="composition-search-table__cell">Arrangements</td>
+                            <td class="composition-search-table__cell">La Poule (Rameau)</td>
+                            <td class="composition-search-table__cell">1929</td>
+                            <td class="composition-search-table__cell">Organ</td>
+                            <td class="composition-search-table__cell">15:02</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -13,3 +13,11 @@
     margin-top: 2em;
 }
 
+.composition-search-table {
+    margin-top: 1em;
+    @extend .table-borderless;
+}
+
+.composition-search-table .composition-search-table__cell + .composition-search-table__cell {
+    border-left: solid 2px change-color($dark-brown, $alpha: 0.5);
+}
