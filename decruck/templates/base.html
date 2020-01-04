@@ -30,7 +30,7 @@
         {% wagtailuserbar %}
 
         {% block nav %}
-            <div class="container">
+            <header class="container">
                 <div class="row">
                     <div class="col-md-6 site-title">
                         {% include 'logo.html' %}
@@ -42,19 +42,24 @@
                         {% include 'nav.html' %}
                     </div>
                 </div>
-            </div>
+            </header>
         {% endblock %}
 
         {% block content %}{% endblock %}
 
         {% block footer %}
             <footer class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            things go here
-                        </div>
-                    </div>
+                <div class="footer__icon">
+                    <i class="fas fa-envelope"></i> 
+                </div>
+                <div class="footer__icon">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="footer__icon">
+                    <i class="fab fa-linkedin-in"></i>
+                </div>
+                <div class="footer__icon">
+                    <i class="fab fa-youtube"></i> 
                 </div>
             </footer>
         {% endblock %}

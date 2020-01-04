@@ -7,6 +7,7 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
 
 // Bootstrap: Optional
 @import "~bootstrap/scss/reboot";
@@ -16,10 +17,9 @@
 @import "~bootstrap/scss/grid";
 
 // Decruck
-body {
-    padding-top: 2em;
-}
+@import "./base";
 @import "./type";
 @import "./elements/nav";
 @import "./elements/logo";
 @import "./elements/footer";
+@import "./pages/homepage";
