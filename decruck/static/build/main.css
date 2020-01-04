@@ -4924,7 +4924,7 @@ body {
   min-height: 100vh; }
 
 main {
-  padding-bottom: 74px; }
+  padding-bottom: calc(74px + 2em); }
 
 html {
   letter-spacing: 0.02em; }
@@ -5044,4 +5044,13 @@ h3, .h3 {
 
 .composition-search-table .composition-search-table__cell + .composition-search-table__cell {
   border-left: solid 2px rgba(55, 51, 46, 0.5); }
+
+.composition-attr {
+  margin-bottom: 1em; }
+
+.composition-link {
+  color: #FFFFFF;
+  background-color: #37332e;
+  text-transform: uppercase;
+  margin-bottom: 1em; }
 

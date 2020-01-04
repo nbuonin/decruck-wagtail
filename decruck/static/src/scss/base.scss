@@ -4,6 +4,6 @@ body {
     min-height: 100vh;
 }
 main {
-    padding-bottom: 74px; // Footer height
+    padding-bottom: calc(74px + 2em); // Footer height + extra spacing
 }
 

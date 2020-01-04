@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<main>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ page.composition_title | richtext }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {% if page.genre %}
+            <div class="composition-attr">
+                <h2>{% trans "Genre" %}</h2>
+                {{ page.genre }}
+            </div>
+            {% endif %}
+
+            <div class="composition-attr">
+                <h2>{% trans "Date" %}</h2>
+                2020
+            </div>
+
+            {% if page.location %}
+            <div class="composition-attr">
+                <h2>{% trans "Location" %}</h2>
+                {{ page.location | richtext }}
+            </div>
+            {% endif %}
+
+            {% if page.instrumentation.all %}
+            <div class="composition-attr">
+                <h2>{% trans "Instrumentation" %}</h2>
+                {% for i in page.instrumentation.all %}
+                    {{ i }},
+                    {% if forloop.last %}
+                    {{ i }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if page.orchestral_instrumentation %}
+            <div class="composition-attr">
+                <h2>{% trans "Orchestral Instrumentation" %}</h2>
+                {{ page.orchestral_instrumentation | richtext }}
+            </div>
+            {% endif %}
+
+            {% if page.duration %}
+            <div class="composition-attr">
+                <h2>{% trans "Duration" %}</h2>
+                {{ page.duration }}
+            </div>
+            {% endif %}
+
+            {% if page.manuscript_status %}
+            <div class="composition-attr">
+                <h2>{% trans "Mansucript Status" %}</h2>
+                {{ page.manuscript_status | richtext }}
+            </div>
+            {% endif %}
+
+            {% if page.collaborator %}
+            <div class="composition-attr">
+                <h2>{% trans "Collaborators" %}</h2>
+                {{ page.collaborator | richtext }}
+            </div>
+            {% endif %}
+
+            {% if page.text_source %}
+            <div class="composition-attr">
+                <h2>{% trans "Text Source" %}</h2>
+                {{ page.text_source | richtext }}
+            </div>
+            {% endif %}
+
+            {% if page.dedicatee %}
+            <div class="composition-attr">
+                <h2>{% trans "Dedicatee" %}</h2>
+                {{ page.dedicatee | richtext }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h2>{% trans "Description" %}</h2>
+            {% if page.description %}
+            {% include_block page.description%}
+            {% endif %}
+
+            {% if page.published_work_link %}
+            <a class="btn composition-link" href="{{ page.published_work_link }}">
+                {% trans "Available for Download "%}
+            </a>
+            {% endif %}
+
+            {% if page.recording_link %}
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/{{ page.recording_link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</main>
+{% endblock %}
+
