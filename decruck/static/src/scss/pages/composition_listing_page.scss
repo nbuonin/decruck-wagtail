@@ -1,0 +1,15 @@
+.composition-search {
+    background-color: #baaa8b;
+    padding: 1em 0;
+}
+
+.composition-search__form-label {
+    @extend .h2;
+}
+
+.composition-search__form-button {
+    color: #FFFFFF;
+    background-color: $dark-brown;
+    margin-top: 2em;
+}
+
