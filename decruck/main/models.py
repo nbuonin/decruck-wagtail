@@ -67,6 +67,31 @@ class BiographyPage(Page, MenuPageMixin):
 
 
 class CompositionListingPage(Page, MenuPageMixin):
+    def serve(self, request):
+        # Local import to break circular dependency
+        from decruck.main.forms import CompositionListingForm
+        if request.method == 'GET':
+            if len(request.GET.keys()) > 0:
+                form = CompositionListingForm(request.GET)
+                compositions = None
+                if form.is_valid():
+                    # Implement search functionality here and
+                    # assign to compositions
+                    compositions = []
+                return render(request, "main/composition_listing_page.html", {
+                    'page': self,
+                    'form': form,
+                    'compositions': compositions
+                })
+
+            # Else return an empty form
+            form = CompositionListingForm()
+            return render(request, "main/composition_listing_page.html", {
+                'page': self,
+                'form': form,
+                'compositions': CompositionPage.objects.all()  # TODO order by date
+            })
+
     class Meta:
         verbose_name = "Composition Listing Page"
 
@@ -162,6 +187,9 @@ class CompositionPage(Page):
 
 class Instrument(Model):
     instrument = CharField(max_length=256)
+
+    def __str__(self):
+        return self.instrument
 
 
 class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):

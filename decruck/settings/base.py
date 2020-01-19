@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'modelcluster',
     'taggit',
     'wagtailmenus',
+    'widget_tweaks',
 
     'django.contrib.admin',
     'django.contrib.auth',

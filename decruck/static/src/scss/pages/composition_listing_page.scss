@@ -3,6 +3,10 @@
     padding: 1em 0;
 }
 
+.composition-search .errorlist {
+    margin-bottom: 0;
+}
+
 .composition-search__form-label {
     @extend .h2;
 }
