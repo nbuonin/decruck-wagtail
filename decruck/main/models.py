@@ -1,11 +1,17 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
-    PROTECT, URLField
+    PROTECT, URLField, FloatField, DateField, OneToOneField, CASCADE
 )
 from django.shortcuts import render
-from modelcluster.fields import ParentalManyToManyField
-from wagtail.admin.edit_handlers import StreamFieldPanel, FieldPanel
+from django.utils.safestring import mark_safe
+from edtf import parse_edtf, struct_time_to_date
+from edtf.parser.edtf_exceptions import EDTFParseException
+from modelcluster.fields import ParentalManyToManyField, ParentalKey
+from wagtail.admin.edit_handlers import (
+    StreamFieldPanel, FieldPanel, InlinePanel
+)
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import RichTextBlock
 from wagtail.core.fields import StreamField, RichTextField
@@ -36,6 +42,7 @@ GENRE = (
 
 
 class HomePage(Page, MenuPageMixin):
+    """Home Page"""
     class Meta:
         verbose_name = "Homepage"
 
@@ -64,6 +71,66 @@ class BiographyPage(Page, MenuPageMixin):
     ]
 
     parent_page_types = ['HomePage']
+
+
+class CompositionEDTF(Model):
+    composition = ParentalKey(
+        'CompositionPage',
+        on_delete=CASCADE,
+        unique=True,
+        related_name='date'
+    )
+    nat_lang_edtf_string = CharField(
+        verbose_name='Natural Language Date',
+        help_text=('The EDTF date in natural language. This field is help '
+                   'users who aren\'t familiar with the EDTF. It does not '
+                   'change how the date is represented.'),
+        max_length=256)
+    edtf_string = CharField(
+        verbose_name='EDTF Date',
+        help_text=mark_safe(
+            'A date in the <a href="https://www.loc.gov/standards/datetime/" '
+            'target="_blank"><strong>Extended Date Time Format</strong></a>'),
+        max_length=256)
+    lower_fuzzy = DateField(editable=False)
+    upper_fuzzy = DateField(editable=False)
+    lower_strict = DateField(editable=False)
+    upper_strict = DateField(editable=False)
+
+    panels = [
+        FieldPanel('edtf_string'),
+        FieldPanel('nat_lang_edtf_string')
+    ]
+
+    def __str__(self):
+        return self.edtf_string
+
+    def clean(self):
+        try:
+            e = parse_edtf(self.edtf_string)
+        except EDTFParseException:
+            raise ValidationError(
+                {'edtf_string': '{} is not a valid EDTF string'.
+                                format(self.edtf_string)})
+
+        self.lower_fuzzy = struct_time_to_date(e.lower_fuzzy())
+        self.upper_fuzzy = struct_time_to_date(e.upper_fuzzy())
+        self.lower_strict = struct_time_to_date(e.lower_strict())
+        self.upper_strict = struct_time_to_date(e.upper_strict())
+
+    def save(self, *args, **kwargs):
+        try:
+            e = parse_edtf(self.edtf_string)
+        except EDTFParseException:
+            raise ValidationError('{} is not a valid EDTF string'.
+                                  format(self.edtf_string))
+
+        self.lower_fuzzy = struct_time_to_date(e.lower_fuzzy())
+        self.upper_fuzzy = struct_time_to_date(e.upper_fuzzy())
+        self.lower_strict = struct_time_to_date(e.lower_strict())
+        self.upper_strict = struct_time_to_date(e.upper_strict())
+
+        super().save(*args, **kwargs)
 
 
 class CompositionListingPage(Page, MenuPageMixin):
@@ -108,7 +175,6 @@ class CompositionPage(Page):
         ('paragraph', RichTextBlock()),
         ('image', ImageChooserBlock())
     ], blank=True)
-    # Date: TODO decide which type of date field to use
     location = RichTextField(
         blank=True,
         features=['bold', 'italic']
@@ -169,6 +235,12 @@ class CompositionPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('composition_title'),
         StreamFieldPanel('description'),
+        InlinePanel(
+            'date',
+            label='Date',
+            help_text='Enter a date in the LOC Extended Date Time Format',
+            max_num=1
+        ),
         FieldPanel('location'),
         FieldPanel('instrumentation'),
         FieldPanel('orchestral_instrumentation'),
