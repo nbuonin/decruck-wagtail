@@ -183,6 +183,9 @@ class CompositionListingPage(Page, MenuPageMixin):
                     (Pdb)
                     """
                     if form.cleaned_data['start_year']:
+                        # TODO filtering off of date could be buggy because
+                        # it's expecting there to be multiple dates
+                        # e.g. 'date__first'...
                         compositions = compositions.filter(
                             date__lower_strict__year__gte=form.cleaned_data['start_year'])
 
@@ -318,6 +321,12 @@ class CompositionPage(Page):
 
     search_fields = Page.search_fields + [
         index.SearchField('description'),
+        index.SearchField('location'),
+        index.SearchField('dedicatee'),
+        index.SearchField('text_source'),
+        index.SearchField('collaborator'),
+        index.SearchField('manuscript_status'),
+        index.SearchField('recording'),
         index.FilterField('genre'),
         index.FilterField('instrument_id')
     ]
