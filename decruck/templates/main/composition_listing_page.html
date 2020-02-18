@@ -59,6 +59,7 @@
                             {{ form.sort_dir.as_hidden }}
                             <div class="form-group col">
                                 <input type="submit" class="btn composition-search__form-button" value="{% trans "Submit" %}"/>
+                                <a href="{% pageurl page %}" role="button" class="btn btn-danger composition-search__form-button--reset">Reset</a>
                             </div>
                         </div>
                     </form>
@@ -92,11 +93,29 @@
                     <tbody>
                         {% for composition in compositions %}
                         <tr>
-                            <td class="composition-search-table__cell">Arrangements</td>
-                            <td class="composition-search-table__cell">La Poule (Rameau)</td>
-                            <td class="composition-search-table__cell">1929</td>
-                            <td class="composition-search-table__cell">Organ</td>
-                            <td class="composition-search-table__cell">15:02</td>
+                            <td class="composition-search-table__cell composition-search-table__genre-cell">
+                                {{ composition.genre }}
+                            </td>
+                            <td class="composition-search-table__cell">
+                                <a href="{% pageurl composition %}">{{ composition.title }}</a>
+                            </td>
+                            <td class="composition-search-table__cell">
+                                {% if composition.date %}
+                                    {{ composition.date.first.nat_lang_year }}
+                                {% endif %}
+                            </td>
+                            <td class="composition-search-table__cell">
+                                {% if composition.instrumentation.all %}
+                                    {% for instrument in composition.instrumentation.all %}
+                                        {{ instrument }}{% if not forloop.last%}, {% endif%}
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td class="composition-search-table__cell">
+                                {% if composition.duration %}
+                                {{ composition.duration }}
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

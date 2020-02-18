@@ -4,7 +4,7 @@ PIPFILE = Pipfile
 
 $(PY_SENTINAL): $(PIPFILE)
 	-rm -rf .venv
-	pipenv sync 
+	pipenv update 
 	touch $@
 
 $(JS_SENTINAL):
@@ -28,7 +28,10 @@ superuser: $(PY_SENTINAL)
 	pipenv run ./manage.py createsuperuser
 
 shell: $(PY_SENTINAL)
-	pipenv run ./manage.py shell
+	pipenv run ./manage.py shell_plus
+
+update-index: $(PY_SENTINAL)
+	pipenv run ./manage.py update_index 
 
 test: $(PY_SENTINAL)
 	pipenv run ./manage.py test
@@ -45,4 +48,4 @@ docker-test:
 docker-push:
 	docker push nbuonin/decruck:`git log -n 1 --pretty="%h"`
 
-.PHONY: clean runserver migrate makemigrations superuser shell test scss docker-image docker-test docker-push
+.PHONY: clean runserver migrate makemigrations superuser shell test scss docker-image docker-test docker-push update-index

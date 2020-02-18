@@ -3,15 +3,19 @@ from django.forms import (
     Form, CharField, IntegerField, ChoiceField, MultipleChoiceField,
     ValidationError
 )
-from decruck.main.models import GENRE, Instrument
+from decruck.main.models import Genre, Instrument
+
+
+def genre_choices():
+    return tuple((i.pk, i) for i in Genre.objects.all())
+
+
+def instrument_choices():
+    return tuple((i.pk, i) for i in Instrument.objects.all())
 
 
 class CompositionListingForm(Form):
     """Composition Listing Form"""
-    instrument_choices = zip(
-        [str(i).replace(' ', '_').upper() for i in Instrument.objects.all()],
-        [i for i in Instrument.objects.all()]
-    )
     sort_by_choices = (
         ('KEYWORD', 'KEYWORD'),
         ('START_YEAR', 'START_YEAR'),
@@ -36,7 +40,7 @@ class CompositionListingForm(Form):
     )
     genre = MultipleChoiceField(
         required=False,
-        choices=GENRE
+        choices=genre_choices
     )
     instrumentation = MultipleChoiceField(
         required=False,

@@ -5136,11 +5136,17 @@ h3, .h3 {
   background-color: #37332e;
   margin-top: 2em; }
 
+.composition-search__form-button--reset {
+  margin-top: 2em; }
+
 .composition-search-table {
   margin-top: 1em; }
 
 .composition-search-table .composition-search-table__cell + .composition-search-table__cell {
   border-left: solid 2px rgba(55, 51, 46, 0.5); }
+
+.composition-search-table__genre-cell {
+  white-space: nowrap; }
 
 .composition-attr {
   margin-bottom: 1em; }

@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
-    PROTECT, URLField, FloatField, DateField, OneToOneField, CASCADE
+    PROTECT, URLField, DateField, CASCADE
 )
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
@@ -12,11 +12,13 @@ from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from wagtail.admin.edit_handlers import (
     StreamFieldPanel, FieldPanel, InlinePanel
 )
+from wagtail.search.backends import get_search_backend
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import RichTextBlock
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.search import index
 from wagtailmenus.models import MenuPageMixin
 from wagtailmenus.panels import menupage_panel
 
@@ -33,7 +35,7 @@ GENRE = (
     (ARRANGEMENTS, 'Arrangements'),
     (CHAMBER, 'Chamber Music'),
     (ETUDES, 'Etudes'),
-    (ORCHESTRAL, 'Orchstral Music'),
+    (ORCHESTRAL, 'Orchestral Music'),
     (ORGAN, 'Organ Music'),
     (SOLO_PIANO, 'Solo Piano Music'),
     (ART_SONG, 'Art Song'),
@@ -55,7 +57,7 @@ class HomePage(Page, MenuPageMixin):
 
 class BiographyPage(Page, MenuPageMixin):
     body = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
 
@@ -71,6 +73,13 @@ class BiographyPage(Page, MenuPageMixin):
     ]
 
     parent_page_types = ['HomePage']
+
+
+class Genre(Model):
+    genre = CharField(max_length=256)
+
+    def __str__(self):
+        return self.genre
 
 
 class CompositionEDTF(Model):
@@ -96,6 +105,7 @@ class CompositionEDTF(Model):
     upper_fuzzy = DateField(editable=False)
     lower_strict = DateField(editable=False)
     upper_strict = DateField(editable=False)
+    nat_lang_year = CharField(editable=False, max_length=9)
 
     panels = [
         FieldPanel('edtf_string'),
@@ -118,6 +128,14 @@ class CompositionEDTF(Model):
         self.lower_strict = struct_time_to_date(e.lower_strict())
         self.upper_strict = struct_time_to_date(e.upper_strict())
 
+        if self.lower_strict.year != self.upper_strict.year:
+            self.nat_lang_year = '{}-{}'.format(
+                self.lower_strict.year,
+                self.upper_strict.year
+            )
+        else:
+            self.nat_lang_year = str(self.lower_strict.year)
+
     def save(self, *args, **kwargs):
         try:
             e = parse_edtf(self.edtf_string)
@@ -130,6 +148,14 @@ class CompositionEDTF(Model):
         self.lower_strict = struct_time_to_date(e.lower_strict())
         self.upper_strict = struct_time_to_date(e.upper_strict())
 
+        if self.lower_strict.year != self.upper_strict.year:
+            self.nat_lang_year = '{}-{}'.format(
+                self.lower_strict.year,
+                self.upper_strict.year
+            )
+        else:
+            self.nat_lang_year = str(self.lower_strict.year)
+
         super().save(*args, **kwargs)
 
 
@@ -140,11 +166,46 @@ class CompositionListingPage(Page, MenuPageMixin):
         if request.method == 'GET':
             if len(request.GET.keys()) > 0:
                 form = CompositionListingForm(request.GET)
-                compositions = None
+                compositions = CompositionPage.objects.all()
                 if form.is_valid():
+                    backend = get_search_backend()
                     # Implement search functionality here and
                     # assign to compositions
-                    compositions = []
+                    """
+                    (Pdb) pp form.cleaned_data
+                    {'end_year': None,
+                    'genre': ['11', '13'],
+                    'instrumentation': ['47'],
+                    'keyword': 'foo',
+                    'sort_by': '',
+                    'sort_dir': '',
+                    'start_year': 1925}
+                    (Pdb)
+                    """
+                    if form.cleaned_data['start_year']:
+                        compositions = compositions.filter(
+                            date__lower_strict__year__gte=form.cleaned_data['start_year'])
+
+                    if form.cleaned_data['end_year']:
+                        compositions = compositions.filter(
+                            date__upper_strict__year__lte=form.cleaned_data['end_year'])
+
+                    if form.cleaned_data['genre']:
+                        compositions = compositions.filter(
+                            genre__in=form.cleaned_data['genre'])
+
+                    if form.cleaned_data['instrumentation']:
+                        compositions = compositions.filter(
+                            instrumentation__in=form.cleaned_data['instrumentation'])
+
+                    # Per Wagtail docs, search must come after all filtering
+                    if form.cleaned_data['keyword']:
+                        print(type(compositions))
+                        compositions = backend.search(
+                            form.cleaned_data['keyword'],
+                            compositions
+                        )
+
                 return render(request, "main/composition_listing_page.html", {
                     'page': self,
                     'form': form,
@@ -172,18 +233,24 @@ class CompositionListingPage(Page, MenuPageMixin):
 class CompositionPage(Page):
     composition_title = RichTextField(features=['bold', 'italic'])
     description = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ], blank=True)
     location = RichTextField(
         blank=True,
         features=['bold', 'italic']
     )
+    genre = ForeignKey(
+        Genre,
+        null=True,
+        blank=True,
+        on_delete=PROTECT
+    )
     instrumentation = ParentalManyToManyField(
         'Instrument',
         blank=True,
     )
-    orchestral_instrumentation = RichTextField(
+    orchestration = RichTextField(
         blank=True,
         features=['bold', 'italic'],
         help_text=(
@@ -198,11 +265,6 @@ class CompositionPage(Page):
     dedicatee = RichTextField(
         blank=True,
         features=['bold', 'italic']
-    )
-    genre = CharField(
-        choices=GENRE,
-        blank=True,
-        max_length=256
     )
     text_source = RichTextField(
         blank=True,
@@ -220,14 +282,14 @@ class CompositionPage(Page):
         help_text='Notes about the location and condition of the manuscript.'
     )
     published_work_link = URLField(
+        null=True,
         blank=True,
         help_text='A URL to the published score.'
     )
-    recording_link = CharField(
-        blank=True,
-        max_length=256,
-        help_text='The You Tube id of a recording.'
-    )
+    recording = StreamField([
+        ('rich_text', RichTextBlock()),
+        ('image', ImageChooserBlock())
+    ], blank=True)
 
     class Meta:
         verbose_name = "Composition"
@@ -243,7 +305,7 @@ class CompositionPage(Page):
         ),
         FieldPanel('location'),
         FieldPanel('instrumentation'),
-        FieldPanel('orchestral_instrumentation'),
+        FieldPanel('orchestration'),
         FieldPanel('duration'),
         FieldPanel('dedicatee'),
         FieldPanel('genre'),
@@ -251,7 +313,13 @@ class CompositionPage(Page):
         FieldPanel('collaborator'),
         FieldPanel('manuscript_status'),
         FieldPanel('published_work_link'),
-        FieldPanel('recording_link'),
+        StreamFieldPanel('recording'),
+    ]
+
+    search_fields = Page.search_fields + [
+        index.SearchField('description'),
+        index.FilterField('genre'),
+        index.FilterField('instrument_id')
     ]
 
     parent_page_types = ['CompositionListingPage']
@@ -266,11 +334,11 @@ class Instrument(Model):
 
 class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
     body = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
     confirmation_page_text = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
 
@@ -296,7 +364,7 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
 
 class ScoreListingPage(Page, MenuPageMixin):
     description = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
 
@@ -321,7 +389,7 @@ class ScorePage(Page):
         related_name='cover_image'
     )
     description = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
     duration = DurationField(
@@ -336,10 +404,11 @@ class ScorePage(Page):
                 allowed_extensions=['pdf'])
         ]
     )
-    genre = CharField(
-        choices=GENRE,
+    genre = ForeignKey(
+        Genre,
+        null=True,
         blank=True,
-        max_length=256
+        on_delete=PROTECT
     )
     instrumentation = RichTextField(
         blank=True,
@@ -363,11 +432,11 @@ class ScorePage(Page):
 
 class ShoppingCartPage(RoutablePageMixin, Page):
     body = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
     confirmation_page_text = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
 
@@ -389,7 +458,7 @@ class ShoppingCartPage(RoutablePageMixin, Page):
 
 class BasicPage(Page, MenuPageMixin):
     body = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
 
