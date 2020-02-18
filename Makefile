@@ -30,6 +30,9 @@ superuser: $(PY_SENTINAL)
 shell: $(PY_SENTINAL)
 	pipenv run ./manage.py shell_plus
 
+bootstrap: $(PY_SENTINAL)
+	pipenv run ./manage.py bootstrap 
+
 update-index: $(PY_SENTINAL)
 	pipenv run ./manage.py update_index 
 
@@ -48,4 +51,4 @@ docker-test:
 docker-push:
 	docker push nbuonin/decruck:`git log -n 1 --pretty="%h"`
 
-.PHONY: clean runserver migrate makemigrations superuser shell test scss docker-image docker-test docker-push update-index
+.PHONY: clean runserver migrate makemigrations superuser shell test scss docker-image docker-test docker-push update-index bootstrap
