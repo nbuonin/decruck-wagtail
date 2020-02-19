@@ -4,7 +4,7 @@ PIPFILE = Pipfile
 
 $(PY_SENTINAL): $(PIPFILE)
 	-rm -rf .venv
-	pipenv update 
+	pipenv sync 
 	touch $@
 
 $(JS_SENTINAL):
