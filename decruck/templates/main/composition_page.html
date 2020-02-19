@@ -19,10 +19,12 @@
             </div>
             {% endif %}
 
+            {% if page.date.first %}
             <div class="composition-attr">
                 <h2>{% trans "Date" %}</h2>
-                2020
+                {{ page.date.first.nat_lang_year }}
             </div>
+            {% endif %}
 
             {% if page.location %}
             <div class="composition-attr">
@@ -86,8 +88,8 @@
             {% endif %}
         </div>
         <div class="col-md-8">
-            <h2>{% trans "Description" %}</h2>
             {% if page.description %}
+            <h2>{% trans "Description" %}</h2>
             {% include_block page.description%}
             {% endif %}
 
