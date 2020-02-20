@@ -55,11 +55,30 @@
                                 <label class="composition-search__form-label" for="{{ form.instrumentation.id_for_label }}">{% trans "Instrumentation" %}</label>
                                 {{ form.instrumentation|add_class:"form-control" }}
                             </div>
-                            {{ form.sort_by.as_hidden }}
-                            {{ form.sort_dir.as_hidden }}
                             <div class="form-group col">
                                 <input type="submit" class="btn composition-search__form-button" value="{% trans "Submit" %}"/>
                                 <a href="{% pageurl page %}" role="button" class="btn btn-danger composition-search__form-button--reset">Reset</a>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="btn-toolbar">
+                                <span class="composition-search__form-label--sort">{% trans "Sort By"%}</span>
+                                <div class="btn-group btn-group-toggle composition-search__btn-bar" data-toggle="buttons">
+                                    {% for el in form.sort_by %}
+                                    <label class="btn btn-light">
+                                        {{ el.tag }}{{ el.choice_label }}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                                <span class="composition-search__form-label--sort">{% trans "Sort Direction"%}</span>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    {% for el in form.sort_dir %}
+                                    <label class="btn btn-light">
+                                        {{ el.tag }}{{ el.choice_label }}
+                                    </label>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </form>

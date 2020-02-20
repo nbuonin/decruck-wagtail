@@ -11,6 +11,13 @@
     @extend .h2;
 }
 
+.composition-search__form-label--sort {
+    @extend .composition-search__form-label;
+    align-self: center;
+    margin-bottom: 0;
+    margin-right: 0.5em;
+}
+
 .composition-search__form-button {
     color: #FFFFFF;
     background-color: $dark-brown;
@@ -19,6 +26,10 @@
 
 .composition-search__form-button--reset {
     margin-top: 2em;
+}
+
+.composition-search__btn-bar {
+    margin-right: 2em;
 }
 
 .composition-search-table {

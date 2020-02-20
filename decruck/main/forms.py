@@ -1,7 +1,7 @@
 """Custom Forms for Decruck Wagatail"""
 from django.forms import (
     Form, CharField, IntegerField, ChoiceField, MultipleChoiceField,
-    ValidationError
+    ValidationError, RadioSelect
 )
 from decruck.main.models import Genre, Instrument
 
@@ -17,11 +17,11 @@ def instrument_choices():
 class CompositionListingForm(Form):
     """Composition Listing Form"""
     sort_by_choices = (
-        ('KEYWORD', 'KEYWORD'),
-        ('START_YEAR', 'START_YEAR'),
-        ('END_YEAR', 'END_YEAR'),
-        ('GENRE', 'GENRE'),
-        ('INSTRUMENTATION', 'INSTRUMENTATION')
+        ('TITLE', 'Title'),
+        ('START_YEAR', 'Start Year'),
+        ('END_YEAR', 'End Year'),
+        ('GENRE', 'Genre'),
+        ('DURATION', 'Duration')
     )
 
     keyword = CharField(
@@ -48,11 +48,13 @@ class CompositionListingForm(Form):
     )
     sort_by = ChoiceField(
         required=False,
-        choices=sort_by_choices
+        choices=sort_by_choices,
+        widget=RadioSelect
     )
     sort_dir = ChoiceField(
         required=False,
-        choices=(('ASC', 'ASC'), ('DESC', 'DESC'))
+        choices=(('ASC', 'Asc'), ('DESC', 'Desc')),
+        widget=RadioSelect
     )
 
     def clean(self):
