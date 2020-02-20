@@ -5107,9 +5107,9 @@ h3, .h3 {
 
 .footer__icon {
   background-color: rgba(255, 255, 255, 0.5);
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
   margin-right: 1em;
   display: -webkit-box;
   display: flex;
@@ -5149,7 +5149,7 @@ h3, .h3 {
   white-space: nowrap; }
 
 .composition-attr {
-  margin-bottom: 1em; }
+  margin-bottom: 1.5em; }
 
 .composition-link {
   color: #FFFFFF;
