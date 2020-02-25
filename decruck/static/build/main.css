@@ -2807,7 +2807,7 @@ template {
   display: none !important; }
 
 h1, h2, h3, h4, h5, h6,
-.h1, .h2, .composition-search__form-label, .composition-search__form-label--sort, .h3, .h4, .h5, .h6 {
+.h1, .h2, .composition-search__form-label, .composition-search__form-label--sort, .composition-search__fieldset-legend, .h3, .h4, .h5, .h6 {
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2; }
@@ -2815,7 +2815,7 @@ h1, h2, h3, h4, h5, h6,
 h1, .h1 {
   font-size: 2.5rem; }
 
-h2, .h2, .composition-search__form-label, .composition-search__form-label--sort {
+h2, .h2, .composition-search__form-label, .composition-search__form-label--sort, .composition-search__fieldset-legend {
   font-size: 1.25rem; }
 
 h3, .h3 {
@@ -5123,7 +5123,7 @@ h1, .h1 {
   text-transform: uppercase;
   letter-spacing: 0.1em; }
 
-h2, .h2, .composition-search__form-label, .composition-search__form-label--sort {
+h2, .h2, .composition-search__form-label, .composition-search__form-label--sort, .composition-search__fieldset-legend {
   font-family: "Lato", "sans-serif";
   font-weight: 900;
   text-transform: uppercase;
@@ -5226,6 +5226,9 @@ h3, .h3 {
 .composition-search .errorlist {
   margin-bottom: 0; }
 
+.composition-search__form-row--first-row {
+  padding-top: 1em; }
+
 .composition-search__form-label--sort {
   align-self: center;
   margin-bottom: 0;
@@ -5236,11 +5239,39 @@ h3, .h3 {
   background-color: #37332e;
   margin-top: 2em; }
 
-.composition-search__form-button--reset {
+.composition-search__form-button--reset, .composition-search__field--end-year {
   margin-top: 2em; }
 
 .composition-search__btn-bar {
   margin-right: 2em; }
+
+.composition-search__side-bar {
+  background-color: #37332e;
+  width: calc(100% - 30px);
+  position: absolute;
+  padding: 1em;
+  z-index: 1000;
+  border-radius: 4px; }
+
+.composition-search__fieldset {
+  margin-bottom: 1em; }
+  .composition-search__fieldset:last-of-type {
+    margin-bottom: 0px; }
+
+.composition-search__fieldset-checkbox-label {
+  display: block;
+  margin-bottom: 0.5em !important;
+  border-color: #FFFFFF;
+  color: #37332e;
+  background-color: #FFFFFF; }
+  .composition-search__fieldset-checkbox-label.active {
+    color: #FFFFFF;
+    background-color: #37332e; }
+  .composition-search__fieldset-checkbox-label:last-of-type {
+    margin-bottom: 0px !important; }
+
+.composition-search__fieldset-legend {
+  color: #FFFFFF; }
 
 .composition-search-table {
   margin-top: 1em; }

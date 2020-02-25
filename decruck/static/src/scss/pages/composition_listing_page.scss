@@ -7,6 +7,10 @@
     margin-bottom: 0;
 }
 
+.composition-search__form-row--first-row {
+    padding-top: 1em;
+}
+
 .composition-search__form-label {
     @extend .h2;
 }
@@ -24,12 +28,50 @@
     margin-top: 2em;
 }
 
-.composition-search__form-button--reset {
+.composition-search__form-button--reset, .composition-search__field--end-year {
     margin-top: 2em;
 }
 
 .composition-search__btn-bar {
     margin-right: 2em;
+}
+
+.composition-search__side-bar {
+    background-color: $dark-brown;
+    width: calc(100% - 30px);
+    position: absolute;
+    padding: 1em;
+    z-index: 1000;
+    border-radius: 4px;
+}
+
+.composition-search__fieldset {
+    margin-bottom: 1em;
+    &:last-of-type {
+        margin-bottom: 0px;
+    }
+}
+
+.composition-search__fieldset-checkbox-label {
+    display: block;
+    margin-bottom: 0.5em !important;
+
+    border-color: #FFFFFF;
+    color: $dark-brown;
+    background-color: #FFFFFF;
+    &.active {
+        color: #FFFFFF;
+        background-color: $dark-brown;
+    }
+
+    &:last-of-type {
+        margin-bottom: 0px !important;
+    }
+}
+
+.composition-search__fieldset-legend {
+    @extend .composition-search__form-label;
+    color: #FFFFFF;
 }
 
 .composition-search-table {

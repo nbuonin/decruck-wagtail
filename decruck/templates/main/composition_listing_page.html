@@ -13,82 +13,96 @@
         </div>
     </div>
     <div class="composition-search">
-        <div class="container">
+        {# Use form as the container element so that Genre and Instrumentation are wrapped in the same form #}
+        <form action="#" method="get" id="composition-search__form" class="container" accept-charset="utf-8">
             <div class="row">
-                <div class="col-12">
+                <div class="col-3 composition-search__side-bar--container">
+                    <div class="composition-search__side-bar">
+                        <fieldset class="composition-search__fieldset">
+                            <legend class="composition-search__fieldset-legend">{% trans "Genre" %}</legend>
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                            {% for genre in form.genre %}
+                                <label class="btn composition-search__fieldset-checkbox-label">
+                                    {{ genre.tag }}{{ genre.choice_label }}
+                                </label>
+                            {% endfor %}
+                            </div>
+                        </fieldset>
+                        <fieldset class="composition-search__fieldset">
+                            <legend class="composition-search__fieldset-legend">{% trans "Instrumentation" %}</legend>
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                            {% for instrument in form.instrumentation %}
+                                <label class="btn composition-search__fieldset-checkbox-label">
+                                    {{ instrument.tag }}{{ instrument.choice_label }}
+                                </label>
+                            {% endfor %}
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-9">
                     {% if form.non_field_errors%}
                     <div class="alert alert-danger" role="alert">
                         {{ form.non_field_errors }}
                     </div>
                     {% endif %}
-                    <form action="#" method="get" accept-charset="utf-8">
-                        <div class="form-row">
-                            <div class="form-group col-4">
-                                <label class="composition-search__form-label" for="{{ form.keyword.id_for_label }}">{% trans "Keyword" %}</label>
-                                {{ form.keyword|add_class:"form-control" }}
-                                <div class="invalid-feedback">
-                                    {{ form.keyword.errors }}
-                                </div>
-                            </div>
-                            <div class="form-group col-2">
-                                {{ form.start_year.errors }}
-                                <label class="composition-search__form-label" for="{{ form.start_year.id_for_label }}">{% trans "Start Year" %}</label>
-                                {{ form.start_year|add_class:"form-control" }}
-                            </div>
-                            <div class="form-group col-2">
-                                {{ form.end_year.errors }}
-                                <label class="composition-search__form-label" for="{{ form.end_year.id_for_label }}">{% trans "End Year" %}</label>
-                                {{ form.end_year|add_class:"form-control" }}
-                            </div>
-                            {{ form.year_range }}
-                        </div>
-
-
-                        <div class="form-row">
-                            <div class="form-group col-4">
-                                {{ form.genre.errors }}
-                                <label class="composition-search__form-label" for="{{ form.genre.id_for_label }}">{% trans "Genre" %}</label>
-                                {{ form.genre|add_class:"form-control" }}
-                            </div>
-                            <div class="form-group col-4">
-                                {{ form.instrumentation.errors }}
-                                <label class="composition-search__form-label" for="{{ form.instrumentation.id_for_label }}">{% trans "Instrumentation" %}</label>
-                                {{ form.instrumentation|add_class:"form-control" }}
-                            </div>
-                            <div class="form-group col">
-                                <input type="submit" class="btn composition-search__form-button" value="{% trans "Submit" %}"/>
-                                <a href="{% pageurl page %}" role="button" class="btn btn-danger composition-search__form-button--reset">Reset</a>
+                    <div class="form-row composition-search__form-row--first-row">
+                        <div class="form-group col-6">
+                            <label class="composition-search__form-label" for="{{ form.keyword.id_for_label }}">{% trans "Keyword" %}</label>
+                            {{ form.keyword|add_class:"form-control" }}
+                            <div class="invalid-feedback">
+                                {{ form.keyword.errors }}
                             </div>
                         </div>
+                        <div class="form-group col-3">
+                            {# You need to render these errors in Bootstrap #}
+                            {{ form.start_year.errors }}
+                            <label class="composition-search__form-label" for="{{ form.start_year.id_for_label }}">{% trans "Year" %}</label>
+                            {{ form.start_year|add_class:"form-control" }}
+                        </div>
+                        <div class="form-group col-3">
+                            {{ form.end_year.errors }}
+                            {{ form.end_year|add_class:"form-control composition-search__field--end-year" }}
+                        </div>
+                        {{ form.year_range }}
+                    </div>
 
-                        <div class="form-row">
-                            <div class="btn-toolbar">
-                                <span class="composition-search__form-label--sort">{% trans "Sort By"%}</span>
-                                <div class="btn-group btn-group-toggle composition-search__btn-bar" data-toggle="buttons">
-                                    {% for el in form.sort_by %}
-                                    <label class="btn btn-light">
-                                        {{ el.tag }}{{ el.choice_label }}
-                                    </label>
-                                    {% endfor %}
-                                </div>
-                                <span class="composition-search__form-label--sort">{% trans "Sort Direction"%}</span>
-                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                    {% for el in form.sort_dir %}
-                                    <label class="btn btn-light">
-                                        {{ el.tag }}{{ el.choice_label }}
-                                    </label>
-                                    {% endfor %}
-                                </div>
+                    <div class="form-row">
+                        <div class="btn-toolbar">
+                            <span class="composition-search__form-label--sort">{% trans "Sort By"%}</span>
+                            <div class="btn-group btn-group-toggle composition-search__btn-bar" data-toggle="buttons">
+                                {% for el in form.sort_by %}
+                                <label class="btn btn-light">
+                                    {{ el.tag }}{{ el.choice_label }}
+                                </label>
+                                {% endfor %}
+                            </div>
+                            <span class="composition-search__form-label--sort">{% trans "Sort Direction"%}</span>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                {% for el in form.sort_dir %}
+                                <label class="btn btn-light">
+                                    {{ el.tag }}{{ el.choice_label }}
+                                </label>
+                                {% endfor %}
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <input type="submit" class="btn composition-search__form-button" value="{% trans "Submit" %}"/>
+                            <a href="{% pageurl page %}" role="button" class="btn btn-danger composition-search__form-button--reset">Reset</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </div> {# end of row #}
+        </form> {# end of container #}
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-3">
+                {# Use an empty col as a spacer for the Genre and Instrumentation menu#}
+            </div>
+            <div class="col-9">
                 <table class="table composition-search-table">
                     <thead>
                         <tr>
@@ -103,9 +117,6 @@
                             </th>
                             <th class="composition-search-table__cell" scope="col">
                                 {% trans "Instrumentation" %}
-                            </th>
-                            <th class="composition-search-table__cell" scope="col">
-                                {% trans "Duration" %}
                             </th>
                         </tr>
                     </thead>
@@ -128,11 +139,6 @@
                                     {% for instrument in composition.instrumentation.all %}
                                         {{ instrument }}{% if not forloop.last%}, {% endif%}
                                     {% endfor %}
-                                {% endif %}
-                            </td>
-                            <td class="composition-search-table__cell">
-                                {% if composition.duration %}
-                                {{ composition.duration }}
                                 {% endif %}
                             </td>
                         </tr>
