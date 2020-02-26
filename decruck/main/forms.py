@@ -17,9 +17,9 @@ def instrument_choices():
 class CompositionListingForm(Form):
     """Composition Listing Form"""
     sort_by_choices = (
-        ('GENRE', 'Genre'),
-        ('TITLE', 'Title'),
-        ('YEAR', 'Year'),
+        ('genre', 'Genre'),
+        ('title', 'Title'),
+        ('year', 'Year'),
     )
 
     keyword = CharField(
@@ -49,11 +49,13 @@ class CompositionListingForm(Form):
     sort_by = ChoiceField(
         required=False,
         choices=sort_by_choices,
+        initial=sort_by_choices[0],
         widget=RadioSelect
     )
     sort_dir = ChoiceField(
         required=False,
         choices=(('ASC', 'Asc'), ('DESC', 'Desc')),
+        initial=('DESC', 'Desc'),
         widget=RadioSelect
     )
 

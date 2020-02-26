@@ -25,15 +25,15 @@
 .composition-search__form-button {
     color: #FFFFFF;
     background-color: $dark-brown;
-    margin-top: 2em;
-}
-
-.composition-search__form-button--reset, .composition-search__field--end-year {
-    margin-top: 2em;
 }
 
 .composition-search__btn-bar {
     margin-right: 2em;
+}
+
+.composition-search__record-count {
+    margin-top: 1em;
+    display: block;
 }
 
 .composition-search__side-bar {

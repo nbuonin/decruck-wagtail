@@ -203,11 +203,28 @@ class CompositionListingPage(Page, MenuPageMixin):
 
                     # Per Wagtail docs, search must come after all filtering
                     if form.cleaned_data['keyword']:
-                        print(type(compositions))
                         compositions = backend.search(
                             form.cleaned_data['keyword'],
                             compositions
                         )
+
+                    # Sort results
+                    sort_by = form.cleaned_data['sort_by']
+                    sort_dir = form.cleaned_data['sort_dir']
+                    if sort_by != 'year':
+                        if sort_dir == 'ASC':
+                            compositions = compositions.order_by(sort_by)
+                        else:
+                            compositions = compositions.order_by('-' + sort_by)
+                    else:
+                        if sort_dir == 'ASC':
+                            # Order by start year
+                            compositions = compositions.order_by(
+                                'date__lower_strict')
+                        else:
+                            # Order by end year
+                            compositions = compositions.order_by(
+                                '-date__upper_strict')
 
                 return render(request, "main/composition_listing_page.html", {
                     'page': self,
