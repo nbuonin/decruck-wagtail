@@ -197,17 +197,6 @@ class CompositionListingPage(Page, MenuPageMixin):
                         compositions = compositions.filter(
                             genre__in=form.cleaned_data['genre'])
 
-                    if form.cleaned_data['instrumentation']:
-                        compositions = compositions.filter(
-                            instrumentation__in=form.cleaned_data['instrumentation'])
-
-                    # Per Wagtail docs, search must come after all filtering
-                    if form.cleaned_data['keyword']:
-                        compositions = backend.search(
-                            form.cleaned_data['keyword'],
-                            compositions
-                        )
-
                     # Sort results
                     sort_by = form.cleaned_data['sort_by']
                     sort_dir = form.cleaned_data['sort_dir']
@@ -225,6 +214,14 @@ class CompositionListingPage(Page, MenuPageMixin):
                             # Order by end year
                             compositions = compositions.order_by(
                                 '-date__upper_strict')
+
+                    # Per Wagtail docs, search must come after all filtering
+                    if form.cleaned_data['keyword']:
+                        print('keyword is hit')
+                        compositions = backend.search(
+                            form.cleaned_data['keyword'],
+                            compositions
+                        )
 
                 return render(request, "main/composition_listing_page.html", {
                     'page': self,

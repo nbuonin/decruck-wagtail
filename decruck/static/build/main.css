@@ -5273,6 +5273,10 @@ h3, .h3 {
 .composition-search__fieldset-legend {
   color: #FFFFFF; }
 
+@media (min-width: 768px) {
+  #composition-search-col {
+    min-height: 700px; } }
+
 .composition-search-table {
   margin-top: 1em; }
 

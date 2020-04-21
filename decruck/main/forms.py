@@ -41,11 +41,6 @@ class CompositionListingForm(Form):
         choices=genre_choices,
         widget=CheckboxSelectMultiple
     )
-    instrumentation = MultipleChoiceField(
-        required=False,
-        choices=instrument_choices,
-        widget=CheckboxSelectMultiple
-    )
     sort_by = ChoiceField(
         required=False,
         choices=sort_by_choices,

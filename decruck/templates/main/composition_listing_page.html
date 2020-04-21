@@ -28,16 +28,6 @@
                             {% endfor %}
                             </div>
                         </fieldset>
-                        <fieldset class="composition-search__fieldset">
-                            <legend class="composition-search__fieldset-legend">{% trans "Instrumentation" %}</legend>
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                            {% for instrument in form.instrumentation %}
-                                <label class="btn composition-search__fieldset-checkbox-label">
-                                    {{ instrument.tag }}{{ instrument.choice_label }}
-                                </label>
-                            {% endfor %}
-                            </div>
-                        </fieldset>
                     </div>
                 </div>
                 <div class="col-9">
@@ -120,7 +110,7 @@
             <div class="col-3">
                 {# Use an empty col as a spacer for the Genre and Instrumentation menu#}
             </div>
-            <div class="col-9">
+            <div id="composition-search-col" class="col-9">
                 <table class="table composition-search-table">
                     <thead>
                         <tr>

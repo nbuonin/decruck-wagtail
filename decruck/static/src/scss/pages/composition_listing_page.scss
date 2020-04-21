@@ -74,6 +74,12 @@
     color: #FFFFFF;
 }
 
+@include media-breakpoint-up(md) {
+    #composition-search-col {
+        min-height: 700px;
+    }
+}
+
 .composition-search-table {
     margin-top: 1em;
     @extend .table-borderless;
