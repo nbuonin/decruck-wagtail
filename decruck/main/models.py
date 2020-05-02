@@ -14,7 +14,9 @@ from wagtail.admin.edit_handlers import (
 )
 from wagtail.search.backends import get_search_backend
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-from wagtail.core.blocks import RichTextBlock
+from wagtail.core.blocks import (
+    RichTextBlock, StructBlock, StreamBlock, BlockQuoteBlock, CharBlock
+)
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
 from wagtail.images.blocks import ImageChooserBlock
@@ -57,8 +59,36 @@ class HomePage(Page, MenuPageMixin):
 
 class BiographyPage(Page, MenuPageMixin):
     body = StreamField([
-        ('rich_text', RichTextBlock()),
-        ('image', ImageChooserBlock())
+        ('heading', StructBlock([
+            ('left_column', CharBlock()),
+            ('right_column', CharBlock())
+        ], template='main/blocks/bio-heading.html', icon='bold')),
+        ('row', StructBlock([
+            ('left_column', StreamBlock([
+                ('rich_text', RichTextBlock(
+                    features=['bold', 'italic', 'ol', 'ul', 'link', 'embed']
+                )),
+                ('caption_image', StructBlock([
+                    ('image', ImageChooserBlock()),
+                    ('caption', CharBlock())
+                ], template='main/blocks/bio-caption-image.html', icon='image')),  # noqa E501
+            ])),
+            ('right_column', StreamBlock([
+                ('rich_text', RichTextBlock(
+                    features=['bold', 'italic', 'ol', 'ul', 'link', 'embed']
+                )),
+                ('caption_image', StructBlock([
+                    ('image', ImageChooserBlock()),
+                    ('caption', CharBlock())
+                ], template='main/blocks/bio-caption-image.html', icon='image')),  # noqa E501
+            ])),
+        ], template='main/blocks/bio-row.html', icon='pilcrow')),
+        ('block_quote', StructBlock([
+            ('quote', CharBlock()),
+            ('caption', RichTextBlock(
+                features=['bold', 'italic']
+            ))
+        ], template='main/blocks/bio-quote.html', icon='openquote')),
     ])
 
     class Meta:

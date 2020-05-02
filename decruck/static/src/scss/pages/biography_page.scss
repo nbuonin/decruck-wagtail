@@ -1,0 +1,86 @@
+#biography__title {
+    text-align: center;
+}
+
+.biography__col--left {
+    border-right: solid 2px $dark-brown;
+    text-align: right;
+    @include media-breakpoint-up(md) {
+        & {
+            padding-right: 30px;
+        }
+    }
+}
+
+.biography__col--right {
+    border-left: solid 2px $dark-brown;
+    @include media-breakpoint-up(md) {
+        & {
+            padding-left: 30px;
+        }
+    }
+}
+
+$bio-header-spacing: 0.1em;
+$bio-header-size: 2em;
+$bio-header-padding: 1em;
+
+.biography__header--left {
+    font-family: $font-family-serif;
+    font-weight: 900;
+    letter-spacing: $bio-header-spacing;
+    font-size: $bio-header-size;
+    padding-bottom: $bio-header-padding;
+}
+
+.biography__header--right {
+    font-family: $font-family-sans-serif;
+    font-weight: 900;
+    letter-spacing: $bio-header-spacing;
+    font-size: $bio-header-size;
+    padding-bottom: $bio-header-padding;
+}
+
+// Bio Images
+@include media-breakpoint-up(md) {
+    .biography__img-container {
+        max-width: 430px;
+    }
+    .biography__col--left .biography__img-container {
+        margin-left: auto;
+    }
+    .biography__col--right .biography__img-container {
+        margin-right: auto;
+    }
+}
+
+.biography__img-caption {
+    margin-top: 1em;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+// Block Quote
+.biography__block-quote {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    @include media-breakpoint-up(md) {
+        & {
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}
+
+
+.biography__block-quote--quote {
+    font-family: $font-family-serif;
+    font-size: 1.8em;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+.biography__block-quote--caption {
+    text-align: center;
+}

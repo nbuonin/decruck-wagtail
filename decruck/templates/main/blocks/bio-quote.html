@@ -1,0 +1,10 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="biography__block-quote">
+    <div class="biography__block-quote--quote">
+        {% include_block value.quote %}
+    </div>
+    <div class="biography__block-quote--caption">
+        {% include_block value.caption %}
+    </div>
+</div>

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<main>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 id="biography__title">{{ page.title }}</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+    {% include_block page.body %}
+</div>
+</main>
+{% endblock %}

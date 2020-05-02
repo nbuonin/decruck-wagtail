@@ -1,0 +1,13 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{# The max width is 538px * 80% = 430px#}
+<div class="biography__img-container">
+    <div class="biography__img">
+        {% image value.image max-538x538 %}
+    </div>
+    {% if value.caption %}
+    <div class="biography__img-caption">
+        {% include_block value.caption %}
+    </div>
+    {% endif %}
+</div>
