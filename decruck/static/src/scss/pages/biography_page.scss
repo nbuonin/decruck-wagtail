@@ -3,19 +3,19 @@
 }
 
 .biography__col--left {
-    border-right: solid 2px $dark-brown;
-    text-align: right;
     @include media-breakpoint-up(md) {
         & {
+            border-right: solid 2px $dark-brown;
+            text-align: right;
             padding-right: 30px;
         }
     }
 }
 
 .biography__col--right {
-    border-left: solid 2px $dark-brown;
     @include media-breakpoint-up(md) {
         & {
+            border-left: solid 2px $dark-brown;
             padding-left: 30px;
         }
     }
@@ -30,7 +30,13 @@ $bio-header-padding: 1em;
     font-weight: 900;
     letter-spacing: $bio-header-spacing;
     font-size: $bio-header-size;
-    padding-bottom: $bio-header-padding;
+    text-align: center;
+    @include media-breakpoint-up(md) {
+        & {
+            padding-bottom: $bio-header-padding;
+            text-align: right;
+        }
+    }
 }
 
 .biography__header--right {
@@ -38,7 +44,13 @@ $bio-header-padding: 1em;
     font-weight: 900;
     letter-spacing: $bio-header-spacing;
     font-size: $bio-header-size;
-    padding-bottom: $bio-header-padding;
+    text-align: center;
+    @include media-breakpoint-up(md) {
+        & {
+            padding-bottom: $bio-header-padding;
+            text-align: left;
+        }
+    }
 }
 
 // Bio Images
@@ -52,6 +64,10 @@ $bio-header-padding: 1em;
     .biography__col--right .biography__img-container {
         margin-right: auto;
     }
+}
+
+.biography__img-container img {
+    width: 100%;
 }
 
 .biography__img-caption {

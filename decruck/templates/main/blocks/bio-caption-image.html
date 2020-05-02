@@ -3,7 +3,8 @@
 {# The max width is 538px * 80% = 430px#}
 <div class="biography__img-container">
     <div class="biography__img">
-        {% image value.image max-538x538 %}
+        {% image value.image max-538x538 as bio_image %}
+        <image src="{{ bio_image.url }}" alt="{{ bio_image.alt }}"></image>
     </div>
     {% if value.caption %}
     <div class="biography__img-caption">

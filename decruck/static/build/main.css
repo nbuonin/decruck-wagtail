@@ -5298,32 +5298,38 @@ h3, .h3 {
 #biography__title {
   text-align: center; }
 
-.biography__col--left {
-  border-right: solid 2px #37332e;
-  text-align: right; }
-  @media (min-width: 768px) {
-    .biography__col--left {
-      padding-right: 30px; } }
+@media (min-width: 768px) {
+  .biography__col--left {
+    border-right: solid 2px #37332e;
+    text-align: right;
+    padding-right: 30px; } }
 
-.biography__col--right {
-  border-left: solid 2px #37332e; }
-  @media (min-width: 768px) {
-    .biography__col--right {
-      padding-left: 30px; } }
+@media (min-width: 768px) {
+  .biography__col--right {
+    border-left: solid 2px #37332e;
+    padding-left: 30px; } }
 
 .biography__header--left {
   font-family: "Abhaye Libre", "serif";
   font-weight: 900;
   letter-spacing: 0.1em;
   font-size: 2em;
-  padding-bottom: 1em; }
+  text-align: center; }
+  @media (min-width: 768px) {
+    .biography__header--left {
+      padding-bottom: 1em;
+      text-align: right; } }
 
 .biography__header--right {
   font-family: "Lato", "sans-serif";
   font-weight: 900;
   letter-spacing: 0.1em;
   font-size: 2em;
-  padding-bottom: 1em; }
+  text-align: center; }
+  @media (min-width: 768px) {
+    .biography__header--right {
+      padding-bottom: 1em;
+      text-align: left; } }
 
 @media (min-width: 768px) {
   .biography__img-container {
@@ -5332,6 +5338,9 @@ h3, .h3 {
     margin-left: auto; }
   .biography__col--right .biography__img-container {
     margin-right: auto; } }
+
+.biography__img-container img {
+  width: 100%; }
 
 .biography__img-caption {
   margin-top: 1em;
