@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load static wagtailuserbar %}
+{% load wagtail_modeltranslation %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -40,6 +41,14 @@
                     </div>
                     <div class="col-lg-6">
                         {% include 'nav.html' %}
+                        <div class="language-picker">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% if LANGUAGE_CODE == 'en' %}
+                            <a href="{{ FR_HOST }}{% change_lang 'fr' page %}">FR</a>
+                            {% else %}
+                            <a href="{{ EN_HOST }}{% change_lang 'en' page %}">EN</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </header>

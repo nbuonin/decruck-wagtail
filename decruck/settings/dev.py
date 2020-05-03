@@ -7,9 +7,12 @@ DEBUG = True
 SECRET_KEY = 's2(pm&w%$lg5vn3%oyig&md0gsx!lq1b))x(ug%_(8=fzz%oci'
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ['*'] 
+ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EN_HOST = 'decruck.en:8000'
+FR_HOST = 'decruck.fr:8000'
 
 
 try:
