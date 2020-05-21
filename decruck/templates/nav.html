@@ -1,8 +1,5 @@
-<nav class="nav">
-    <ul>
-        <li>Biography</li>
-        <li>Works</li>
-        <li>Discography</li>
-        <li>Scores</li>
-    </ul>
+{% load menu_tags %}
+
+<nav>
+{% main_menu apply_active_classes=True %}
 </nav>

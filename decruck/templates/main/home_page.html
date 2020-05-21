@@ -1,22 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block nav %}
-<header class="header container">
-    <div class="row">
-        <div class="col-md-12 nav-container--home-page">
-            {% include 'nav.html' %}
-        </div>
-        <div class="col-md-12 site-title">
-            {% include 'logo.html' %}
-            <div class="site-subtitle">
-                {% trans "The Life and Works of Fernande Breilh-Decruck" %}
-            </div>
-        </div>
-    </div>
-</header>
-{% endblock %}
-
 {% block content %}
 <main class="home-page__main"></main>
 {% endblock %}

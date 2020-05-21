@@ -476,7 +476,7 @@ class ScorePage(Page):
     )
 
     class Meta:
-        verbose_name = "Score Listing Page"
+        verbose_name = "Score Page"
 
     content_panels = Page.content_panels + [
         StreamFieldPanel('description')

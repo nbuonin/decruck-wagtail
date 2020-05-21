@@ -33,22 +33,37 @@
         {% block nav %}
             <header class="header container">
                 <div class="row">
-                    <div class="col-lg-6 site-title">
-                        {% include 'logo.html' %}
-                        <div class="site-subtitle">
-                            {% trans "The Life and Works of Fernande Breilh-Decruck" %}
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        {% include 'nav.html' %}
+                    <div class="col-12">
                         <div class="language-picker">
                             {% get_current_language as LANGUAGE_CODE %}
                             {% if LANGUAGE_CODE == 'en' %}
-                            <a href="{{ FR_HOST }}{% change_lang 'fr' page %}">FR</a>
+                            <a href="{{ FR_HOST }}{% change_lang 'fr' page %}">Français</a>
                             {% else %}
-                            <a href="{{ EN_HOST }}{% change_lang 'en' page %}">EN</a>
+                            <a href="{{ EN_HOST }}{% change_lang 'en' page %}">English</a>
                             {% endif %}
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 site-title">
+                        <div class="site-title-logo">
+                            <div class="logo-container">
+                                {% include 'logo.html' %}
+                            </div>
+                            <div class="site-subtitle">
+                                {% trans "The Life and Works of Fernande Breilh-Decruck" %}
+                            </div>
+                        </div>
+                        <div class="site-title-mobile-nav">
+                            <button id="navbar-toggle">
+                                <span class="navbar-toggle-layer"></span>
+                                <span class="navbar-toggle-layer"></span>
+                                <span class="navbar-toggle-layer"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        {% include 'nav.html' %}
                     </div>
                 </div>
             </header>

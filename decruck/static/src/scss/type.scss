@@ -1,3 +1,5 @@
+@use "sass:color";
+
 html {
     letter-spacing: 0.02em;
 }
@@ -20,3 +22,12 @@ h3, .h3 {
     font-weight: 700;
     letter-spacing: 0.02em;
 }
+
+a {
+    color: $dark-brown;
+    text-decoration: underline;
+    &:hover {
+        color: $dark-brown;
+    }
+}
+

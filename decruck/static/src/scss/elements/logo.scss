@@ -3,13 +3,38 @@
     max-width: 816px;
 }
 
-.site-title {
+.logo-container {
+    width: 100%;
+}
+
+// the logo width needs to be:
+// 0 to md: 100% - the mobile nav
+// md to xl: some max width, center alligned
+// lg+: 100%
+.site-title-logo {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    width: calc(100% - 50px);
+    @include media-breakpoint-up(md) {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    @include media-breakpoint-up(xl) {
+        max-width: unset;
+        width: 100%;
+    }
+}
+
+.site-title {
+    display: flex;
+    flex-flow: row nowrap;
 }
 
 .site-subtitle {
+    @extend .d-none;
+    @extend .d-xl-block;
     font-family: $font-family-serif;
     text-transform: uppercase;
     padding-top: 1em;
