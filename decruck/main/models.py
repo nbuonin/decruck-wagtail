@@ -2,7 +2,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
-    PROTECT, URLField, DateField, CASCADE
+    PROTECT, URLField, DateField, CASCADE, PositiveSmallIntegerField,
+    ImageField
 )
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
@@ -20,6 +21,7 @@ from wagtail.core.blocks import (
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtailmenus.models import MenuPageMixin
 from wagtailmenus.panels import menupage_panel
@@ -454,6 +456,13 @@ class ScorePage(Page):
         upload_to='scores/',
         validators=[
             FileExtensionValidator(
+                allowed_extensions=['pdf', 'zip'])
+        ]
+    )
+    preview_score = FileField(
+        upload_to='preview_scores/',
+        validators=[
+            FileExtensionValidator(
                 allowed_extensions=['pdf'])
         ]
     )
@@ -463,9 +472,13 @@ class ScorePage(Page):
         blank=True,
         on_delete=PROTECT
     )
-    instrumentation = RichTextField(
+    date = CharField(
+        max_length=256,
+        blank=True
+    )
+    instrumentation = ParentalManyToManyField(
+        'Instrument',
         blank=True,
-        features=['bold', 'italic'],
         help_text='The instrumentation of the compostition.'
     )
     price = DecimalField(max_digits=6, decimal_places=2)
@@ -479,8 +492,31 @@ class ScorePage(Page):
         verbose_name = "Score Page"
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('description')
+        FieldPanel('date'),
+        FieldPanel('duration'),
+        FieldPanel('genre'),
+        FieldPanel('instrumentation'),
+        FieldPanel('price'),
+        StreamFieldPanel('description'),
+        FieldPanel('materials'),
+        FieldPanel('file'),
+        FieldPanel('preview_score'),
+        ImageChooserPanel('cover_image')
     ]
+
+
+class PreviewScoreImage(Model):
+    score = ForeignKey(
+        ScorePage,
+        on_delete=CASCADE
+    )
+    preview_score_image = ImageField(
+        upload_to='score_preview_images/',
+    )
+    page_number = PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together = ('score', 'page_number')
 
 
 class ShoppingCartPage(RoutablePageMixin, Page):
