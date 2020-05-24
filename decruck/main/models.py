@@ -3,7 +3,7 @@ from django.core.validators import FileExtensionValidator
 from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
     PROTECT, URLField, DateField, CASCADE, PositiveSmallIntegerField,
-    ImageField
+    ImageField, OneToOneField
 )
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
@@ -498,6 +498,11 @@ class ScorePage(Page):
 
     def clean(self):
         super().clean()
+
+        if hasattr(self, 'preview_score_lock'):
+            raise ValidationError(
+                "Please retry in a moment. Preview score images are being processed.")  # noqa E501
+
         if self.preview_score_checked:
             return
 
@@ -528,6 +533,14 @@ class ScorePage(Page):
         FieldPanel('preview_score'),
         ImageChooserPanel('cover_image')
     ]
+
+
+class PreviewScoreImageProcessingLock(Model):
+    score = OneToOneField(
+        ScorePage,
+        on_delete=CASCADE,
+        related_name='preview_score_lock'
+    )
 
 
 class PreviewScoreImage(Model):
