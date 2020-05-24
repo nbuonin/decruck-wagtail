@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from edtf import parse_edtf, struct_time_to_date
 from edtf.parser.edtf_exceptions import EDTFParseException
+import hashlib
 from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from wagtail.admin.edit_handlers import (
     StreamFieldPanel, FieldPanel, InlinePanel
@@ -466,6 +467,13 @@ class ScorePage(Page):
                 allowed_extensions=['pdf'])
         ]
     )
+    preview_score_checksum = CharField(
+        editable=False,
+        max_length=256,
+        blank=True
+    )
+    preview_score_checked = False
+    preview_score_updated = False
     genre = ForeignKey(
         Genre,
         null=True,
@@ -487,6 +495,23 @@ class ScorePage(Page):
         features=['bold', 'italic'],
         help_text='The materials sent in the PDF file.'
     )
+
+    def clean(self):
+        super().clean()
+        if self.preview_score_checked:
+            return
+
+        h = hashlib.md5()
+        for chunk in iter(lambda: self.preview_score.read(8192), b''):
+            h.update(chunk)
+
+        self.preview_score.seek(0)
+        checksum = h.hexdigest()
+        if not self.preview_score_checksum == checksum:
+            self.preview_score_checksum = checksum
+            self.preview_score_updated = True
+
+        self.preview_score_checked = True
 
     class Meta:
         verbose_name = "Score Page"

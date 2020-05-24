@@ -39,7 +39,8 @@ modeladmin_register(CompositionPageAdmin)
 
 @receiver(post_save, sender=ScorePage)
 def generate_score_preview(sender, instance, created, update_fields, **kwargs):
-    if created or update_fields:
+    print('post save called')
+    if instance.preview_score_updated:
         print('images are being updated')
         if update_fields:
             PreviewScoreImage.objects.filter(score=instance.pk).delete()
