@@ -31,3 +31,13 @@ a {
     }
 }
 
+.btn-outline-dark {
+    color: $dark-brown;
+    border-color: $dark-brown;
+    text-transform: uppercase;
+    &:hover {
+        color: #FFFFFF;
+        background-color: $dark-brown;
+        border-color: $dark-brown;
+    }
+}

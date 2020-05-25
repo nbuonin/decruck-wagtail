@@ -1,3 +1,31 @@
+.score-page__row {
+    margin-bottom: 2em;
+}
+
+.score-page__label {
+    margin-bottom: 0px;
+}
+
+.score-page__description-item {
+    margin-bottom: 1em;
+}
+
+.score-page__price-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.score-page__description-row {
+    margin-top: 1em;
+    border-top: solid $dark-brown 1px;
+    padding-top: 1em;
+}
+
+.score-page__price {
+    font-size: 3em;
+}
+
 .score-cover-image {
     width: 100%;
 }
@@ -13,5 +41,5 @@
 }
 
 .carousel-item {
-    background-color: #000000;
+    background-color: $dark-brown;
 }

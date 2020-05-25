@@ -6,7 +6,7 @@
 {% block content %}
 <main>
 <div class="container">
-    <div class="row">
+    <div class="row score-page__row">
         <div class="col-md-4">
             {% image page.cover_image original as cover_image %}
             <image class="score-cover-image" src="{{ cover_image.url }}">
@@ -20,53 +20,56 @@
             <div class="row">
                 <div class="col-md-6">
                     {% if page.genre %}
-                    <h2>Genre</h2>
-                    <div class="score-description-item">
+                    <h2 class="score-page__label">Genre</h2>
+                    <div class="score-page__description-item">
                         {{ page.genre }}
                     </div>
                     {% endif %}
 
                     {% if page.date %}
-                    <h2>Date</h2>
-                    <div class="score-description-item">
+                    <h2 class="score-page__label">Date</h2>
+                    <div class="score-page__description-item">
                         {{ page.date}}
                     </div>
                     {% endif %}
 
                     {% if page.instrumentation.exists %}
-                    <h2>Instrumentation</h2>
-                    <div class="score-description-item">
+                    <h2 class="score-page__label">Instrumentation</h2>
+                    <div class="score-page__description-item">
                         {% for i in page.instrumentation.all %}{{i}}{% if not forloop.last%}, {% endif %}{% endfor %}
                     </div>
                     {% endif %}
 
                     {% if page.duration %}
-                    <h2>Duration</h2>
-                    <div class="score-description-item">
+                    <h2 class="score-page__label">Duration</h2>
+                    <div class="score-page__description-item">
                         {{ page.duration }}
                     </div>
                     {% endif %}
                 </div>
-                <div class="col-md-6">
-                    <div>{{ page.price }}</div>
-                    <button class="btn btn-primary">
-                        ADD TO CART
+                <div class="col-md-6 score-page__price-container">
+                    <div class="score-page__price">${{ page.price }}</div>
+                    <button id="score-page__atc-button" class="btn btn-outline-dark" data-item="{{ page.pk }}" data-add="{% trans 'Add to cart' %}" data-remove="{% trans 'Remove from cart' %}">
                     </button>
                 </div>
             </div>
             {% if page.description %}
-            <div class="row">
+            <div class="row score-page__description-row">
                 <div class="col-12">
-                    <h2>Description</h2>
+                    <h2 class="score-page__label">Description</h2>
+                    <div class="score-page__description-item">
                     {% include_block page.description %}
+                    </div>
                 </div>
             </div>
             {% endif %}
             {% if page.materials %}
-            <div class="row">
+            <div class="row score-page__description-row">
                 <div class="col-12">
-                    <h2>Materials</h2>
-                    Materials content goes here
+                    <h2 class="score-page__label">Materials</h2>
+                    <div class="score-page__description-item">
+                        {{ page.materials|richtext }}
+                    </div>
                 </div>
             </div>
             {% endif %}
@@ -77,7 +80,7 @@
             <div id="carouselScorePreview" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false" data-ride="false">
                 <div class="carousel-inner">
                     {% for img in page.preview_score_images.all %}
-                        {% cycle True False as new_slide silent%}
+                        {% cycle True False as new_slide silent %}
                         {% if new_slide %}
                         <div class="carousel-item{% if forloop.first %} active{% endif %}">
                             <div class="preview-score__item">

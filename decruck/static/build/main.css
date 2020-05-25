@@ -5342,6 +5342,15 @@ a {
   a:hover {
     color: #37332e; }
 
+.btn-outline-dark {
+  color: #37332e;
+  border-color: #37332e;
+  text-transform: uppercase; }
+  .btn-outline-dark:hover {
+    color: #FFFFFF;
+    background-color: #37332e;
+    border-color: #37332e; }
+
 .header {
   margin-bottom: 3em; }
 
@@ -5649,6 +5658,32 @@ a {
 .biography__block-quote--caption {
   text-align: center; }
 
+.score-page__row {
+  margin-bottom: 2em; }
+
+.score-page__label {
+  margin-bottom: 0px; }
+
+.score-page__description-item {
+  margin-bottom: 1em; }
+
+.score-page__price-container {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-flow: column nowrap;
+  -webkit-box-align: center;
+          align-items: center; }
+
+.score-page__description-row {
+  margin-top: 1em;
+  border-top: solid #37332e 1px;
+  padding-top: 1em; }
+
+.score-page__price {
+  font-size: 3em; }
+
 .score-cover-image {
   width: 100%; }
 
@@ -5665,5 +5700,5 @@ a {
   width: 49.75%; }
 
 .carousel-item {
-  background-color: #000000; }
+  background-color: #37332e; }
 
