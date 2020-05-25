@@ -19,7 +19,7 @@ runserver: $(PY_SENTINAL)
 	pipenv run ./manage.py runserver
 
 migrate: $(PY_SENTINAL)
-	pipenv run ./manage.py migrate
+	pipenv run ./manage.py migrate --noinput
 
 makemigrations: $(PY_SENTINAL)
 	pipenv run ./manage.py makemigrations
@@ -31,7 +31,10 @@ shell: $(PY_SENTINAL)
 	pipenv run ./manage.py shell_plus
 
 bootstrap: $(PY_SENTINAL)
+	pipenv run ./manage.py sync_page_translation_fields
+	pipenv run ./manage.py update_translation_fields
 	pipenv run ./manage.py bootstrap 
+	pipenv run ./manage.py import_compositions ./data/decruck-catalog-temp.csv
 
 update-index: $(PY_SENTINAL)
 	pipenv run ./manage.py update_index 
