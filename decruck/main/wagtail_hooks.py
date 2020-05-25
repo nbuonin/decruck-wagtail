@@ -39,9 +39,7 @@ modeladmin_register(CompositionPageAdmin)
 
 @receiver(post_save, sender=ScorePage)
 def generate_score_preview(sender, instance, created, update_fields, **kwargs):
-    print('post save called')
     if instance.preview_score_updated:
-        print('images are being updated')
         if update_fields:
             PreviewScoreImage.objects.filter(score=instance.pk).delete()
 
@@ -51,9 +49,12 @@ def generate_score_preview(sender, instance, created, update_fields, **kwargs):
             file_name = '{}-{:03d}.jpg'.format(
                 instance.preview_score.name, idx)
 
+            width = 555
+            height = (width * img.height) // img.width
+            resized_img = img.resize((width, height))
             # Write the extracted image to a buffer
             buffer = BytesIO()
-            img.save(buffer, 'JPEG')
+            resized_img.save(buffer, 'JPEG')
 
             # Instantiate an uploaded file object, and create a new object
             img_file = InMemoryUploadedFile(

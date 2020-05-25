@@ -250,7 +250,6 @@ class CompositionListingPage(Page, MenuPageMixin):
 
                     # Per Wagtail docs, search must come after all filtering
                     if form.cleaned_data['keyword']:
-                        print('keyword is hit')
                         compositions = backend.search(
                             form.cleaned_data['keyword'],
                             compositions
@@ -533,7 +532,8 @@ class ScorePage(Page):
 class PreviewScoreImage(Model):
     score = ForeignKey(
         ScorePage,
-        on_delete=CASCADE
+        on_delete=CASCADE,
+        related_name='preview_score_images'
     )
     preview_score_image = ImageField(
         upload_to='score_preview_images/',
@@ -541,6 +541,7 @@ class PreviewScoreImage(Model):
     page_number = PositiveSmallIntegerField()
 
     class Meta:
+        ordering = ['page_number']
         unique_together = ('score', 'page_number')
 
 
