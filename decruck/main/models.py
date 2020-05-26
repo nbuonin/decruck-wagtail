@@ -435,6 +435,29 @@ class ScoreListingPage(Page, MenuPageMixin):
     ]
 
 
+def score_in_cart(request, pk):
+    if 'shopping_cart' in request.session and request.session['shopping_cart']:
+        return pk in request.session['shopping_cart']
+    return False
+
+
+def toggle_score_in_cart(request, score_pk):
+    """
+    Toggles the presence of an item in the shopping cart.
+    It returns the current state of the item in the cart.
+    """
+    if score_in_cart(request, score_pk):
+        items = request.session['shopping_cart']
+        request.session['shopping_cart'] = [x for x in items if x != score_pk]
+        return False
+    else:
+        if 'shopping_cart' in request.session and request.session['shopping_cart']:
+            request.session['shopping_cart'] += [score_pk]
+        else:
+            request.session['shopping_cart'] = [score_pk]
+        return True
+
+
 class ScorePage(Page):
     cover_image = ForeignKey(
         'wagtailimages.Image',
@@ -512,6 +535,19 @@ class ScorePage(Page):
 
         self.preview_score_checked = True
 
+    def serve(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            in_cart = toggle_score_in_cart(request, self.pk)
+            return render(request, "main/score_page.html", {
+                'page': self,
+                'in_cart': in_cart
+            })
+        else:
+            return render(request, "main/score_page.html", {
+                'page': self,
+                'in_cart': score_in_cart(request, self.pk)
+            })
+
     class Meta:
         verbose_name = "Score Page"
 
@@ -567,8 +603,21 @@ class ShoppingCartPage(RoutablePageMixin, Page):
 
     @route(r'^$')
     def contact_form(self, request):
-        context = self.get_context(request)
-        return render(request, "main/shopping_cart.html", context)
+        if request.method == 'POST':
+            # Validate the form input
+            # If valid, remove the item from the cart
+            toggle_score_in_cart(request, None)
+        else:
+            items = None
+            total = 0.00
+            if 'shopping_cart' in request.session and request.session['shopping_cart']:
+                items = ScorePage.objects.filter(pk__in=request.session['shopping_cart'])
+                total = sum([i.price for i in items])
+
+            ctx = self.get_context(request)
+            ctx['items'] = items
+            ctx['total'] = total
+            return render(request, "main/shopping_cart.html", ctx)
 
 
 class BasicPage(Page, MenuPageMixin):

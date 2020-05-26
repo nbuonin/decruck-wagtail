@@ -49,8 +49,10 @@
                 </div>
                 <div class="col-md-6 score-page__price-container">
                     <div class="score-page__price">${{ page.price }}</div>
-                    <button id="score-page__atc-button" class="btn btn-outline-dark" data-item="{{ page.pk }}" data-add="{% trans 'Add to cart' %}" data-remove="{% trans 'Remove from cart' %}">
-                    </button>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="submit" id="score-page__atc-button" class="btn btn-outline-dark" value="{% if not in_cart %}{% trans 'Add to cart' %}{% else %}{% trans 'Remove from cart' %}{% endif %}"></input>
+                    </form>
                 </div>
             </div>
             {% if page.description %}

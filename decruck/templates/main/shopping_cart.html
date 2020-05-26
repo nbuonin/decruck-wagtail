@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<main>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ page.title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% if items %}
+        <div class="col-md-8">
+            <table id="shopping-cart-table" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">{% trans 'Item'%}</th>
+                        <th scope="col">{% trans 'Price'%}</th>
+                        <th scope="col">{% trans 'Action'%}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for score in items %}
+                    <tr>
+                        <td><a href={{ score.url }}>{{ score.title }}</a></td>
+                        <td>${{ score.price }}</td>
+                        <td>Remove from cart</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div id="shopping-cart-totals">
+                {{ total }}
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p>{% trans "There are no items in your shopping cart" %}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</main>
+{% endblock %}
