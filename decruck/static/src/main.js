@@ -15,3 +15,8 @@ $('.composition-search__fieldset-checkbox-label').on('click', function(el){
 $('.composition-search__fieldset-sort-label').on('click', function(el){
     $('#composition-search__form').submit();
 });
+
+// Checkout Form
+$('#shopping-cart__proxy-button').on('click', function(el){
+    $('#shopping-cart__pp-form-container form').submit();
+})

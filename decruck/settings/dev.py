@@ -14,6 +14,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EN_HOST = 'decruck.en:8000'
 FR_HOST = 'decruck.fr:8000'
 
+PAYPAL_TEST = True
+PAYPAL_ACCT_EMAIL = 'info-facilitator@example.org'
+ORDER_EMAIL_ADDR = 'order-test@example.org'
 
 try:
     from .local import *

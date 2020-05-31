@@ -26,7 +26,12 @@
                     <tr>
                         <td><a href={{ score.url }}>{{ score.title }}</a></td>
                         <td>${{ score.price }}</td>
-                        <td>Remove from cart</td>
+                        <td>
+                            <form action="{{ page.url }}remove/{{ score.pk }}/" method="post">
+                                {% csrf_token %}
+                                <input type="submit" id="score-page__atc-button" class="btn btn-sm btn-outline-dark" value="{% trans 'Remove from cart' %}"></input>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -34,7 +39,11 @@
         </div>
         <div class="col-md-4">
             <div id="shopping-cart-totals">
-                {{ total }}
+                <div class="shopping-cart-total">${{ total }}</div>
+                <form action="" method="post" id="shopping-cart__form">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-dark shopping-cart__button" value="{% trans 'Confirm Order' %}"></input>
+                </form>
             </div>
         </div>
         {% else %}

@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'decruck.main',
 
     'wagtailmenus',
+    'paypal.standard.ipn'
 ]
 
 MIDDLEWARE = [

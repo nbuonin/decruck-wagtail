@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<main>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>{% trans 'Order Confirmation' %}</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% if items %}
+        <div class="col-md-8">
+            <table id="shopping-cart-table" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">{% trans 'Item'%}</th>
+                        <th scope="col">{% trans 'Price'%}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for score in items %}
+                    <tr>
+                        <td><a href={{ score.url }}>{{ score.title }}</a></td>
+                        <td>${{ score.price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div id="shopping-cart-totals">
+                <div class="shopping-cart-total">
+                    <div class="h2">{% trans 'Total' %}</div>
+                    ${{ total }}
+                </div>
+                <button type="submit" id="shopping-cart__proxy-button" class="btn btn-dark shopping-cart__button">{% trans 'Checkout with PayPal' %}</button>
+                <div id="shopping-cart__pp-form-container">
+                    {{ checkout_form.render }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</main>
+{% endblock %}

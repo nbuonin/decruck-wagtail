@@ -1,3 +1,27 @@
-#shopping-cart-table th {
+#shopping-cart-table th, #shopping-cart-table td {
     border-color: $dark-brown;
+}
+
+#shopping-cart-totals {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.shopping-cart-total {
+    font-size: 3em;
+    text-align: center;
+}
+
+#shopping-cart__form {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.shopping-cart__button{
+    margin: 0 auto;
+}
+
+#shopping-cart__pp-form-container {
+    display: none;
 }

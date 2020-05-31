@@ -1,9 +1,15 @@
 from io import BytesIO
-from decruck.main.models import CompositionPage, ScorePage, PreviewScoreImage
+from decruck.main.models import (
+    CompositionPage, ScorePage, PreviewScoreImage, Order, OrderItem
+)
+from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
+import math
+from paypal.standard.ipn.signals import valid_ipn_received
+from paypal.standard.models import ST_PP_COMPLETED
 from pdf2image import convert_from_bytes
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, modeladmin_register
@@ -76,3 +82,47 @@ def generate_score_preview(sender, instance, created, update_fields, **kwargs):
     return
 
 
+@receiver(valid_ipn_received)
+def process_order(sender, **kwargs):
+    ipn_obj = sender
+    if ipn_obj.payment_status == ST_PP_COMPLETED:
+        # Validate the reciever email
+        if ipn_obj.receiver_email != settings.ORDER_EMAIL_ADDR:
+            return
+
+        # Validate the price totals
+        try:
+            item_pks = [int(i) for i in ipn_obj.item_number.split('-')]
+        except ValueError:
+            # if string is passed in, it's not a valid order
+            return
+
+        items = ScorePage.objects.filter(pk__in=item_pks)
+        # If any af the item numbers passed in aren't in the database, reject
+        if len(items) != len(item_pks):
+            return
+
+        # If the gross amount is not close to the calulated price, then reject
+        if not math.isclose(
+                float(ipn_obj.mc_gross), sum([float(i.price) for i in items])):
+            return
+
+        # Process the order
+        order = Order.objects.create(
+            paypal_ipn=ipn_obj,
+            first_name=ipn_obj.first_name,
+            last_name=ipn_obj.last_name,
+            email=ipn_obj.payer_email,
+            total=ipn_obj.mc_gross
+        )
+        for i in items:
+            # Create the order items and links
+            order_item = OrderItem.objects.create(
+                order=order,
+                item=i,
+                price=i.price
+            )
+
+        # Then send a thank you email
+
+        # Then send an email with all the links

@@ -1,16 +1,23 @@
+from datetime import datetime, timedelta
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
     PROTECT, URLField, DateField, CASCADE, PositiveSmallIntegerField,
-    ImageField
+    ImageField, DateTimeField, EmailField, UUIDField, GenericIPAddressField
 )
-from django.shortcuts import render
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from edtf import parse_edtf, struct_time_to_date
 from edtf.parser.edtf_exceptions import EDTFParseException
 import hashlib
 from modelcluster.fields import ParentalManyToManyField, ParentalKey
+from paypal.standard.forms import PayPalPaymentsForm
+from paypal.standard.ipn.models import PayPalIPN
+import uuid
 from wagtail.admin.edit_handlers import (
     StreamFieldPanel, FieldPanel, InlinePanel
 )
@@ -458,7 +465,82 @@ def toggle_score_in_cart(request, score_pk):
         return True
 
 
-class ScorePage(Page):
+class Order(Model):
+    INITIATED = 'INITIATED'
+    PAYMENT_RECEIVED = 'PAYMENT_RECEIVED'
+    FILE_LINKS_SENT = 'FILE_LINKS_SENT'
+    STATUS_CHOICES = [
+        (INITIATED, 'Initiated'),
+        (PAYMENT_RECEIVED, 'Payment Received'),
+        (FILE_LINKS_SENT, 'File Links Sent')
+    ]
+    created = DateTimeField(auto_now_add=True)
+    modified = DateTimeField(auto_now=True)
+    uuid = UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    status = CharField(
+        max_length=24, choices=STATUS_CHOICES, default=INITIATED)
+    initiator_ip = GenericIPAddressField()
+    paypay_ipn = ForeignKey(
+        PayPalIPN,
+        on_delete=PROTECT,
+        null=True,
+        related_name='order'
+    )
+    first_name = CharField(max_length=256, blank=True)
+    last_name = CharField(max_length=256, blank=True)
+    email = EmailField(blank=True)
+    total = DecimalField(max_digits=5, decimal_places=2)
+
+    @property
+    def order_number(self):
+        return 1000 + self.pk
+
+
+class OrderItem(Model):
+    created = DateTimeField(auto_now_add=True)
+    modified = DateTimeField(auto_now=True)
+    order = ForeignKey(
+        'Order',
+        on_delete=CASCADE,
+        related_name='items'
+    )
+    item = ForeignKey(
+        'ScorePage',
+        on_delete=PROTECT,
+        related_name='+'
+    )
+    price = DecimalField(max_digits=5, decimal_places=2)
+
+
+def plus_one_day():
+    return datetime.now() + timedelta(days=1)
+
+
+class OrderItemLink(Model):
+    created = DateTimeField(auto_now_add=True)
+    expires = DateTimeField(default=plus_one_day)
+    accessed = DateTimeField(auto_now=True)
+    access_ip = GenericIPAddressField()
+    slug = UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    order_item = ForeignKey(
+        'OrderItem',
+        on_delete=CASCADE,
+        related_name='links'
+    )
+
+    @property
+    def relative_url(self):
+        return self.order_item.item.url + str(self.slug) + '/'
+
+    @property
+    def full_url(self):
+        return self.order_item.item.full_url + str(self.slug) + '/'
+
+    def is_expired(self):
+        return self.expires < datetime.now()
+
+
+class ScorePage(RoutablePageMixin, Page):
     cover_image = ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -535,7 +617,25 @@ class ScorePage(Page):
 
         self.preview_score_checked = True
 
-    def serve(self, request, *args, **kwargs):
+    @route(r'^([\w-]+)/$')
+    def get_score_file(self, request, score_link_slug):
+        if request.method == 'GET':
+            item_link = get_object_or_404(OrderItemLink, slug=score_link_slug)
+
+            if item_link.is_expired():
+                raise Http404()
+
+            item_link.access_ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
+            item_link.save()
+
+            return render(request, "main/score_page_download.html", {
+                'page': self,
+            })
+        else:
+            raise Http404()
+
+    @route(r'^$')
+    def score(self, request):
         if request.method == 'POST':
             in_cart = toggle_score_in_cart(request, self.pk)
             return render(request, "main/score_page.html", {
@@ -601,23 +701,79 @@ class ShoppingCartPage(RoutablePageMixin, Page):
         context = self.get_context(request)
         return render(request, "main/shopping_cart_thank_you.html", context)
 
-    @route(r'^$')
-    def contact_form(self, request):
-        if request.method == 'POST':
-            # Validate the form input
-            # If valid, remove the item from the cart
-            toggle_score_in_cart(request, None)
-        else:
+    @route(r'remove/(\d+)/$')
+    def remove_from_cart(self, request, item_pk):
+        pk = int(item_pk)
+        if request.method == 'POST' and score_in_cart(request, pk):
+            toggle_score_in_cart(request, pk)
+
+        return redirect(self.url)
+
+    @route(r'confirmation/$')
+    def order_confirmation(self, request):
+        if request.method == 'GET':
             items = None
             total = 0.00
             if 'shopping_cart' in request.session and request.session['shopping_cart']:
                 items = ScorePage.objects.filter(pk__in=request.session['shopping_cart'])
                 total = sum([i.price for i in items])
+            else:
+                # If there is nothing in the cart, redirect to the cart page
+                return redirect(self.url)
+
+            if not items:
+                # If for some reason the items can't be found
+                return redirect(self.url)
+
+            order = Order.objects.create(
+                status=Order.INITIATED,
+                initiator_ip=request.META.get('REMOTE_ADDR', '0.0.0.0'),
+                total=total
+            )
+
+            for i in items:
+                OrderItem.objects.create(order=order, item=i, price=i.price)
 
             ctx = self.get_context(request)
+
+            form_data = {
+                'business': settings.PAYPAL_ACCT_EMAIL,
+                'amount': str(total),
+                'notify_url': request.build_absolute_uri(
+                    reverse('paypal-ipn')),
+                'return': request.build_absolute_uri(
+                    self.reverse_subpage('thank_you')),
+                'cancel_return': request.build_absolute_uri(self.url),
+                'item_name': 'Scores by Fernande Breilh Decruck',
+                'item_number': str(order.uuid)
+            }
+
+            ctx['items'] = items
+            ctx['total'] = total
+            ctx['checkout_form'] = PayPalPaymentsForm(initial=form_data)
+            return render(request, "main/shopping_cart_confirmation.html", ctx)
+
+    @route(r'^$')
+    def cart_page(self, request):
+        if request.method == 'GET':
+            items = None
+            total = 0.00
+            if 'shopping_cart' in request.session and request.session['shopping_cart']:
+                items = ScorePage.objects.filter(
+                    pk__in=request.session['shopping_cart'])
+                total = sum([i.price for i in items])
+
+            ctx = self.get_context(request)
+
             ctx['items'] = items
             ctx['total'] = total
             return render(request, "main/shopping_cart.html", ctx)
+
+        if request.method == 'POST':
+            return redirect(
+                self.url + self.reverse_subpage('order_confirmation'))
+
+        return HttpResponse(status_code='405')
 
 
 class BasicPage(Page, MenuPageMixin):

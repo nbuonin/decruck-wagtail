@@ -1,7 +1,7 @@
 """Custom Forms for Decruck Wagatail"""
 from django.forms import (
     Form, CharField, IntegerField, ChoiceField, MultipleChoiceField,
-    ValidationError, RadioSelect, CheckboxSelectMultiple
+    ValidationError, RadioSelect, CheckboxSelectMultiple, EmailField
 )
 from decruck.main.models import Genre, Instrument
 
@@ -62,3 +62,7 @@ class CompositionListingForm(Form):
             if start_year > end_year:
                 raise ValidationError(
                     'The starting year can not be greater than the end year.')
+
+
+class OrderRetrievalForm(Form):
+    email_address = EmailField()

@@ -5342,6 +5342,10 @@ a {
   a:hover {
     color: #37332e; }
 
+.btn-dark {
+  background-color: #37332e;
+  border-color: #37332e; }
+
 .btn-outline-dark {
   color: #37332e;
   border-color: #37332e;
@@ -5702,6 +5706,32 @@ a {
 .carousel-item {
   background-color: #37332e; }
 
-#shopping-cart-table th {
+#shopping-cart-table th, #shopping-cart-table td {
   border-color: #37332e; }
+
+#shopping-cart-totals {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-flow: column nowrap;
+  -webkit-box-pack: center;
+          justify-content: center; }
+
+.shopping-cart-total {
+  font-size: 3em;
+  text-align: center; }
+
+#shopping-cart__form {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-flow: column nowrap; }
+
+.shopping-cart__button {
+  margin: 0 auto; }
+
+#shopping-cart__pp-form-container {
+  display: none; }
 
