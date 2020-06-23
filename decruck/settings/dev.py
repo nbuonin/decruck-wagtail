@@ -18,6 +18,18 @@ PAYPAL_TEST = True
 PAYPAL_ACCT_EMAIL = 'info-facilitator@example.org'
 ORDER_EMAIL_ADDR = 'order-test@example.org'
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'decruck',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'USER': 'nickb',
+        'PASSWORD': '',
+    }
+}
+
 try:
     from .local import *
 except ImportError:

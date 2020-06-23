@@ -1,0 +1,23 @@
+{{ order.created }}
+{{ order.order_number }}
+{{ order.full_name }}
+
+Thank you for you order.
+
+Below are links to download all purchased scores. Download links expire after 24 hours, though new links can be requested at any time from [INSERT LINK] using the email address associated with your order.
+
+If you have any questions, please email orders@fernandedecruck.com
+
+================================================================================
+
+Merci pour votre commande.
+
+Vous trouverez ci-dessous les liens de téléchargement pour vous commande. Attention ! Les liens de téléchargement expirent après 24 heures. Si besoin de nouveaux liens, contactez-nous via la page [INSERT LINK] en utilisant l'adresse e-mail associée à votre commande.
+
+Des questions ? Veuillez contacter orders@fernandedecruck.com
+
+================================================================================
+
+{% for link in links %}
+{{ link.item.title }}
+{% endfor %}

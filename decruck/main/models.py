@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
@@ -9,7 +10,9 @@ from django.db.models import (
 )
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import get_template
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from edtf import parse_edtf, struct_time_to_date
 from edtf.parser.edtf_exceptions import EDTFParseException
@@ -495,6 +498,10 @@ class Order(Model):
     def order_number(self):
         return 1000 + self.pk
 
+    @property
+    def full_name(self):
+        return '{} {}'.format(self.first_name, self.last_name)
+
 
 class OrderItem(Model):
     created = DateTimeField(auto_now_add=True)
@@ -513,14 +520,14 @@ class OrderItem(Model):
 
 
 def plus_one_day():
-    return datetime.now() + timedelta(days=1)
+    return timezone.now() + timedelta(days=1)
 
 
 class OrderItemLink(Model):
     created = DateTimeField(auto_now_add=True)
     expires = DateTimeField(default=plus_one_day)
     accessed = DateTimeField(auto_now=True)
-    access_ip = GenericIPAddressField()
+    access_ip = GenericIPAddressField(blank=True, null=True)
     slug = UUIDField(default=uuid.uuid4, unique=True, editable=False)
     order_item = ForeignKey(
         'OrderItem',
@@ -536,8 +543,12 @@ class OrderItemLink(Model):
     def full_url(self):
         return self.order_item.item.full_url + str(self.slug) + '/'
 
+    @property
+    def item(self):
+        return self.order_item.item
+
     def is_expired(self):
-        return self.expires < datetime.now()
+        return self.expires < timezone.now()
 
 
 class ScorePage(RoutablePageMixin, Page):
@@ -603,6 +614,10 @@ class ScorePage(RoutablePageMixin, Page):
     def clean(self):
         super().clean()
         if self.preview_score_checked:
+            # This was the cause of a subtle bug. Because this method can be
+            # called multiple times during model creation, leaving this flag
+            # set would cause the post save hook to fire multiple times.
+            self.preview_score_updated = False
             return
 
         h = hashlib.md5()
@@ -696,9 +711,48 @@ class ShoppingCartPage(RoutablePageMixin, Page):
         StreamFieldPanel('confirmation_page_text')
     ]
 
+    @route(r'retrieve-order/$')
+    def retreive_order(self, request):
+        # Local import to break circular dependency
+        from decruck.main.forms import OrderRetrievalForm
+        if request.method == 'POST':
+            form = OrderRetrievalForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data.get('email_address')
+                items = OrderItem.objects.filter(order__email=email)
+                if items:
+                    # Send email
+                    links = []
+                    for i in items:
+                        link = OrderItemLink.objects.create(order_item=i)
+                        links.append(link.full_url)
+
+                    plaintext = get_template('main/email/order_retrieve.txt')
+                    send_mail(
+                        'Your ordered items',
+                        plaintext.render({'links': links}),
+                        settings.ORDER_EMAIL_ADDR,
+                        [email],
+                    )
+                # Set message and render
+                ctx = {
+                    'form': form
+                }
+                return render(
+                    request, "main/shopping_cart_order_retrieve.html", ctx)
+        else:
+            ctx = {
+                'form': OrderRetrievalForm()
+            }
+            return render(
+                request, "main/shopping_cart_order_retrieve.html", ctx)
+
     @route(r'thank-you/$')
     def thank_you(self, request):
         context = self.get_context(request)
+        if 'shopping_cart' in request.session and request.session['shopping_cart']:
+            del request.session['shopping_cart']
+
         return render(request, "main/shopping_cart_thank_you.html", context)
 
     @route(r'remove/(\d+)/$')
@@ -745,7 +799,7 @@ class ShoppingCartPage(RoutablePageMixin, Page):
                     self.reverse_subpage('thank_you')),
                 'cancel_return': request.build_absolute_uri(self.url),
                 'item_name': 'Scores by Fernande Breilh Decruck',
-                'item_number': str(order.uuid)
+                'item_number': order.uuid
             }
 
             ctx['items'] = items

@@ -1,0 +1,157 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-12 00:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: decruck/templates/base.html:54
+msgid "The Life and Works of Fernande Breilh-Decruck"
+msgstr "Foo"
+
+#: decruck/templates/main/composition_listing_page.html:22
+#: decruck/templates/main/composition_listing_page.html:118
+#: decruck/templates/main/composition_page.html:17
+msgid "Genre"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:41
+msgid "Keyword"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:50
+msgid "Start Year"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:55
+msgid "End Year"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:65
+#: decruck/templates/main/composition_listing_page.html:68
+msgid "Sort By"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:78
+msgid "Sort Direction"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:95
+msgid "Search"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:96
+msgid "Reset"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:101
+msgid "compositions found"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:121
+msgid "Title"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:124
+msgid "Year"
+msgstr ""
+
+#: decruck/templates/main/composition_listing_page.html:127
+#: decruck/templates/main/composition_page.html:38
+msgid "Instrumentation"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:24
+msgid "Date"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:31
+msgid "Location"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:50
+msgid "Orchestral Instrumentation"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:57
+msgid "Duration"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:64
+msgid "Mansucript Status"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:71
+msgid "Collaborators"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:78
+msgid "Text Source"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:85
+msgid "Dedicatee"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:92
+msgid "Description"
+msgstr ""
+
+#: decruck/templates/main/composition_page.html:98
+msgid "Available for Download "
+msgstr ""
+
+#: decruck/templates/main/score_page.html:54
+msgid "Add to cart"
+msgstr ""
+
+#: decruck/templates/main/score_page.html:54
+#: decruck/templates/main/shopping_cart.html:32
+msgid "Remove from cart"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart.html:19
+#: decruck/templates/main/shopping_cart_confirmation.html:19
+msgid "Item"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart.html:20
+#: decruck/templates/main/shopping_cart_confirmation.html:20
+msgid "Price"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart.html:21
+msgid "Action"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart.html:45
+msgid "Confirm Order"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart.html:51
+msgid "There are no items in your shopping cart"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart_confirmation.html:10
+msgid "Order Confirmation"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart_confirmation.html:36
+msgid "Total"
+msgstr ""
+
+#: decruck/templates/main/shopping_cart_confirmation.html:39
+msgid "Checkout with PayPal"
+msgstr ""
