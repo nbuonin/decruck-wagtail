@@ -3,6 +3,7 @@ from django.forms import (
     Form, CharField, IntegerField, ChoiceField, MultipleChoiceField,
     ValidationError, RadioSelect, CheckboxSelectMultiple, EmailField
 )
+from django.utils.translation import gettext as _
 from decruck.main.models import Genre, Instrument
 
 
@@ -66,3 +67,8 @@ class CompositionListingForm(Form):
 
 class OrderRetrievalForm(Form):
     email_address = EmailField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email_address'].widget.attrs['placeholder'] = _(
+            'Email Address')

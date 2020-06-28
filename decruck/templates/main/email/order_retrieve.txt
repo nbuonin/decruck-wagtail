@@ -1,0 +1,15 @@
+Below are links to download all purchases associated with {{ email }}. These links will remain active for 24 hours. Once links expire, new links can be requested from {{ retrival_form_url }}
+
+If you have any questions, please email orders@fernandedecruck.com
+
+================================================================================
+
+Vous trouverez ci-dessous les liens de téléchargement de l'ensemble des achats associés à l'adresse {{ email }}. Ces liens resteront actifs pendant 24 heures. Une fois les liens expirés, de nouveaux liens peuvent être demandés à {{ retrieval_form_url }}
+
+Des questions ? Veuillez contacter orders@fernandebreilhdecruck.com
+
+================================================================================
+
+{% for link in links %}
+{{ link.full_url }}
+{% endfor %}

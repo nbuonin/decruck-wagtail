@@ -1,5 +1,6 @@
 from datetime import timedelta
 from django.conf import settings
+from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.validators import FileExtensionValidator
@@ -14,6 +15,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 from edtf import parse_edtf, struct_time_to_date
 from edtf.parser.edtf_exceptions import EDTFParseException
 import hashlib
@@ -474,8 +476,7 @@ class Order(Model):
     FILE_LINKS_SENT = 'FILE_LINKS_SENT'
     STATUS_CHOICES = [
         (INITIATED, 'Initiated'),
-        (PAYMENT_RECEIVED, 'Payment Received'),
-        (FILE_LINKS_SENT, 'File Links Sent')
+        (PAYMENT_RECEIVED, 'Payment Received')
     ]
     created = DateTimeField(auto_now_add=True)
     modified = DateTimeField(auto_now=True)
@@ -730,22 +731,35 @@ class ShoppingCartPage(RoutablePageMixin, Page):
                     plaintext = get_template('main/email/order_retrieve.txt')
                     send_mail(
                         'Your ordered items',
-                        plaintext.render({'links': links}),
+                        plaintext.render({
+                            'links': links,
+                            'email': email,
+                            'retrieval_form_url':
+                                self.full_url + self.reverse_subpage('retreive_order')  # NOQA: E501
+                        }),
                         settings.ORDER_EMAIL_ADDR,
                         [email],
                     )
+
                 # Set message and render
-                ctx = {
-                    'form': form
-                }
-                return render(
-                    request, "main/shopping_cart_order_retrieve.html", ctx)
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    _('If any orders exist for this email address, an email has been sent with links to your purchased scores.')  # NOQA: E501
+                )
+            ctx = {
+                'page': self,
+                'form': form
+            }
+            return render(
+                request, "main/shopping_cart_retrieve.html", ctx)
         else:
             ctx = {
+                'page': self,
                 'form': OrderRetrievalForm()
             }
             return render(
-                request, "main/shopping_cart_order_retrieve.html", ctx)
+                request, "main/shopping_cart_retrieve.html", ctx)
 
     @route(r'thank-you/$')
     def thank_you(self, request):

@@ -1,8 +1,9 @@
 import random
 import string
+from datetime import timedelta
 from decimal import Decimal
 from decruck.main.models import (
-    Order, ScorePage, ScoreListingPage, ShoppingCartPage
+    Order, OrderItemLink, ScorePage, ScoreListingPage, ShoppingCartPage
 )
 from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -10,6 +11,7 @@ from django.conf import settings
 from django.core import mail
 from django.test import TestCase
 from django.test.utils import override_settings
+from django.utils import timezone
 from os.path import join
 from paypal.standard.ipn.tests.test_ipn import MockedPostbackMixin
 from six import text_type
@@ -266,9 +268,18 @@ class ShoppingCartPageTest(MockedPostbackMixin, TestCase):
         # Create an order object, try posting valid values to the PayPal endpoint and check that:
         # - Link objects are created
         # - The email is sent
-        # Check that the order status is updated when the links are sent
+        # - The order status is updated when the links are sent
+        # - The links are accessible
+
+        # Check that no links already exist, validates creation below
+        self.assertEqual(OrderItemLink.objects.all().count(), 0)
+
+        # Simulate an order
         self.client.get(self.cart.get_url() + 'confirmation/')
         order = Order.objects.first()
+
+        # check the initial state of the order
+        self.assertEqual(order.status, Order.INITIATED)
 
         params = self.generate_params(order.total, str(order.uuid))
         response = self.paypal_post(params)
@@ -278,18 +289,125 @@ class ShoppingCartPageTest(MockedPostbackMixin, TestCase):
             'Thank you for your order / Merci pour votre commande',
             mail.outbox[0].subject
         )
-        # TODO: links are created, order status is updated
+
+        # Check that the status is updated
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.PAYMENT_RECEIVED)
+
+        # Check that links are created
+        links = OrderItemLink.objects.all()
+        self.assertEqual(links.count(), 2)
+
+        # Check that links work
+        for link in links:
+            res = self.client.get(link.relative_url)
+            self.assertEqual(res.status_code, 200)
 
     def test_order_processing_invalid_uuid(self):
         """Simulate an order with an invalid UUID"""
         # Post an order to the PayPal endpoint with a phony UUID and check that it takes no action
 
+        # Check that no links already exist, validates creation below
+        self.assertEqual(OrderItemLink.objects.all().count(), 0)
+
+        # Simulate an order
+        self.client.get(self.cart.get_url() + 'confirmation/')
+        order = Order.objects.first()
+
+        # check the initial state of the order
+        self.assertEqual(order.status, Order.INITIATED)
+
+        params = self.generate_params(order.total, 'space-lizard')
+        response = self.paypal_post(params)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 0)
+
+        # Check that the status is updated
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.INITIATED)
+
+        # Check that links are created
+        links = OrderItemLink.objects.all()
+        self.assertEqual(links.count(), 0)
+
     def test_order_processing_invalid_total(self):
         """Simulate an order with an invalid total"""
         # Post an order the the PayPal endpoint with a real UUID but incorrect total and check that it takes no action
+        # Check that no links already exist, validates creation below
+        self.assertEqual(OrderItemLink.objects.all().count(), 0)
 
-    # Check that the order retreival page sends email with correct links when given valid email
-    # Check that the order retrieval page takes no action when given an email which has no associated orders
-    # Check that the retrieval links work within 24 hours of now
-    # Check that retrieval links don't work when thier expiration time is set to be more than 24 hours ago
+        # Simulate an order
+        self.client.get(self.cart.get_url() + 'confirmation/')
+        order = Order.objects.first()
 
+        # check the initial state of the order
+        self.assertEqual(order.status, Order.INITIATED)
+
+        params = self.generate_params(Decimal('1.99'), str(order.uuid))
+        response = self.paypal_post(params)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 0)
+
+        # Check that the status is updated
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.INITIATED)
+
+        # Check that links are created
+        links = OrderItemLink.objects.all()
+        self.assertEqual(links.count(), 0)
+
+    def test_order_retrieval_valid_email(self):
+        """
+        Check that the order retreival page sends email with
+        correct links when given valid email
+        """
+        # Simulate an order
+        self.client.get(self.cart.get_url() + 'confirmation/')
+        order = Order.objects.first()
+        params = self.generate_params(order.total, str(order.uuid))
+        self.paypal_post(params)
+
+        response = self.client.post(
+            self.cart.get_url() + 'retrieve-order/',
+            {'email_address': 'email@gmail.com'}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 2)
+
+    def test_order_retrieval_invalid_email(self):
+        """
+        Test that no email is sent when an invalid email is given
+        """
+        response = self.client.post(
+            self.cart.get_url() + 'retrieve-order/',
+            {'email_address': 'foo@bar.com'}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_retrieval_links(self):
+        """
+        Check that the retrieval links work within 24 hours of now
+        Check that retrieval links don't work when thier expiration time is set
+        to be more than 24 hours ago
+        """
+        # Simulate an order
+        self.client.get(self.cart.get_url() + 'confirmation/')
+        order = Order.objects.first()
+        params = self.generate_params(order.total, str(order.uuid))
+        self.paypal_post(params)
+
+        links = OrderItemLink.objects.all()
+        for link in links:
+            r = self.client.get(link.relative_url)
+            self.assertEqual(r.status_code, 200)
+
+        # test expired links
+        for link in links:
+            link.expires = timezone.now() - timedelta(days=2)
+            link.save()
+
+        links = OrderItemLink.objects.all()
+        for link in links:
+            r = self.client.get(link.relative_url)
+            self.assertEqual(r.status_code, 404)
