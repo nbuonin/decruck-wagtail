@@ -1,0 +1,19 @@
+.score-listing-page__score {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-items: center;
+    margin-bottom: 1em;
+}
+
+.score-listing-page__score-image {
+    margin-bottom: 0.75em;
+}
+
+.score-listing-page__score-title {
+    @extend .h2;
+    text-align: center;
+}
+
+.score-listing-page__score-price {
+    text-align: center;
+}

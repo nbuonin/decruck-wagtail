@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load wagtailcore_tags %}
+{% load wagtailimages_tags%}
 
 {% block content %}
 <main>
@@ -8,8 +9,23 @@
     <div class="row">
         <div class="col-12">
             <h1>{{ page.title }}</h1>
-            {% include_block page.body %}
         </div>
+    </div>
+    <div class="row">
+        {% for score in scores %}
+        <div class="col-md-4 score-listing-page__score">
+            <div class="score-listing-page__score-image">
+                {% image score.cover_image original as cover_image %}
+                <a href="{{ score.url }}"><image class="score-cover-image" src="{{ cover_image.url }}"></a>
+            </div>
+            <div class="score-listing-page__score-title">
+                <a href="{{ score.url }}">{{ score.title }}</a>
+            </div>
+            <div class="score-listing-page__score-price">
+                ${{ score.price }}
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 </main>

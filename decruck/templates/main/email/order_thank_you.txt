@@ -19,5 +19,5 @@ Des questions ? Veuillez contacter orders@fernandedecruck.com
 ================================================================================
 
 {% for link in links %}
-{{ link.item.title }}
+{{ link.full_url }}
 {% endfor %}

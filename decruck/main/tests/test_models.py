@@ -411,3 +411,7 @@ class ShoppingCartPageTest(MockedPostbackMixin, TestCase):
         for link in links:
             r = self.client.get(link.relative_url)
             self.assertEqual(r.status_code, 404)
+
+# TODO
+# Add test to check that an order with an empty cart can not be created
+# Inspect the links in the emails
