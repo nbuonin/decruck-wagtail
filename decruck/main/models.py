@@ -211,7 +211,7 @@ class CompositionListingPage(Page, MenuPageMixin):
         if request.method == 'GET':
             if len(request.GET.keys()) > 0:
                 form = CompositionListingForm(request.GET)
-                compositions = CompositionPage.objects.all()
+                compositions = CompositionPage.objects.live()
                 if form.is_valid():
                     backend = get_search_backend()
                     # Implement search functionality here and
@@ -278,7 +278,7 @@ class CompositionListingPage(Page, MenuPageMixin):
             return render(request, "main/composition_listing_page.html", {
                 'page': self,
                 'form': form,
-                'compositions': CompositionPage.objects.all()  # TODO order by date
+                'compositions': CompositionPage.objects.live()  # TODO order by date
             })
 
     class Meta:
@@ -446,6 +446,13 @@ class ScoreListingPage(Page, MenuPageMixin):
         menupage_panel
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        return {
+            'page': self,
+            'scores':
+                ScorePage.objects.live().order_by('title')
+        }
+
 
 def score_in_cart(request, pk):
     if 'shopping_cart' in request.session and request.session['shopping_cart']:
@@ -612,14 +619,13 @@ class ScorePage(RoutablePageMixin, Page):
         help_text='The materials sent in the PDF file.'
     )
 
-    def clean(self):
-        super().clean()
+    def save(self, *args, **kwargs):
         if self.preview_score_checked:
             # This was the cause of a subtle bug. Because this method can be
             # called multiple times during model creation, leaving this flag
             # set would cause the post save hook to fire multiple times.
             self.preview_score_updated = False
-            return
+            return super().save(*args, **kwargs)
 
         h = hashlib.md5()
         for chunk in iter(lambda: self.preview_score.read(8192), b''):
@@ -632,6 +638,7 @@ class ScorePage(RoutablePageMixin, Page):
             self.preview_score_updated = True
 
         self.preview_score_checked = True
+        return super().save(*args, **kwargs)
 
     @route(r'^([\w-]+)/$')
     def get_score_file(self, request, score_link_slug):
