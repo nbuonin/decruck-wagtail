@@ -5316,6 +5316,9 @@ body {
 main {
   padding-bottom: calc(74px + 2em); }
 
+#home-page__main {
+  padding-bottom: 0; }
+
 @use "sass:color";
 html {
   letter-spacing: 0.02em; }
@@ -5515,6 +5518,15 @@ a {
   color: #37332e; }
   .footer__icon:last-of-type {
     margin-right: 0; }
+
+#home-page__cover-image {
+  background-image: url("/static/img/decruck-home-page-cover.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center; }
+  @media (min-width: 576px) {
+    #home-page__cover-image {
+      background-size: contain; } }
 
 .composition-search {
   background-color: #baaa8b;

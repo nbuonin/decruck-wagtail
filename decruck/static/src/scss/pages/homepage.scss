@@ -1,3 +1,9 @@
-.home-page__main {
-    //min-height: 250px;
+#home-page__cover-image {
+    background-image: url('/static/img/decruck-home-page-cover.png');
+    background-size: cover;
+    @include media-breakpoint-up(sm) {
+        background-size: contain;
+    }
+    background-repeat: no-repeat;
+    background-position: center center;
 }

@@ -6,4 +6,6 @@ body {
 main {
     padding-bottom: calc(74px + 2em); // Footer height + extra spacing
 }
-
+#home-page__main {
+    padding-bottom: 0;
+}
