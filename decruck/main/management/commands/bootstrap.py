@@ -3,6 +3,7 @@ from decruck.main.models import (
     HomePage, CompositionListingPage, BiographyPage, ScoreListingPage,
     ShoppingCartPage
 )
+from django.core.management import call_command
 from django.core.management.base import (
     BaseCommand, CommandError
 )
@@ -35,13 +36,14 @@ class Command(BaseCommand):
         )
 
         # Create Compostion listing page
-        comp = CompositionListingPage(title='compositions')
+        comp = CompositionListingPage(title='Compositions')
         homepage.add_child(instance=comp)
         comp.save_revision().publish()
 
         # Create a Bio page
         bio_page = BiographyPage(
-            title='Decruck Biography',
+            title='Biography',
+            show_in_menus=True,
             body=[
                 ('heading', {
                     'left_column': 'Foo',
@@ -52,20 +54,25 @@ class Command(BaseCommand):
         homepage.add_child(instance=bio_page)
         bio_page.save_revision().publish()
 
-        # Shopping cart page
-        cart = ShoppingCartPage(
-            title='Shopping Cart',
-            body=[('rich_text', RichText('<p>Body text</p>'))],
-            confirmation_page_text=[
-                ('rich_text', RichText('<p>Confirmation text</p>'))]
-        )
-        homepage.add_child(instance=cart)
-        cart.save_revision().publish()
-
         # Score listing page
         score_listing = ScoreListingPage(
-            title='Scores',
+            title='Shop',
+            show_in_menus=True,
             description=[('rich_text', RichText('<p>Description text</p>'))],
         )
         homepage.add_child(instance=score_listing)
         score_listing.save_revision().publish()
+
+        # Shopping cart page
+        cart = ShoppingCartPage(
+            title='Cart',
+            show_in_menus=True,
+            body=[('rich_text', RichText('<p>Body text</p>'))],
+            confirmation_page_text=[
+                ('rich_text', RichText('<p>Confirmation text</p>'))]
+        )
+        score_listing.add_child(instance=cart)
+        cart.save_revision().publish()
+
+        # Create the main menu
+        call_command('autopopulate_main_menus')
