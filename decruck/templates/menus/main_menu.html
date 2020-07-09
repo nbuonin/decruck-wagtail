@@ -1,0 +1,24 @@
+{% load i18n %}
+{% load change_lang %}
+{% load menu_tags %}
+
+<ul class="navbar-nav ml-auto">
+{% for item in menu_items %}
+    <li class="nav-item{% if item.has_children_in_menu %} dropdown dropdown-menu-right{% endif %}">
+        <a href="{{ item.href }}" class="nav-link {{ item.active_class }}"{% if item.has_children_in_menu %} class="nav-link dropdown-toggle" id="ddtoggle_{{ item.link_page.pk }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% endif %}>{{ item.text }}</a>
+        {% if item.has_children_in_menu %}
+        	{% sub_menu item template="menus/sub_menu.html" %}
+        {% endif %}
+    </li>       
+{% endfor %}
+    <div class="dropdown-divider d-lg-none"></div>
+    <li class="nav-item d-lg-none">
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'en' %}
+    <a href="{{ FR_HOST }}{% change_lang 'fr' page %}" class="nav-link">Français</a>
+    {% else %}
+    <a href="{{ EN_HOST }}{% change_lang 'en' page %}" class="nav-link">English</a>
+    {% endif %}
+    </li>
+</ul>
+

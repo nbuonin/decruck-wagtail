@@ -1,47 +1,17 @@
 .header {
-    margin-bottom: 3em;
-}
-
-.nav-container--home-page {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    margin-bottom: 50px
-}
-
-.nav {
-    list-style-type: none;
-    display: none;
-    &.mobile-nav-active {
-        display: flex;
-    }
-    flex-flow: column nowrap;
-    padding: 0;
-    @include media-breakpoint-up(md) {
-        display: flex;
-        flex-flow: row nowrap;
-        width: fit-content;
-        margin: 1em auto 0;
-    }
-
     @include media-breakpoint-up(xl) {
-        //width: unset;
-        margin: unset;
-        margin-left: auto;
+        margin-bottom: 3em;
     }
 }
 
-.nav > li {
+li.nav-item {
     text-transform: uppercase;
-    text-align: center;
-
-    @include media-breakpoint-up(md) {
-        text-align: unset;
+    @include media-breakpoint-up(lg) {
         margin-right: 1em;
         padding-right: 1em;
         border-right: solid 1px #FFFFFF;
 
-        &:last-of-type {
+        &:last-of-type, &:nth-last-of-type(2) {
             margin-right: 0em;
             padding-right: 0em;
             border-right: none;
@@ -52,6 +22,9 @@
 .language-picker {
     width: fit-content;
     margin-left: auto;
+    a {
+        text-decoration: none;
+    }
 }
 
 .site-title-mobile-nav {
@@ -63,19 +36,30 @@
     justify-content: center;
 }
 
-#navbar-toggle {
-   display: flex;
-   flex-flow: column nowrap;
-   height: 30px;
-   justify-content: space-between;
-   background: none;
-   border: 0;
-   &:focus {
-       outline: none;
-   }
-   .navbar-toggle-layer {
-       height: 3px;
-       width: 40px;
-       background-color: #000000;
-   }
+// Override Bootstrap
+.navbar {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+a.nav-link {
+    color: $dark-brown !important;
+    text-decoration: none;
+}
+
+.dropdown-menu {
+    background-color: unset;
+    border: none;
+}
+
+a.navbar-brand {
+    text-decoration: none;
+    font-size: 1em;
+    @include media-breakpoint-up(lg) {
+        width: 33%;
+        margin-right: auto;
+    }
+    @include media-breakpoint-up(xl) {
+        width: 45%;
+    }
 }

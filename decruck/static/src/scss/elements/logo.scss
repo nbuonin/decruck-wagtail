@@ -15,14 +15,15 @@
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    width: calc(100% - 50px);
+    width: 270px;
+    margin: 0 auto 0 0;
     @include media-breakpoint-up(md) {
         max-width: 400px;
-        margin: 0 auto;
     }
 
     @include media-breakpoint-up(xl) {
         max-width: unset;
+        margin: 0 auto;
         width: 100%;
     }
 }
@@ -39,4 +40,5 @@
     text-transform: uppercase;
     padding-top: 1em;
     border-top: solid 1px $dark-brown;
+    margin: 0 3em;
 }
