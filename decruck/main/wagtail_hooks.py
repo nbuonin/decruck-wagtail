@@ -2,7 +2,7 @@ from io import BytesIO
 from decimal import Decimal
 from decruck.main.models import (
     CompositionPage, ScorePage, PreviewScoreImage, Order, OrderItem,
-    OrderItemLink
+    OrderItemLink, Message
 )
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -16,9 +16,23 @@ import math
 from paypal.standard.ipn.signals import valid_ipn_received
 from paypal.standard.models import ST_PP_COMPLETED
 from pdf2image import convert_from_bytes
+from wagtail.contrib.modeladmin.helpers import (
+    PermissionHelper, PageButtonHelper
+)
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, modeladmin_register
 )
+
+
+class ProtectModelPermissionHelper(PermissionHelper):
+    def user_can_create(self, user):
+        return False
+
+    def user_can_edit_obj(self, user, obj):
+        return False
+
+    def user_can_delete_obj(self, user, obj):
+        return False
 
 
 class CompositionPageAdmin(ModelAdmin):
@@ -46,6 +60,22 @@ class CompositionPageAdmin(ModelAdmin):
 
 
 modeladmin_register(CompositionPageAdmin)
+
+
+class MessageAdmin(ModelAdmin):
+    model = Message
+    permission_helper_class = ProtectModelPermissionHelper
+    menu_label = 'Contact Form Messages'
+    menu_icon = 'form'
+    menu_order = 400
+    list_display = ('created', 'name', 'email')
+    search_fields = (
+        'name', 'email', 'message',
+    )
+    inspect_view_enabled = True
+
+
+modeladmin_register(MessageAdmin)
 
 
 @receiver(post_save, sender=ScorePage)

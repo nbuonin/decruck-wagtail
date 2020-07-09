@@ -1,7 +1,7 @@
 """Bootstrap the site from a clean database"""
 from decruck.main.models import (
     HomePage, CompositionListingPage, BiographyPage, ScoreListingPage,
-    ShoppingCartPage
+    ShoppingCartPage, ContactFormPage
 )
 from django.core.management import call_command
 from django.core.management.base import (
@@ -73,6 +73,15 @@ class Command(BaseCommand):
         )
         score_listing.add_child(instance=cart)
         cart.save_revision().publish()
+
+        # Contact Form Page
+        contact = ContactFormPage(
+            title='Contact',
+            body=[('rich_text', RichText('<p>Body text</p>'))],
+            message_recipients=[('email_address', 'admin@fernandedecruck.com')]
+        )
+        homepage.add_child(instance=contact)
+        contact.save_revision().publish()
 
         # Create the main menu
         call_command('autopopulate_main_menus')

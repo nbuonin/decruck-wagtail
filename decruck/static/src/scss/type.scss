@@ -46,3 +46,14 @@ a {
         border-color: $dark-brown;
     }
 }
+
+.btn-dark {
+    color: #FFFFFF;
+    border-color: $dark-brown;
+    text-transform: uppercase;
+    text-decoration: none;
+    &:hover {
+        color: $dark-brown;
+        background-color: unset;
+    }
+}

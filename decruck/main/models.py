@@ -7,7 +7,8 @@ from django.core.validators import FileExtensionValidator
 from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
     PROTECT, URLField, DateField, CASCADE, PositiveSmallIntegerField,
-    ImageField, DateTimeField, EmailField, UUIDField, GenericIPAddressField
+    ImageField, DateTimeField, EmailField, UUIDField, GenericIPAddressField,
+    TextField
 )
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -29,7 +30,8 @@ from wagtail.admin.edit_handlers import (
 from wagtail.search.backends import get_search_backend
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
-    RichTextBlock, StructBlock, StreamBlock, BlockQuoteBlock, CharBlock
+    RichTextBlock, StructBlock, StreamBlock, BlockQuoteBlock, CharBlock,
+    EmailBlock
 )
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
@@ -399,29 +401,81 @@ class Instrument(Model):
         return self.instrument
 
 
+class Message(Model):
+    created = DateTimeField(auto_now_add=True)
+    modified = DateTimeField(auto_now=True)
+    name = CharField(max_length=64)
+    email = EmailField()
+    message = TextField()
+    sender_ip = GenericIPAddressField()
+
+
 class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
     body = StreamField([
         ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ])
-    confirmation_page_text = StreamField([
-        ('rich_text', RichTextBlock()),
-        ('image', ImageChooserBlock())
+    message_recipients = StreamField([
+        ('email_address', EmailBlock())
     ])
 
-    @route(r'thank-you/$')
-    def thank_you(self, request):
-        context = self.get_context(request)
-        return render(request, "main/contact_form_thank_you.html", context)
+    def serve(self, request, *args, **kwargs):
+        from decruck.main.forms import ContactForm
+        if request.method == 'POST':
+            form = ContactForm(request.POST)
+            if form.is_valid():
+                recipients = [
+                    el['value'] for el in self.message_recipients.stream_data]
+                name = form.cleaned_data.get('name')
+                email = form.cleaned_data.get('email_address')
+                message = form.cleaned_data.get('message')
 
-    @route(r'^$')
-    def contact_form(self, request):
-        context = self.get_context(request)
-        return render(request, "main/contact_form.html", context)
+                Message.objects.create(
+                    name=name,
+                    email=email,
+                    message=message,
+                    sender_ip=request.META.get('REMOTE_ADDR', '0.0.0.0')
+                )
+
+                plaintext = get_template('main/email/contact_form_message.txt')
+                send_mail(
+                    'Decruck Message Receieved',
+                    plaintext.render({
+                        'name': name,
+                        'email': email,
+                        'message': message
+                    }),
+                    'admin@' + settings.EN_HOST,
+                    recipients
+                )
+
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    _('Thank you for your message.')
+                )
+                ctx = {
+                    'page': self,
+                    'form': ContactForm()
+                }
+                return render(request, "main/contact_form_page.html", ctx)
+
+            else:
+                ctx = {
+                    'page': self,
+                    'form': form
+                }
+                return render(request, "main/contact_form_page.html", ctx)
+        else:
+            ctx = {
+                'page': self,
+                'form': ContactForm()
+            }
+            return render(request, "main/contact_form_page.html", ctx)
 
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
-        StreamFieldPanel('confirmation_page_text')
+        StreamFieldPanel('message_recipients'),
     ]
 
     settings_panels = Page.settings_panels + [
@@ -450,7 +504,8 @@ class ScoreListingPage(Page, MenuPageMixin):
         return {
             'page': self,
             'scores':
-                ScorePage.objects.live().order_by('title')
+                ScorePage.objects.live().order_by('title'),
+            'cart_page': ShoppingCartPage.objects.first()
         }
 
 
@@ -659,16 +714,19 @@ class ScorePage(RoutablePageMixin, Page):
 
     @route(r'^$')
     def score(self, request):
+        cart_page = ShoppingCartPage.objects.first()
         if request.method == 'POST':
             in_cart = toggle_score_in_cart(request, self.pk)
             return render(request, "main/score_page.html", {
                 'page': self,
-                'in_cart': in_cart
+                'in_cart': in_cart,
+                'cart_page': cart_page
             })
         else:
             return render(request, "main/score_page.html", {
                 'page': self,
-                'in_cart': score_in_cart(request, self.pk)
+                'in_cart': score_in_cart(request, self.pk),
+                'cart_page': cart_page
             })
 
     class Meta:
@@ -737,7 +795,7 @@ class ShoppingCartPage(RoutablePageMixin, Page):
 
                     plaintext = get_template('main/email/order_retrieve.txt')
                     send_mail(
-                        'Your ordered items',
+                        _('Your ordered items'),
                         plaintext.render({
                             'links': links,
                             'email': email,

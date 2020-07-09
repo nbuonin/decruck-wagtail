@@ -1,7 +1,8 @@
 """Custom Forms for Decruck Wagatail"""
 from django.forms import (
     Form, CharField, IntegerField, ChoiceField, MultipleChoiceField,
-    ValidationError, RadioSelect, CheckboxSelectMultiple, EmailField
+    ValidationError, RadioSelect, CheckboxSelectMultiple, EmailField,
+    Textarea
 )
 from django.utils.translation import gettext as _
 from decruck.main.models import Genre, Instrument
@@ -72,3 +73,18 @@ class OrderRetrievalForm(Form):
         super().__init__(*args, **kwargs)
         self.fields['email_address'].widget.attrs['placeholder'] = _(
             'Email Address')
+
+
+class ContactForm(Form):
+    name = CharField(max_length=64)
+    email_address = EmailField()
+    message = CharField(widget=Textarea)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['placeholder'] = _(
+            'Name')
+        self.fields['email_address'].widget.attrs['placeholder'] = _(
+            'Email Address')
+        self.fields['message'].widget.attrs['placeholder'] = _(
+            'Message')

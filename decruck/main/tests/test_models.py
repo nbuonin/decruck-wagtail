@@ -3,7 +3,8 @@ import string
 from datetime import timedelta
 from decimal import Decimal
 from decruck.main.models import (
-    Order, OrderItemLink, ScorePage, ScoreListingPage, ShoppingCartPage
+    Order, OrderItemLink, ScorePage, ScoreListingPage, ShoppingCartPage,
+    ContactFormPage, Message
 )
 from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -25,6 +26,21 @@ CHARSET = "windows-1252"
 class CompositionModelTest(TestCase):
     def test_test(self):
         pass
+
+
+class ContactPageTest(TestCase):
+    def test_form_submission(self):
+        self.assertEqual(0, Message.objects.count())
+        self.client.post(
+            ContactFormPage.objects.first().url,
+            {
+                'name': 'Maurice Decruck',
+                'email_address': 'maurice@decruck.com',
+                'message': 'I like to play the bass.'
+            }
+        )
+        self.assertEqual(1, Message.objects.count())
+        self.assertEqual(len(mail.outbox), 1)
 
 
 class ScorePageTest(TestCase):
@@ -407,7 +423,7 @@ class ShoppingCartPageTest(MockedPostbackMixin, TestCase):
             link.expires = timezone.now() - timedelta(days=2)
             link.save()
 
-        links = OrderItemLink.objects.all()
+        # links = OrderItemLink.objects.all()
         for link in links:
             r = self.client.get(link.relative_url)
             self.assertEqual(r.status_code, 404)

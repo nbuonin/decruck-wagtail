@@ -53,6 +53,10 @@
                         {% csrf_token %}
                         <input type="submit" id="score-page__atc-button" class="btn btn-outline-dark" value="{% if not in_cart %}{% trans 'Add to cart' %}{% else %}{% trans 'Remove from cart' %}{% endif %}"></input>
                     </form>
+                    {% if in_cart %}
+                    <a class="btn btn-dark mt-2" href="{{ cart_page.url }}">{% trans 'Checkout' %}</a>
+                    <a class="mt-2" href="{{ page.get_parent.url }}">{% trans 'Back to Scores' %}</a>
+                    {% endif %}
                 </div>
             </div>
             {% if page.description %}

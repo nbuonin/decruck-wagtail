@@ -7737,6 +7737,15 @@ a {
     background-color: #37332e;
     border-color: #37332e; }
 
+.btn-dark {
+  color: #FFFFFF;
+  border-color: #37332e;
+  text-transform: uppercase;
+  text-decoration: none; }
+  .btn-dark:hover {
+    color: #37332e;
+    background-color: unset; }
+
 @media (min-width: 1200px) {
   .header {
     margin-bottom: 3em; } }

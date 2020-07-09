@@ -1,0 +1,3 @@
+The following message was submitted by {{ name }} at {{ email }}:
+
+{{ message }}
