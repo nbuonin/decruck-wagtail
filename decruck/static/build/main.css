@@ -7964,6 +7964,9 @@ a.navbar-brand {
   text-transform: uppercase;
   margin-bottom: 1em; }
 
+.composition__nav-link {
+  text-decoration: none; }
+
 #biography__title {
   text-align: center; }
 

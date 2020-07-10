@@ -269,6 +269,9 @@ class CompositionListingPage(Page, MenuPageMixin):
                             compositions
                         )
 
+                request.session['comp_search_index'] = [
+                    comp.pk for comp in compositions]
+                request.session['comp_search_qs'] = request.GET.urlencode()
                 return render(request, "main/composition_listing_page.html", {
                     'page': self,
                     'form': form,
@@ -277,10 +280,14 @@ class CompositionListingPage(Page, MenuPageMixin):
 
             # Else return an empty form
             form = CompositionListingForm()
+            compositions = CompositionPage.objects.live().order_by(
+                'date__lower_strict')
+            request.session['comp_search_index'] = [
+                comp.pk for comp in compositions]
             return render(request, "main/composition_listing_page.html", {
                 'page': self,
                 'form': form,
-                'compositions': CompositionPage.objects.live()  # TODO order by date
+                'compositions': compositions
             })
 
     class Meta:
@@ -356,6 +363,32 @@ class CompositionPage(Page):
 
     class Meta:
         verbose_name = "Composition"
+
+    def get_context(self, request, *args, **kwargs):
+        ctx = super().get_context(request, *args, **kwargs)
+
+        try:
+            search_idx = request.session['comp_search_index']
+            if search_idx:
+                idx = search_idx.index(self.pk)
+                prev_url = None
+                next_url = None
+                if idx > 0:
+                    pk = search_idx[idx - 1]
+                    prev_url = CompositionPage.objects.get(pk=pk).url
+
+                if idx < len(search_idx) - 1:
+                    pk = search_idx[idx + 1]
+                    next_url = CompositionPage.objects.get(pk=pk).url
+
+                ctx['prev_url'] = prev_url
+                ctx['next_url'] = next_url
+                ctx['comp_seach_qs'] = request.\
+                    session.get('comp_search_qs', '')
+        except KeyError:
+            pass
+
+        return ctx
 
     content_panels = Page.content_panels + [
         FieldPanel('composition_title'),
