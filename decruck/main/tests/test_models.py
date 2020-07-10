@@ -4,7 +4,7 @@ from datetime import timedelta
 from decimal import Decimal
 from decruck.main.models import (
     Order, OrderItemLink, ScorePage, ScoreListingPage, ShoppingCartPage,
-    ContactFormPage, Message
+    ContactFormPage, Message, CompositionListingPage
 )
 from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -23,9 +23,17 @@ from wagtail.core.rich_text import RichText
 CHARSET = "windows-1252"
 
 
-class CompositionModelTest(TestCase):
-    def test_test(self):
-        pass
+class CompositionListingPageTest(TestCase):
+    def test_search(self):
+        search_page = CompositionListingPage.objects.first()
+        request = self.client.get(search_page.url, {
+            'keyword': 'oboe',
+            'start_year': '1940',
+            'end_year': '1950',
+            'sort_by': 'genre',
+            'sort_dir': 'DESC'
+        })
+        self.assertEqual(request.status_code, 200)
 
 
 class ContactPageTest(TestCase):

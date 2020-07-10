@@ -213,9 +213,8 @@ class CompositionListingPage(Page, MenuPageMixin):
         if request.method == 'GET':
             if len(request.GET.keys()) > 0:
                 form = CompositionListingForm(request.GET)
-                compositions = CompositionPage.objects.live()
+                compositions = CompositionPage.objects.all()
                 if form.is_valid():
-                    backend = get_search_backend()
                     # Implement search functionality here and
                     # assign to compositions
                     """
@@ -229,16 +228,25 @@ class CompositionListingPage(Page, MenuPageMixin):
                     'start_year': 1925}
                     (Pdb)
                     """
+
+                    if form.cleaned_data['keyword']:
+                        kw_results = compositions.search(
+                            form.cleaned_data['keyword'],
+                        )
+                        # Because of a bug in how dates are extracted in
+                        # Wagtail's search, we requery the db based on the
+                        # pk's found with the initial keyword search
+                        compositions = CompositionPage.objects.filter(
+                            pk__in=[c.pk for c in kw_results]
+                        )
+
                     if form.cleaned_data['start_year']:
-                        # TODO filtering off of date could be buggy because
-                        # it's expecting there to be multiple dates
-                        # e.g. 'date__first'...
                         compositions = compositions.filter(
-                            date__lower_strict__year__gte=form.cleaned_data['start_year'])
+                            date__lower_strict__year__gte=form.cleaned_data['start_year'])  # NOQA: E501
 
                     if form.cleaned_data['end_year']:
                         compositions = compositions.filter(
-                            date__upper_strict__year__lte=form.cleaned_data['end_year'])
+                            date__upper_strict__year__lte=form.cleaned_data['end_year'])  # NOQA: E501
 
                     if form.cleaned_data['genre']:
                         compositions = compositions.filter(
@@ -261,13 +269,6 @@ class CompositionListingPage(Page, MenuPageMixin):
                             # Order by end year
                             compositions = compositions.order_by(
                                 '-date__upper_strict')
-
-                    # Per Wagtail docs, search must come after all filtering
-                    if form.cleaned_data['keyword']:
-                        compositions = backend.search(
-                            form.cleaned_data['keyword'],
-                            compositions
-                        )
 
                 request.session['comp_search_index'] = [
                     comp.pk for comp in compositions]
@@ -383,8 +384,9 @@ class CompositionPage(Page):
 
                 ctx['prev_url'] = prev_url
                 ctx['next_url'] = next_url
-                ctx['comp_seach_qs'] = request.\
+                ctx['comp_search_qs'] = request.\
                     session.get('comp_search_qs', '')
+                print(ctx)
         except KeyError:
             pass
 
@@ -421,7 +423,9 @@ class CompositionPage(Page):
         index.SearchField('manuscript_status'),
         index.SearchField('recording'),
         index.FilterField('genre'),
-        index.FilterField('instrument_id')
+        index.RelatedFields('instrumentation', [
+            index.SearchField('instrument'),
+        ]),
     ]
 
     parent_page_types = ['CompositionListingPage']
