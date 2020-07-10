@@ -37,8 +37,16 @@ class Command(BaseCommand):
                 # Get or create genre
                 genre = row.get('Genre', None)
                 if genre:
-                    genre, _ = Genre.objects.get_or_create(
-                        genre=string.capwords(genre.strip()))
+                    genre_en, genre_fr = string.capwords(
+                        genre.strip()).split('/')
+
+                    try:
+                        genre = Genre.objects.get(genre=genre_en)
+                    except Genre.DoesNotExist:
+                        genre = Genre.objects.create(
+                            genre=genre_en,
+                            genre_fr=genre_fr
+                        )
 
                 # Assemble description from notes and movements
                 description = []

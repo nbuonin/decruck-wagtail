@@ -2,7 +2,7 @@ from io import BytesIO
 from decimal import Decimal
 from decruck.main.models import (
     CompositionPage, ScorePage, PreviewScoreImage, Order, OrderItem,
-    OrderItemLink, Message
+    OrderItemLink, Message, Instrument, Genre
 )
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -60,6 +60,40 @@ class CompositionPageAdmin(ModelAdmin):
 
 
 modeladmin_register(CompositionPageAdmin)
+
+
+class InstrumentAdmin(ModelAdmin):
+    model = Instrument
+
+    menu_label = 'Instruments'
+    menu_icon = 'doc-full-inverse'
+    menu_order = 210
+    list_display = ('instrument',)
+    search_fields = ('instrument_en', 'instrument_fr')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.order_by('instrument')
+
+
+modeladmin_register(InstrumentAdmin)
+
+
+class GenreAdmin(ModelAdmin):
+    model = Genre
+
+    menu_label = 'Genres'
+    menu_icon = 'doc-full-inverse'
+    menu_order = 215
+    list_display = ('genre',)
+    search_fields = ('genre_en', 'genre_fr')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.order_by('genre')
+
+
+modeladmin_register(GenreAdmin)
 
 
 class MessageAdmin(ModelAdmin):

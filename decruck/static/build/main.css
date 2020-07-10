@@ -7930,6 +7930,7 @@ a.navbar-brand {
 .composition-search__fieldset-checkbox-label {
   display: block;
   margin-bottom: 0.5em !important;
+  text-transform: capitalize;
   border-color: #FFFFFF;
   color: #37332e;
   background-color: #FFFFFF; }

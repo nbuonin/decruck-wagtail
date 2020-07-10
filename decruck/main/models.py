@@ -424,7 +424,8 @@ class CompositionPage(Page):
         index.SearchField('recording'),
         index.FilterField('genre'),
         index.RelatedFields('instrumentation', [
-            index.SearchField('instrument'),
+            index.SearchField('instrument_en'),
+            index.SearchField('instrument_fr'),
         ]),
     ]
 

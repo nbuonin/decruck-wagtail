@@ -3,7 +3,7 @@ from modeltranslation.decorators import register
 from decruck.main.models import (
     HomePage, BiographyPage, CompositionListingPage, CompositionPage,
     ContactFormPage, ScoreListingPage, ScorePage, ShoppingCartPage,
-    BasicPage
+    BasicPage, Instrument, Genre
 )
 
 
@@ -52,3 +52,13 @@ class ShoppingCartPageTR(TranslationOptions):
 @register(BasicPage)
 class BasicPageTR(TranslationOptions):
     fields = []
+
+
+@register(Instrument)
+class InstrumentTR(TranslationOptions):
+    fields = ['instrument']
+
+
+@register(Genre)
+class GenreTR(TranslationOptions):
+    fields = ['genre']
