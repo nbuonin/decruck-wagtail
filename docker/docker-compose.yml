@@ -1,8 +1,8 @@
 version: "3"
 services:
-  db:
+  decruck_db:
     image: postgres:11-alpine  
-  web:
+  decruck_web:
     build: ../
     depends_on:
       - db

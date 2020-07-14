@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 ENV PIPENV_VENV_IN_PROJECT 1
 EXPOSE 8000
 
-RUN apt-get update
+RUN apt-get update && apt-get install poppler-utils -y
 RUN apt-get install libglib2.0-0 -y
 RUN pip3 install pipenv
 COPY . /app/
