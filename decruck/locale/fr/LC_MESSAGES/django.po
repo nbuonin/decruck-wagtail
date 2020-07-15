@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Fernande Decruck
+# Copyright (C) 2020
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Nick Buonincontri, 2020.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-12 00:10+0000\n"
+"POT-Creation-Date: 2020-07-15 05:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,13 +17,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: decruck/templates/base.html:54
-msgid "The Life and Works of Fernande Breilh-Decruck"
-msgstr "Vie et Oeuvre de Fernande Breilh-Decruck"
+
+#: decruck/main/forms.py:75 decruck/main/forms.py:88
+#: decruck/templates/main/contact_form_page.html:45
+#: decruck/templates/main/shopping_cart_retrieve.html:31
+msgid "Email Address"
+msgstr ""
+
+#: decruck/main/forms.py:86 decruck/templates/main/contact_form_page.html:29
+msgid "Name"
+msgstr "Nom"
+
+#: decruck/main/forms.py:90 decruck/templates/main/contact_form_page.html:61
+msgid "Message"
+msgstr "Message"
+
+#: decruck/main/models.py:493
+msgid "Thank you for your message."
+msgstr "Merci pour votre message"
+
+#: decruck/main/models.py:836
+msgid "Your ordered items"
+msgstr "Vos articles commandés"
+
+#: decruck/main/models.py:851
+msgid ""
+"If any orders exist for this email address, an email has been sent with "
+"links to your purchased scores."
+msgstr ""
+"Si des commandes existent pour cette adresse e-mail, un e-mail a été envoyé "
+"avec des liens vers vos partitions achetées."
 
 #: decruck/templates/main/composition_listing_page.html:22
 #: decruck/templates/main/composition_listing_page.html:118
-#: decruck/templates/main/composition_page.html:17
+#: decruck/templates/main/composition_page.html:41
 msgid "Genre"
 msgstr "Genre"
 
@@ -58,7 +85,7 @@ msgstr "Tout effacer"
 
 #: decruck/templates/main/composition_listing_page.html:101
 msgid "compositions found"
-msgstr "Oeuvres trouvées"
+msgstr "oeuvres trouvées"
 
 #: decruck/templates/main/composition_listing_page.html:121
 msgid "Title"
@@ -69,49 +96,69 @@ msgid "Year"
 msgstr "Année"
 
 #: decruck/templates/main/composition_listing_page.html:127
-#: decruck/templates/main/composition_page.html:38
+#: decruck/templates/main/composition_page.html:62
 msgid "Instrumentation"
 msgstr "Instrumentation"
 
-#: decruck/templates/main/composition_page.html:24
+#: decruck/templates/main/composition_page.html:13
+msgid "PREVIOUS"
+msgstr "PRÉCÉDENT"
+
+#: decruck/templates/main/composition_page.html:20
+msgid "RETURN TO RESULTS"
+msgstr "RETOUR AUX RÉSULTATS"
+
+#: decruck/templates/main/composition_page.html:26
+msgid "NEXT"
+msgstr "SUIVANT"
+
+#: decruck/templates/main/composition_page.html:48
 msgid "Date"
 msgstr "Date"
 
-#: decruck/templates/main/composition_page.html:31
+#: decruck/templates/main/composition_page.html:55
 msgid "Location"
 msgstr "Lieu de composition"
 
-#: decruck/templates/main/composition_page.html:50
+#: decruck/templates/main/composition_page.html:74
 msgid "Orchestral Instrumentation"
 msgstr "Orchestration"
 
-#: decruck/templates/main/composition_page.html:57
+#: decruck/templates/main/composition_page.html:81
 msgid "Duration"
 msgstr "Durée"
 
-#: decruck/templates/main/composition_page.html:64
+#: decruck/templates/main/composition_page.html:88
 msgid "Mansucript Status"
 msgstr "Statut du manuscrit"
 
-#: decruck/templates/main/composition_page.html:71
+#: decruck/templates/main/composition_page.html:95
 msgid "Collaborators"
 msgstr "Collaborateurs"
 
-#: decruck/templates/main/composition_page.html:78
+#: decruck/templates/main/composition_page.html:102
 msgid "Text Source"
 msgstr "Source du texte"
 
-#: decruck/templates/main/composition_page.html:85
+#: decruck/templates/main/composition_page.html:109
 msgid "Dedicatee"
 msgstr "Dédié à"
 
-#: decruck/templates/main/composition_page.html:92
+#: decruck/templates/main/composition_page.html:116
 msgid "Description"
 msgstr "Description"
 
-#: decruck/templates/main/composition_page.html:98
+#: decruck/templates/main/composition_page.html:122
 msgid "Available for Download "
 msgstr "Téléchargement disponible"
+
+#: decruck/templates/main/contact_form_page.html:77
+msgid "Submit"
+msgstr "Soumettre"
+
+#: decruck/templates/main/score_listing_page.html:13
+msgid "Shopping Cart"
+msgstr "Panier"
 
 #: decruck/templates/main/score_page.html:54
 msgid "Add to cart"
@@ -121,6 +168,18 @@ msgstr "Ajouter au panier"
 #: decruck/templates/main/shopping_cart.html:32
 msgid "Remove from cart"
 msgstr "Retirer du panier"
+
+#: decruck/templates/main/score_page.html:57
+msgid "Checkout"
+msgstr "Payer"
+
+#: decruck/templates/main/score_page.html:58
+msgid "Back to Scores"
+msgstr "Retour aux Partitions"
+
+#: decruck/templates/main/score_page_download.html:22
+msgid "Download score here"
+msgstr "Télécharger la partition ici"
 
 #: decruck/templates/main/shopping_cart.html:19
 #: decruck/templates/main/shopping_cart_confirmation.html:19
@@ -155,3 +214,19 @@ msgstr "Total"
 #: decruck/templates/main/shopping_cart_confirmation.html:39
 msgid "Checkout with PayPal"
 msgstr "Payer avec PayPal"
+
+#: decruck/templates/main/shopping_cart_retrieve.html:11
+msgid "Retrieve your order"
+msgstr "Récupérer votre commande"
+
+#: decruck/templates/main/shopping_cart_retrieve.html:45
+msgid "Retrieve Order"
+msgstr "Récupérer la commande"
+
+#: decruck/templates/main/shopping_cart_thank_you.html:10
+msgid "Thank you for your order"
+msgstr "Nous vous remercions de votre commande"
+
+#: decruck/templates/nav.html:13
+msgid "The Life and Works of Fernande Breilh-Decruck"
+msgstr "Vie et Oeuvre de Fernande Breilh-Decruck"
