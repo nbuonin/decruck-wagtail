@@ -18,7 +18,8 @@ RUN set -ex && \
 
 USER wagtail
 
-CMD pipenv run ./manage.py migrate --noinput && \
+CMD pipenv run ./manage.py collectstatic --noinput --settings=decruck.settings.production && \
+    pipenv run ./manage.py migrate --noinput && \
 	pipenv run ./manage.py sync_page_translation_fields && \
 	pipenv run ./manage.py update_translation_fields && \
-    pipenv run ./manage.py runserver 0.0.0.0:8000
+    pipenv run gunicorn --bind 0.0.0.0:8000 --workers 3 --forwarded-allow-ips="*" decruck.wsgi:application
