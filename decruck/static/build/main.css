@@ -7880,7 +7880,6 @@ a.navbar-brand {
     margin-right: 0; }
 
 #home-page__cover-image {
-  background-image: url("/static/img/decruck-home-page-cover.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center; }
