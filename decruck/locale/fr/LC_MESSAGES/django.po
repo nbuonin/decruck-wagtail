@@ -19,139 +19,139 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 #: decruck/templates/base.html:54
 msgid "The Life and Works of Fernande Breilh-Decruck"
-msgstr "Foo"
+msgstr "Vie et Oeuvre de Fernande Breilh-Decruck"
 
 #: decruck/templates/main/composition_listing_page.html:22
 #: decruck/templates/main/composition_listing_page.html:118
 #: decruck/templates/main/composition_page.html:17
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: decruck/templates/main/composition_listing_page.html:41
 msgid "Keyword"
-msgstr ""
+msgstr "Mot-clé"
 
 #: decruck/templates/main/composition_listing_page.html:50
 msgid "Start Year"
-msgstr ""
+msgstr "Année de départ"
 
 #: decruck/templates/main/composition_listing_page.html:55
 msgid "End Year"
-msgstr ""
+msgstr "Année de fin"
 
 #: decruck/templates/main/composition_listing_page.html:65
 #: decruck/templates/main/composition_listing_page.html:68
 msgid "Sort By"
-msgstr ""
+msgstr "Classer par"
 
 #: decruck/templates/main/composition_listing_page.html:78
 msgid "Sort Direction"
-msgstr ""
+msgstr "Ordre d'affichage"
 
 #: decruck/templates/main/composition_listing_page.html:95
 msgid "Search"
-msgstr ""
+msgstr "Rechercher"
 
 #: decruck/templates/main/composition_listing_page.html:96
 msgid "Reset"
-msgstr ""
+msgstr "Tout effacer"
 
 #: decruck/templates/main/composition_listing_page.html:101
 msgid "compositions found"
-msgstr ""
+msgstr "Oeuvres trouvées"
 
 #: decruck/templates/main/composition_listing_page.html:121
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: decruck/templates/main/composition_listing_page.html:124
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
 #: decruck/templates/main/composition_listing_page.html:127
 #: decruck/templates/main/composition_page.html:38
 msgid "Instrumentation"
-msgstr ""
+msgstr "Instrumentation"
 
 #: decruck/templates/main/composition_page.html:24
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #: decruck/templates/main/composition_page.html:31
 msgid "Location"
-msgstr ""
+msgstr "Lieu de composition"
 
 #: decruck/templates/main/composition_page.html:50
 msgid "Orchestral Instrumentation"
-msgstr ""
+msgstr "Orchestration"
 
 #: decruck/templates/main/composition_page.html:57
 msgid "Duration"
-msgstr ""
+msgstr "Durée"
 
 #: decruck/templates/main/composition_page.html:64
 msgid "Mansucript Status"
-msgstr ""
+msgstr "Statut du manuscrit"
 
 #: decruck/templates/main/composition_page.html:71
 msgid "Collaborators"
-msgstr ""
+msgstr "Collaborateurs"
 
 #: decruck/templates/main/composition_page.html:78
 msgid "Text Source"
-msgstr ""
+msgstr "Source du texte"
 
 #: decruck/templates/main/composition_page.html:85
 msgid "Dedicatee"
-msgstr ""
+msgstr "Dédié à"
 
 #: decruck/templates/main/composition_page.html:92
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: decruck/templates/main/composition_page.html:98
 msgid "Available for Download "
-msgstr ""
+msgstr "Téléchargement disponible"
 
 #: decruck/templates/main/score_page.html:54
 msgid "Add to cart"
-msgstr ""
+msgstr "Ajouter au panier"
 
 #: decruck/templates/main/score_page.html:54
 #: decruck/templates/main/shopping_cart.html:32
 msgid "Remove from cart"
-msgstr ""
+msgstr "Retirer du panier"
 
 #: decruck/templates/main/shopping_cart.html:19
 #: decruck/templates/main/shopping_cart_confirmation.html:19
 msgid "Item"
-msgstr ""
+msgstr "Article"
 
 #: decruck/templates/main/shopping_cart.html:20
 #: decruck/templates/main/shopping_cart_confirmation.html:20
 msgid "Price"
-msgstr ""
+msgstr "Prix"
 
 #: decruck/templates/main/shopping_cart.html:21
 msgid "Action"
-msgstr ""
+msgstr "Action"
 
 #: decruck/templates/main/shopping_cart.html:45
 msgid "Confirm Order"
-msgstr ""
+msgstr "Confirmer la commande"
 
 #: decruck/templates/main/shopping_cart.html:51
 msgid "There are no items in your shopping cart"
-msgstr ""
+msgstr "Il n'y a pas d'article dans votre panier"
 
 #: decruck/templates/main/shopping_cart_confirmation.html:10
 msgid "Order Confirmation"
-msgstr ""
+msgstr "Confirmation de la commande"
 
 #: decruck/templates/main/shopping_cart_confirmation.html:36
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: decruck/templates/main/shopping_cart_confirmation.html:39
 msgid "Checkout with PayPal"
-msgstr ""
+msgstr "Payer avec PayPal"
