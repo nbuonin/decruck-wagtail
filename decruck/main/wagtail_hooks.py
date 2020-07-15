@@ -115,8 +115,7 @@ modeladmin_register(MessageAdmin)
 @receiver(post_save, sender=ScorePage)
 def generate_score_preview(sender, instance, created, update_fields, **kwargs):
     if instance.preview_score_updated:
-        if update_fields:
-            PreviewScoreImage.objects.filter(score=instance.pk).delete()
+        PreviewScoreImage.objects.filter(score=instance.pk).delete()
 
         images = convert_from_bytes(instance.preview_score.read())
 
