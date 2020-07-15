@@ -18,5 +18,7 @@ RUN set -ex && \
 
 USER wagtail
 
-CMD pipenv run ./manage.py migrate && \
+CMD pipenv run ./manage.py migrate --noinput && \
+	pipenv run ./manage.py sync_page_translation_fields && \
+	pipenv run ./manage.py update_translation_fields && \
     pipenv run ./manage.py runserver 0.0.0.0:8000
