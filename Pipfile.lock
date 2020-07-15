@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "88dd8b2cbe1648ebc58c4677cc02db1393ed050d46c212b0a56b7ccf485b414e"
+            "sha256": "3b734934e94d413f8c3fc5968a25a2f4a2e8b22974628987f09c0879c09d3286"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -127,9 +127,9 @@
         },
         "django-modeltranslation": {
             "hashes": [
-                "sha256:49b82d864dff18577d455252b9d3290a21809bc09a80844b161cde3448a96d36"
+                "sha256:3fa13fa19fd7c1c35fe601605e9bf3b1fe586f5d3e3fb1879b4bd327b697703f"
             ],
-            "version": "==0.15"
+            "version": "==0.15.1"
         },
         "django-paypal": {
             "hashes": [
@@ -141,11 +141,11 @@
         },
         "django-storages": {
             "hashes": [
-                "sha256:8e35d2c7baeda5dc6f0b4f9a0fc142d25f9a1bf72b8cebfcbc5db4863abc552d",
-                "sha256:b1a63cd5ea286ee5a9fb45de6c3c5c0ae132d58308d06f1ce9865cfcd5e470a7"
+                "sha256:3103991c2ee8cef8a2ff096709973ffe7106183d211a79f22cf855f33533d924",
+                "sha256:a59e9923cbce7068792f75344ed7727021ee4ac20f227cf17297d0d03d141e91"
             ],
             "index": "pypi",
-            "version": "==1.7.1"
+            "version": "==1.9.1"
         },
         "django-taggit": {
             "hashes": [

@@ -25,7 +25,7 @@ DATABASES = {
         'NAME': 'decruck',
         'HOST': 'localhost',
         'PORT': '5432',
-        'USER': 'nickb',
+        'USER': 'nick',
         'PASSWORD': '',
     }
 }
