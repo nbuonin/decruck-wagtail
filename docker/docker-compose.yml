@@ -5,7 +5,7 @@ services:
   decruck_web:
     build: ../
     depends_on:
-      - db
+      - decruck_db
     ports:
       - "8000:8000"
     environment:
