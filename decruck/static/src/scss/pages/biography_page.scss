@@ -1,13 +1,15 @@
 #biography__title {
     text-align: center;
+    margin-bottom: 0.75em;
 }
 
+$bio_col_padding: 50px;
 .biography__col--left {
     @include media-breakpoint-up(md) {
         & {
             border-right: solid 2px $dark-brown;
             text-align: right;
-            padding-right: 30px;
+            padding-right: $bio_col_padding;
         }
     }
 }
@@ -16,20 +18,16 @@
     @include media-breakpoint-up(md) {
         & {
             border-left: solid 2px $dark-brown;
-            padding-left: 30px;
+            padding-left: $bio_col_padding;
         }
     }
 }
 
-$bio-header-spacing: 0.1em;
-$bio-header-size: 2em;
-$bio-header-padding: 1em;
-
+$bio-header-padding: 0.5em;
 .biography__header--left {
     font-family: $font-family-serif;
     font-weight: 900;
-    letter-spacing: $bio-header-spacing;
-    font-size: $bio-header-size;
+    font-size: 2.5em;
     text-align: center;
     @include media-breakpoint-up(md) {
         & {
@@ -42,8 +40,7 @@ $bio-header-padding: 1em;
 .biography__header--right {
     font-family: $font-family-sans-serif;
     font-weight: 900;
-    letter-spacing: $bio-header-spacing;
-    font-size: $bio-header-size;
+    font-size: 2em;
     text-align: center;
     @include media-breakpoint-up(md) {
         & {
@@ -54,15 +51,25 @@ $bio-header-padding: 1em;
 }
 
 // Bio Images
-@include media-breakpoint-up(md) {
-    .biography__img-container {
-        max-width: 430px;
+.block-caption_image {
+    padding-top: 6px;
+}
+
+.biography__col--left .biography__img-container {
+    margin: 0 auto;
+    @include media-breakpoint-up(md) {
+        & {
+            margin: 0 0 0 auto;
+        }
     }
-    .biography__col--left .biography__img-container {
-        margin-left: auto;
-    }
-    .biography__col--right .biography__img-container {
-        margin-right: auto;
+}
+
+.biography__col--right .biography__img-container {
+    margin: 0 auto;
+    @include media-breakpoint-up(md) {
+        & {
+            margin: 0 auto 0 0;
+        }
     }
 }
 
@@ -99,4 +106,12 @@ $bio-header-padding: 1em;
 
 .biography__block-quote--caption {
     text-align: center;
+}
+
+.block-rich_text {
+    @include media-breakpoint-up(md) {
+        & {
+            padding-bottom: 26px;
+        }
+    }
 }

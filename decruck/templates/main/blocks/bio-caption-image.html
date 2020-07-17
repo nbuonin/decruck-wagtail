@@ -1,7 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-{# The max width is 538px * 80% = 430px#}
-<div class="biography__img-container">
+<div class="biography__img-container"{% if value.image_max_width %} style="max-width: {{ value.image_max_width }}px;"{% endif %}>
     <div class="biography__img">
         {% image value.image max-538x538 as bio_image %}
         <image src="{{ bio_image.url }}" alt="{{ bio_image.alt }}"></image>

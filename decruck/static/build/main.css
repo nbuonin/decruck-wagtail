@@ -7703,7 +7703,7 @@ html {
   letter-spacing: 0.02em; }
 
 h1, .h1 {
-  font-family: "Abhaye Libre", "serif";
+  font-family: "Abhaya Libre", "serif";
   text-transform: uppercase;
   letter-spacing: 0.1em; }
 
@@ -7838,7 +7838,7 @@ a.navbar-brand {
           flex-flow: row nowrap; }
 
 .site-subtitle {
-  font-family: "Abhaye Libre", "serif";
+  font-family: "Abhaya Libre", "serif";
   text-transform: uppercase;
   padding-top: 1em;
   border-top: solid 1px #37332e;
@@ -7968,48 +7968,54 @@ a.navbar-brand {
   text-decoration: none; }
 
 #biography__title {
-  text-align: center; }
+  text-align: center;
+  margin-bottom: 0.75em; }
 
 @media (min-width: 768px) {
   .biography__col--left {
     border-right: solid 2px #37332e;
     text-align: right;
-    padding-right: 30px; } }
+    padding-right: 50px; } }
 
 @media (min-width: 768px) {
   .biography__col--right {
     border-left: solid 2px #37332e;
-    padding-left: 30px; } }
+    padding-left: 50px; } }
 
 .biography__header--left {
-  font-family: "Abhaye Libre", "serif";
+  font-family: "Abhaya Libre", "serif";
   font-weight: 900;
-  letter-spacing: 0.1em;
-  font-size: 2em;
+  font-size: 2.5em;
   text-align: center; }
   @media (min-width: 768px) {
     .biography__header--left {
-      padding-bottom: 1em;
+      padding-bottom: 0.5em;
       text-align: right; } }
 
 .biography__header--right {
   font-family: "Lato", "sans-serif";
   font-weight: 900;
-  letter-spacing: 0.1em;
   font-size: 2em;
   text-align: center; }
   @media (min-width: 768px) {
     .biography__header--right {
-      padding-bottom: 1em;
+      padding-bottom: 0.5em;
       text-align: left; } }
 
-@media (min-width: 768px) {
-  .biography__img-container {
-    max-width: 430px; }
-  .biography__col--left .biography__img-container {
-    margin-left: auto; }
-  .biography__col--right .biography__img-container {
-    margin-right: auto; } }
+.block-caption_image {
+  padding-top: 6px; }
+
+.biography__col--left .biography__img-container {
+  margin: 0 auto; }
+  @media (min-width: 768px) {
+    .biography__col--left .biography__img-container {
+      margin: 0 0 0 auto; } }
+
+.biography__col--right .biography__img-container {
+  margin: 0 auto; }
+  @media (min-width: 768px) {
+    .biography__col--right .biography__img-container {
+      margin: 0 auto 0 0; } }
 
 .biography__img-container img {
   width: 100%; }
@@ -8029,13 +8035,17 @@ a.navbar-brand {
       margin-right: auto; } }
 
 .biography__block-quote--quote {
-  font-family: "Abhaye Libre", "serif";
+  font-family: "Abhaya Libre", "serif";
   font-size: 1.8em;
   letter-spacing: 0;
   text-align: center; }
 
 .biography__block-quote--caption {
   text-align: center; }
+
+@media (min-width: 768px) {
+  .block-rich_text {
+    padding-bottom: 26px; } }
 
 .score-page__row {
   margin-bottom: 2em; }

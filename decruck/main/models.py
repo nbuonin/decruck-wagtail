@@ -31,7 +31,7 @@ from wagtail.search.backends import get_search_backend
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.core.blocks import (
     RichTextBlock, StructBlock, StreamBlock, BlockQuoteBlock, CharBlock,
-    EmailBlock
+    EmailBlock, IntegerBlock
 )
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
@@ -87,7 +87,8 @@ class BiographyPage(Page, MenuPageMixin):
                 )),
                 ('caption_image', StructBlock([
                     ('image', ImageChooserBlock()),
-                    ('caption', CharBlock())
+                    ('image_max_width', IntegerBlock()),
+                    ('caption', CharBlock()),
                 ], template='main/blocks/bio-caption-image.html', icon='image')),  # noqa E501
             ])),
             ('right_column', StreamBlock([
@@ -96,6 +97,7 @@ class BiographyPage(Page, MenuPageMixin):
                 )),
                 ('caption_image', StructBlock([
                     ('image', ImageChooserBlock()),
+                    ('image_max_width', IntegerBlock()),
                     ('caption', CharBlock())
                 ], template='main/blocks/bio-caption-image.html', icon='image')),  # noqa E501
             ])),
