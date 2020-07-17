@@ -1,7 +1,11 @@
 body {
-    padding-top: 2em;
     position: relative;
     min-height: 100vh;
+    @include media-breakpoint-up(md) {
+        & {
+            padding-top: 1em;
+        }
+    }
 }
 main {
     padding-bottom: calc(74px + 2em); // Footer height + extra spacing
