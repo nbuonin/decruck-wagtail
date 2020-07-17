@@ -26,39 +26,58 @@ class CompositionListingPageTR(TranslationOptions):
 
 @register(CompositionPage)
 class CompositionPageTR(TranslationOptions):
-    fields = []
+    fields = (
+        'description',
+        'manuscript_status',
+    )
 
 
 @register(ContactFormPage)
 class ContactFormPageTR(TranslationOptions):
-    fields = []
+    fields = (
+        'body',
+    )
 
 
 @register(ScoreListingPage)
 class ScoreListingPageTR(TranslationOptions):
-    fields = []
+    fields = (
+        'description',
+    )
 
 
 @register(ScorePage)
 class ScorePageTR(TranslationOptions):
-    fields = []
+    fields = (
+        'description',
+        'materials',
+    )
 
 
 @register(ShoppingCartPage)
 class ShoppingCartPageTR(TranslationOptions):
-    fields = []
+    fields = (
+        'body',
+        'confirmation_page_text',
+    )
 
 
 @register(BasicPage)
 class BasicPageTR(TranslationOptions):
-    fields = []
+    fields = (
+        'body',
+    )
 
 
 @register(Instrument)
 class InstrumentTR(TranslationOptions):
-    fields = ['instrument']
+    fields = (
+        'instrument',
+    )
 
 
 @register(Genre)
 class GenreTR(TranslationOptions):
-    fields = ['genre']
+    fields = (
+        'genre',
+    )
