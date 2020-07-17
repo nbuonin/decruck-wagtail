@@ -38,7 +38,8 @@
     @extend .d-xl-block;
     font-family: $font-family-serif;
     text-transform: uppercase;
-    padding-top: 1em;
+    letter-spacing: 0.1em;
+    padding-top: 11px;
     border-top: solid 1px $dark-brown;
     margin: 0 3em;
 }

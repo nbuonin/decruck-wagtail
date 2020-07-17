@@ -16,7 +16,7 @@
         {# Use form as the container element so that Genre and Instrumentation are wrapped in the same form #}
         <form action="#" method="get" id="composition-search__form" class="container" accept-charset="utf-8">
             <div class="row">
-                <div class="col-3 composition-search__side-bar--container">
+                <div class="col-md-3 composition-search__side-bar--container">
                     <div class="composition-search__side-bar">
                         <fieldset class="composition-search__fieldset">
                             <legend class="composition-search__fieldset-legend">{% trans "Genre" %}</legend>
@@ -30,27 +30,27 @@
                         </fieldset>
                     </div>
                 </div>
-                <div class="col-9">
+                <div class="col-md-9">
                     {% if form.non_field_errors%}
                     <div class="alert alert-danger" role="alert">
                         {{ form.non_field_errors }}
                     </div>
                     {% endif %}
                     <div class="form-row composition-search__form-row--first-row">
-                        <div class="form-group col-6">
+                        <div class="form-group col-md-6">
                             <label class="composition-search__form-label" for="{{ form.keyword.id_for_label }}">{% trans "Keyword" %}</label>
                             {{ form.keyword|add_class:"form-control" }}
                             <div class="invalid-feedback">
                                 {{ form.keyword.errors }}
                             </div>
                         </div>
-                        <div class="form-group col-3">
+                        <div class="form-group col-md-3">
                             {# You need to render these errors in Bootstrap #}
                             {{ form.start_year.errors }}
                             <label class="composition-search__form-label" for="{{ form.start_year.id_for_label }}">{% trans "Start Year" %}</label>
                             {{ form.start_year|add_class:"form-control" }}
                         </div>
-                        <div class="form-group col-3">
+                        <div class="form-group col-md-3">
                             {{ form.end_year.errors }}
                             <label class="composition-search__form-label" for="{{ form.end_year.id_for_label }}">{% trans "End Year" %}</label>
                             {{ form.end_year|add_class:"form-control composition-search__field--end-year" }}
@@ -59,8 +59,8 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="col-6">
-                            <div class="btn-toolbar">
+                        <div class="col-md-6">
+                            <div id="composition-search__form--sort" class="btn-toolbar">
                                 <span class="composition-search__form-label--sort" aria-hidden="true">
                                     {% trans "Sort By"%}
                                 </span>
@@ -91,7 +91,7 @@
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <input type="submit" class="btn composition-search__form-button" value="{% trans "Search" %}"/>
                             <a href="{% pageurl page %}" role="button" class="btn btn-danger composition-search__form-button--reset">{% trans "Reset" %}</a>
                         </div>
@@ -107,10 +107,10 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-3">
+            <div class="col-md-3">
                 {# Use an empty col as a spacer for the Genre and Instrumentation menu#}
             </div>
-            <div id="composition-search-col" class="col-9">
+            <div id="composition-search-col" class="col-md-9">
                 <table class="table composition-search-table">
                     <thead>
                         <tr>

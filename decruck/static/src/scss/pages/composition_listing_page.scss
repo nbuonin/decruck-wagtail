@@ -15,16 +15,48 @@
     @extend .h2;
 }
 
+#composition-search__form--sort {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+
+    fieldset {
+        margin-bottom: 0.5rem;
+    }
+
+    @include media-breakpoint-up(md) {
+        & {
+            flex-flow: row nowrap;
+            align-items: unset;
+
+            fieldset {
+                margin-bottom: unset;
+            }
+        }
+    }
+}
+
 .composition-search__form-label--sort {
     @extend .composition-search__form-label;
-    align-self: center;
-    margin-bottom: 0;
-    margin-right: 0.5em;
+    @include media-breakpoint-up(md) {
+        & {
+            align-self: center;
+            margin-bottom: 0;
+            margin-right: 0.5em;
+        }
+    }
 }
 
 .composition-search__form-button {
     color: #FFFFFF;
     background-color: $dark-brown;
+    text-decoration: none;
+    &:hover {
+        color: #FFFFFF;
+    }
+}
+
+.composition-search__form-button--reset{
+    text-decoration: none;
 }
 
 .composition-search__btn-bar {
@@ -38,11 +70,16 @@
 
 .composition-search__side-bar {
     background-color: $dark-brown;
-    width: calc(100% - 30px);
-    position: absolute;
     padding: 1em;
     z-index: 1000;
     border-radius: 4px;
+
+    @include media-breakpoint-up(md) {
+        & {
+            width: calc(100% - 30px);
+            position: absolute;
+        }
+    }
 }
 
 .composition-search__fieldset {
@@ -84,6 +121,7 @@
 .composition-search-table {
     margin-top: 1em;
     @extend .table-borderless;
+    @extend .table-responsive;
 }
 
 .composition-search-table .composition-search-table__cell + .composition-search-table__cell {

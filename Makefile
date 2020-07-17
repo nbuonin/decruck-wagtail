@@ -54,4 +54,13 @@ docker-test:
 docker-push:
 	docker push nbuonin/decruck:`git log -n 1 --pretty="%h"`
 
+makemessages:
+	pipenv run ./manage.py makemessages -l fr
+.PHONY: makemessages
+
+compilemessages:
+	pipenv run ./manage.py compilemessages -l fr
+.PHONY: compilemessages
+
+
 .PHONY: clean runserver migrate makemigrations superuser shell test scss docker-image docker-test docker-push update-index bootstrap

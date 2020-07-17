@@ -69,7 +69,7 @@ msgstr "Année de fin"
 #: decruck/templates/main/composition_listing_page.html:65
 #: decruck/templates/main/composition_listing_page.html:68
 msgid "Sort By"
-msgstr "Classer par"
+msgstr "Classer"
 
 #: decruck/templates/main/composition_listing_page.html:78
 msgid "Sort Direction"

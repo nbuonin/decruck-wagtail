@@ -9,7 +9,19 @@
     margin-bottom: 1em;
 }
 
+#composition__nav {
+    margin-bottom: 1em;
+}
+
 .composition__nav-link {
     text-decoration: none;
 }
 
+#composition__nav-link--prev, #composition__nav-link--next {
+    white-space: nowrap;
+}
+
+#composition__nav-link--return {
+    text-align: center;
+    display: inline-block;
+}

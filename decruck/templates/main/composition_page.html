@@ -6,24 +6,23 @@
 <main>
 <div class="container">
     {% if prev_url or next_url %}
-    <nav class="row">
+    <nav id="composition__nav" class="row">
         <div class="col-4 d-flex">
             {% if prev_url %}
             <div class="mr-auto">
-                <a href="{{ prev_url }}" class="composition__nav-link">&lt; {% trans 'PREVIOUS' %}</a>
+                <a href="{{ prev_url }}" id="composition__nav-link--prev" class="composition__nav-link">&lt; {% trans 'PREVIOUS' %}</a>
             </div>
             {% endif %}
         </div>
         <div class="col-4 d-flex">
-
             <div class="ml-auto mr-auto">
-                <a href="{{ page.get_parent.url }}?{{ comp_search_qs }}" class="composition__nav-link">{% trans 'RETURN TO RESULTS' %}</a>
+                <a href="{{ page.get_parent.url }}?{{ comp_search_qs }}" id="composition__nav-link--return" class="composition__nav-link">{% trans 'RETURN TO RESULTS' %}</a>
             </div>
         </div>
         <div class="col-4 d-flex">
             {% if next_url %}
             <div class="ml-auto">
-                <a href="{{ next_url }}" class="composition__nav-link">{% trans 'NEXT' %} &gt;</a>
+                <a href="{{ next_url }}" id="composition__nav-link--next" class="composition__nav-link">{% trans 'NEXT' %} &gt;</a>
             </div>
             {% endif %}
         </div>
