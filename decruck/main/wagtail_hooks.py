@@ -7,6 +7,7 @@ from decruck.main.models import (
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.images import ImageFile
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -16,6 +17,7 @@ import math
 from paypal.standard.ipn.signals import valid_ipn_received
 from paypal.standard.models import ST_PP_COMPLETED
 from pdf2image import convert_from_bytes
+import tempfile
 from wagtail.contrib.modeladmin.helpers import (
     PermissionHelper, PageButtonHelper
 )
@@ -117,34 +119,35 @@ def generate_score_preview(sender, instance, created, update_fields, **kwargs):
     if instance.preview_score_updated:
         PreviewScoreImage.objects.filter(score=instance.pk).delete()
 
-        images = convert_from_bytes(instance.preview_score.read())
-
-        for idx, img in enumerate(images):
-            file_name = '{}-{:03d}.jpg'.format(
-                instance.preview_score.name, idx)
-
-            width = 555
-            height = (width * img.height) // img.width
-            resized_img = img.resize((width, height))
-            # Write the extracted image to a buffer
-            buffer = BytesIO()
-            resized_img.save(buffer, 'JPEG')
-
-            # Instantiate an uploaded file object, and create a new object
-            img_file = InMemoryUploadedFile(
-                file=buffer,
-                field_name=None,
-                name=file_name,
-                size=img.tell,
-                content_type='image/jpeg',
-                charset=None,
-                content_type_extra=None
+        with tempfile.TemporaryDirectory() as path:
+            images = convert_from_bytes(
+                instance.preview_score.read(),
+                fmt='jpeg',
+                output_folder=path,
+                paths_only=True,
+                size=(555, None)
             )
-            PreviewScoreImage.objects.create(
-                score=instance,
-                preview_score_image=img_file,
-                page_number=idx
-            )
+
+            for idx, img_path in enumerate(images):
+                file_name = '{}-{:03d}.jpg'.format(
+                    instance.preview_score.name, idx)
+
+                with open(img_path, mode='rb') as img:
+                    # Instantiate an uploaded file object
+                    img_file = InMemoryUploadedFile(
+                        file=img,
+                        field_name=None,
+                        name=file_name,
+                        size=img.tell,
+                        content_type='image/jpeg',
+                        charset=None,
+                        content_type_extra=None
+                    )
+                    PreviewScoreImage.objects.create(
+                        score=instance,
+                        preview_score_image=img_file,
+                        page_number=idx
+                    )
 
 
 @receiver(valid_ipn_received)
