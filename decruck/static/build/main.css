@@ -7861,7 +7861,8 @@ a.navbar-brand {
   border-top: solid 8px #FFFFFF;
   position: absolute;
   width: 100%;
-  bottom: 0; }
+  bottom: 0;
+  height: 64px; }
 
 .footer__icon {
   background-color: rgba(255, 255, 255, 0.5);
