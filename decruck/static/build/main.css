@@ -8061,13 +8061,12 @@ a.navbar-brand {
   width: 100%; }
 
 .biography__img-caption {
-  margin-top: 1em;
+  margin: 0.75em 0 1.5em;
   text-align: center;
   font-size: 0.9em; }
 
 .biography__block-quote {
-  margin-top: 1em;
-  margin-bottom: 1em; }
+  margin: 2em 0; }
   @media (min-width: 768px) {
     .biography__block-quote {
       max-width: 80%;
