@@ -24,3 +24,8 @@ if (hpContianer) {
     setImageHeight();
     window.addEventListener('resize', setImageHeight);
 }
+
+// Composition search page
+$('.composition-search__fieldset-checkbox-label').on('click', function(el){
+    $('#composition-search__form').submit();
+})
