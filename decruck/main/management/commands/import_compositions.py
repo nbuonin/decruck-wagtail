@@ -85,6 +85,11 @@ class Command(BaseCommand):
                 if row['Recording']:
                     recording = [('rich_text', RichText(row['Recording']))]
 
+                # Assemble premiere
+                premiere = row.get('Premiere', None)
+                if premiere:
+                    premiere = [('rich_text', RichText(premiere))]
+
                 comp = CompositionPage(
                     # If there's no Title, let it throw a KeyError
                     title=row['Title'],
@@ -97,9 +102,13 @@ class Command(BaseCommand):
                     genre=genre,
                     text_source=row.get('Text Source'),
                     collaborator=row.get('Collaborator?'),
-                    manuscript_status=row.get('Manuscript Status English'),
+                    manuscript_status_en=row.get('Manuscript Status English'),
+                    manuscript_status_fr=row.get('Manuscript Status French'),
                     published_work_link=None,
-                    recording=recording
+                    recording=recording,
+                    information_up_to_date=True if row.get('Information Up-To-Date', False) else False,  # noqa
+                    scanned=True if row.get('Scanned', False) else False,  # noqa
+                    premiere=premiere
                 )
                 parent.add_child(instance=comp)
                 comp.save_revision().publish()

@@ -8,7 +8,7 @@ from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
     PROTECT, URLField, DateField, CASCADE, PositiveSmallIntegerField,
     ImageField, DateTimeField, EmailField, UUIDField, GenericIPAddressField,
-    TextField
+    TextField, BooleanField
 )
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -363,6 +363,12 @@ class CompositionPage(Page):
         ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
     ], blank=True)
+    information_up_to_date = BooleanField(default=False)
+    scanned = BooleanField(default=False)
+    premiere = RichTextField(
+        blank=True,
+        features=['bold', 'italic']
+    )
 
     def nat_lang_date(self):
         return self.date.first() if self.date else ''
@@ -414,11 +420,14 @@ class CompositionPage(Page):
         FieldPanel('orchestration'),
         FieldPanel('duration'),
         FieldPanel('dedicatee'),
+        FieldPanel('premiere'),
         FieldPanel('genre'),
         FieldPanel('text_source'),
         FieldPanel('collaborator'),
         FieldPanel('manuscript_status'),
         FieldPanel('published_work_link'),
+        FieldPanel('information_up_to_date'),
+        FieldPanel('scanned'),
         StreamFieldPanel('recording'),
     ]
 
@@ -426,6 +435,7 @@ class CompositionPage(Page):
         index.SearchField('description'),
         index.SearchField('location'),
         index.SearchField('dedicatee'),
+        index.SearchField('premiere'),
         index.SearchField('text_source'),
         index.SearchField('collaborator'),
         index.SearchField('manuscript_status'),
