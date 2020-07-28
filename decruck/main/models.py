@@ -364,6 +364,12 @@ class CompositionPage(Page):
         ('image', ImageChooserBlock())
     ], blank=True)
 
+    def nat_lang_date(self):
+        return self.date.first() if self.date else ''
+
+    def instrumentation_list(self):
+        return ', '.join([str(i) for i in self.instrumentation.all()])
+
     class Meta:
         verbose_name = "Composition"
 
@@ -605,6 +611,10 @@ class Order(Model):
     def full_name(self):
         return '{} {}'.format(self.first_name, self.last_name)
 
+    @property
+    def items_ordered(self):
+        return ', '.join(self.items)
+
 
 class OrderItem(Model):
     created = DateTimeField(auto_now_add=True)
@@ -620,6 +630,9 @@ class OrderItem(Model):
         related_name='+'
     )
     price = DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return self.itemj
 
 
 def plus_one_day():

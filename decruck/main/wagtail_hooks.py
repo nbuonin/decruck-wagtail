@@ -4,7 +4,9 @@ from decruck.main.models import (
     CompositionPage, ScorePage, PreviewScoreImage, Order, OrderItem,
     OrderItemLink, Message, Instrument, Genre
 )
+from decruck.main.views import CompositionReportView, OrderReportView
 from django.conf import settings
+from django.conf.urls import url
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.images import ImageFile
@@ -12,12 +14,15 @@ from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import get_template
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 import math
 from paypal.standard.ipn.signals import valid_ipn_received
 from paypal.standard.models import ST_PP_COMPLETED
 from pdf2image import convert_from_bytes
 import tempfile
+from wagtail.admin.menu import MenuItem
+from wagtail.core import hooks
 from wagtail.contrib.modeladmin.helpers import (
     PermissionHelper, PageButtonHelper
 )
@@ -197,3 +202,39 @@ def process_order(sender, **kwargs):
             settings.ORDER_EMAIL_ADDR,
             [ipn_obj.payer_email],
         )
+
+
+@hooks.register('register_reports_menu_item')
+def register_composition_report_menu_item():
+    return MenuItem(
+        'Compositions Report',
+        reverse('composition_report_view'),
+        classnames='icon icon-' + CompositionReportView.header_icon,
+        order=700
+    )
+
+
+@hooks.register('register_admin_urls')
+def register_composition_report_url():
+    return [
+        url(r'^reports/composition-reports/$', CompositionReportView.as_view(),
+            name='composition_report_view'),
+    ]
+
+
+@hooks.register('register_reports_menu_item')
+def register_order_report_menu_item():
+    return MenuItem(
+        'Orders',
+        reverse('order_report_view'),
+        classnames='icon icon-' + CompositionReportView.header_icon,
+        order=710
+    )
+
+
+@hooks.register('register_admin_urls')
+def register_order_report_url():
+    return [
+        url(r'^reports/order-reports/$', OrderReportView.as_view(),
+            name='order_report_view'),
+    ]
