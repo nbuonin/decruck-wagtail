@@ -49,7 +49,8 @@ class CompositionPageAdmin(ModelAdmin):
     menu_icon = 'doc-full-inverse'
     menu_order = 200
     list_display = ('genre', 'title', 'year', 'instrument_list')
-    list_filter = ('genre', 'instrumentation')
+    list_filter = (
+        'information_up_to_date', 'scanned', 'genre', 'instrumentation')
     search_fields = (
         'composition_title', 'description', 'location', 'dedicatee',
         'text_source', 'collaborator', 'manuscript_status', 'recording'
