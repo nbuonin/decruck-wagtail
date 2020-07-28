@@ -5,9 +5,10 @@ from wagtail.admin.views.reports import PageReportView
 class CompositionReportView(PageReportView):
     title = 'Compositions'
     list_export = [
-        'genre', 'composition_title', 'description', 'nat_lang_date',
-        'location', 'instrumentation_list', 'orchestration', 'duration',
-        'manuscript_status', 'collaborator', 'text_source', 'dedicatee',
+        'information_up_to_date', 'genre', 'composition_title', 'description',
+        'nat_lang_date', 'location', 'instrumentation_list', 'orchestration',
+        'duration', 'manuscript_status_en', 'manuscript_status_fr',
+        'collaborator', 'text_source', 'dedicatee', 'premiere', 'scanned'
     ]
     header_icon = 'doc-empty-inverse'
 
