@@ -1,5 +1,5 @@
-from decruck.main.models import CompositionPage, OrderItem
-from wagtail.admin.views.reports import PageReportView
+from decruck.main.models import CompositionPage, Order
+from wagtail.admin.views.reports import PageReportView, ReportView
 
 
 class CompositionReportView(PageReportView):
@@ -16,7 +16,7 @@ class CompositionReportView(PageReportView):
         return CompositionPage.objects.all()
 
 
-class OrderReportView(PageReportView):
+class OrderReportView(ReportView):
     title = 'Orders'
     list_export = [
         'order_number', 'total', 'full_name', 'email', 'created', 'modified',
@@ -25,4 +25,4 @@ class OrderReportView(PageReportView):
     header_icon = 'doc-empty-inverse'
 
     def get_queryset(self):
-        return OrderItem.objects.all().order_by('created')
+        return Order.objects.all().order_by('created')

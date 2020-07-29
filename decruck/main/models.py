@@ -623,7 +623,7 @@ class Order(Model):
 
     @property
     def items_ordered(self):
-        return ', '.join(self.items)
+        return ', '.join(str(i) for i in self.items.all())
 
 
 class OrderItem(Model):
@@ -642,7 +642,7 @@ class OrderItem(Model):
     price = DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return self.itemj
+        return self.item.title
 
 
 def plus_one_day():
