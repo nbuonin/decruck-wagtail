@@ -18,8 +18,6 @@ if (hpContianer) {
         hpContianer.style.height = String(footerOffsets.top - offsets.top + 16) + 'px';
 
         let hpMain = document.getElementById('home-page__main');
-        window.DEBUG = hpMain.style;
-        console.log(hpContianer.height);
     }
     setImageHeight();
     window.addEventListener('resize', setImageHeight);
