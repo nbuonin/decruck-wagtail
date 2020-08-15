@@ -1,4 +1,4 @@
-from decruck.main.models import CompositionPage, Order
+from decruck.main.models import CompositionPage, Order, Message
 from wagtail.admin.views.reports import PageReportView, ReportView
 
 
@@ -26,3 +26,14 @@ class OrderReportView(ReportView):
 
     def get_queryset(self):
         return Order.objects.all().order_by('created')
+
+
+class MessageReportView(ReportView):
+    title = 'Messages'
+    list_export = [
+        'name', 'email', 'message'
+    ]
+    header_icon = 'doc-empty-inverse'
+
+    def get_queryset(self):
+        return Message.objects.all().order_by('created')

@@ -4,7 +4,9 @@ from decruck.main.models import (
     CompositionPage, ScorePage, PreviewScoreImage, Order, OrderItem,
     OrderItemLink, Message, Instrument, Genre, CompositionPreviewScoreImage
 )
-from decruck.main.views import CompositionReportView, OrderReportView
+from decruck.main.views import (
+    CompositionReportView, OrderReportView, MessageReportView
+)
 from django.conf import settings
 from django.conf.urls import url
 from django.core.exceptions import ValidationError
@@ -237,7 +239,7 @@ def register_order_report_menu_item():
     return MenuItem(
         'Orders',
         reverse('order_report_view'),
-        classnames='icon icon-' + CompositionReportView.header_icon,
+        classnames='icon icon-' + OrderReportView.header_icon,
         order=710
     )
 
@@ -247,4 +249,22 @@ def register_order_report_url():
     return [
         url(r'^reports/order-reports/$', OrderReportView.as_view(),
             name='order_report_view'),
+    ]
+
+
+@hooks.register('register_reports_menu_item')
+def register_message_report_menu_item():
+    return MenuItem(
+        'Messages',
+        reverse('message_report_view'),
+        classnames='icon icon-' + MessageReportView.header_icon,
+        order=720
+    )
+
+
+@hooks.register('register_admin_urls')
+def register_message_report_url():
+    return [
+        url(r'^reports/message-reports/$', MessageReportView.as_view(),
+            name='message_report_view'),
     ]
