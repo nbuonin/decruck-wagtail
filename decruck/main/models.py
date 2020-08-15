@@ -370,6 +370,23 @@ class CompositionPage(Page):
         features=['bold', 'italic']
     )
 
+    # For preview score
+    preview_score = FileField(
+        upload_to='composition_preview_scores/',
+        null=True,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=['pdf'])
+        ]
+    )
+    preview_score_checksum = CharField(
+        editable=False,
+        max_length=256,
+        blank=True
+    )
+    preview_score_checked = False
+    preview_score_updated = False
+
     def nat_lang_date(self):
         return self.date.first() if self.date else ''
 
@@ -406,6 +423,27 @@ class CompositionPage(Page):
 
         return ctx
 
+    def save(self, *args, **kwargs):
+        if self.preview_score_checked:
+            # This was the cause of a subtle bug. Because this method can be
+            # called multiple times during model creation, leaving this flag
+            # set would cause the post save hook to fire multiple times.
+            self.preview_score_updated = False
+            return super().save(*args, **kwargs)
+
+        h = hashlib.md5()
+        for chunk in iter(lambda: self.preview_score.read(8192), b''):
+            h.update(chunk)
+
+        self.preview_score.seek(0)
+        checksum = h.hexdigest()
+        if not self.preview_score_checksum == checksum:
+            self.preview_score_checksum = checksum
+            self.preview_score_updated = True
+
+        self.preview_score_checked = True
+        return super().save(*args, **kwargs)
+
     content_panels = Page.content_panels + [
         FieldPanel('composition_title'),
         StreamFieldPanel('description'),
@@ -428,6 +466,7 @@ class CompositionPage(Page):
         FieldPanel('published_work_link'),
         FieldPanel('information_up_to_date'),
         FieldPanel('scanned'),
+        FieldPanel('preview_score'),
         StreamFieldPanel('recording'),
     ]
 
@@ -448,6 +487,22 @@ class CompositionPage(Page):
     ]
 
     parent_page_types = ['CompositionListingPage']
+
+
+class CompositionPreviewScoreImage(Model):
+    score = ForeignKey(
+        CompositionPage,
+        on_delete=CASCADE,
+        related_name='preview_score_images'
+    )
+    preview_score_image = ImageField(
+        upload_to='composition_score_preview_images/',
+    )
+    page_number = PositiveSmallIntegerField()
+
+    class Meta:
+        ordering = ['page_number']
+        unique_together = ('score', 'page_number')
 
 
 class Instrument(Model):

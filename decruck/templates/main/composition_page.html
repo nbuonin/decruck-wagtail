@@ -129,6 +129,36 @@
             {% endif %}
         </div>
     </div>
+    {% if page.preview_score_images %}
+    <div class="row">
+        <div class="col-12">
+            <div id="carouselScorePreview" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false" data-ride="false">
+                <div class="carousel-inner">
+                    {% for img in page.preview_score_images.all %}
+                        {% cycle True False as new_slide silent %}
+                        {% if new_slide %}
+                        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                            <div class="preview-score__item">
+                            {% endif %}
+                                <img class="preview-score__image" src="{{ img.preview_score_image.url }}">
+                            {% if not new_slide or forloop.last %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#carouselScorePreview" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselScorePreview" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 </main>
 {% endblock %}

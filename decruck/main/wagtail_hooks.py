@@ -2,7 +2,7 @@ from io import BytesIO
 from decimal import Decimal
 from decruck.main.models import (
     CompositionPage, ScorePage, PreviewScoreImage, Order, OrderItem,
-    OrderItemLink, Message, Instrument, Genre
+    OrderItemLink, Message, Instrument, Genre, CompositionPreviewScoreImage
 )
 from decruck.main.views import CompositionReportView, OrderReportView
 from django.conf import settings
@@ -120,10 +120,9 @@ class MessageAdmin(ModelAdmin):
 modeladmin_register(MessageAdmin)
 
 
-@receiver(post_save, sender=ScorePage)
-def generate_score_preview(sender, instance, created, update_fields, **kwargs):
+def generate_score_preview(instance, image_model):
     if instance.preview_score_updated:
-        stale_images = PreviewScoreImage.objects.filter(score=instance.pk)
+        stale_images = image_model.objects.filter(score=instance.pk)
         for img in stale_images:
             img.preview_score_image.delete()
             img.delete()
@@ -152,11 +151,21 @@ def generate_score_preview(sender, instance, created, update_fields, **kwargs):
                         charset=None,
                         content_type_extra=None
                     )
-                    PreviewScoreImage.objects.create(
+                    image_model.objects.create(
                         score=instance,
                         preview_score_image=img_file,
                         page_number=idx
                     )
+
+
+@receiver(post_save, sender=ScorePage)
+def generate_scorepage_score_preview(sender, instance, created, update_fields, **kwargs):
+    generate_score_preview(instance, PreviewScoreImage)
+
+
+@receiver(post_save, sender=CompositionPage)
+def generate_compositionpage_score_preview(sender, instance, created, update_fields, **kwargs):
+    generate_score_preview(instance, CompositionPreviewScoreImage)
 
 
 @receiver(valid_ipn_received)

@@ -4,7 +4,7 @@ from datetime import timedelta
 from decimal import Decimal
 from decruck.main.models import (
     Order, OrderItemLink, ScorePage, ScoreListingPage, ShoppingCartPage,
-    ContactFormPage, Message, CompositionListingPage
+    ContactFormPage, Message, CompositionListingPage, CompositionPage
 )
 from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -34,6 +34,35 @@ class CompositionListingPageTest(TestCase):
             'sort_dir': 'DESC'
         })
         self.assertEqual(request.status_code, 200)
+
+
+class CompositionPageTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Sample score page
+        parent = CompositionListingPage.objects.first()
+        with open(join(settings.BASE_DIR, 'data/pdf_example.pdf'), 'rb') as f:
+            pdf_file = InMemoryUploadedFile(
+                file=f,
+                field_name=None,
+                name='pdf_example.pdf',
+                size=f.tell,
+                content_type='application/pdf',
+                charset=None,
+                content_type_extra=None
+            )
+            composition = CompositionPage(
+                title='Example Composition with preview score',
+                composition_title='Example Composition with preview score',
+                preview_score=pdf_file
+            )
+            parent.add_child(instance=composition)
+            composition.save_revision().publish()
+            cls.composition = composition
+
+    def test_create_preview_score_images(self):
+        self.assertEquals(self.composition.preview_score_images.count(), 2)
+
 
 
 class ContactPageTest(TestCase):
