@@ -59,6 +59,7 @@ makemessages:
 .PHONY: makemessages
 
 compilemessages:
+	# First add gettext to your $PATH, check 'brew info gettext'
 	pipenv run ./manage.py compilemessages -l fr
 .PHONY: compilemessages
 

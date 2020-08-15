@@ -129,7 +129,7 @@ msgid "Duration"
 msgstr "Durée"
 
 #: decruck/templates/main/composition_page.html:88
-msgid "Mansucript Status"
+msgid "Manuscript Status"
 msgstr "Statut du manuscrit"
 
 #: decruck/templates/main/composition_page.html:95
