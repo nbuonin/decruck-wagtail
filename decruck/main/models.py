@@ -276,6 +276,7 @@ class CompositionListingPage(Page, MenuPageMixin):
                     comp.pk for comp in compositions]
                 request.session['comp_search_qs'] = request.GET.urlencode()
                 return render(request, "main/composition_listing_page.html", {
+                    'self': self,
                     'page': self,
                     'form': form,
                     'compositions': compositions
@@ -288,6 +289,7 @@ class CompositionListingPage(Page, MenuPageMixin):
             request.session['comp_search_index'] = [
                 comp.pk for comp in compositions]
             return render(request, "main/composition_listing_page.html", {
+                'self': self,
                 'page': self,
                 'form': form,
                 'compositions': compositions
@@ -568,6 +570,7 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                     _('Thank you for your message.')
                 )
                 ctx = {
+                    'self': self,
                     'page': self,
                     'form': ContactForm()
                 }
@@ -575,12 +578,14 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
 
             else:
                 ctx = {
+                    'self': self,
                     'page': self,
                     'form': form
                 }
                 return render(request, "main/contact_form_page.html", ctx)
         else:
             ctx = {
+                'self': self,
                 'page': self,
                 'form': ContactForm()
             }
@@ -615,6 +620,7 @@ class ScoreListingPage(Page, MenuPageMixin):
 
     def get_context(self, request, *args, **kwargs):
         return {
+            'self': self,
             'page': self,
             'scores':
                 ScorePage.objects.live().order_by('title'),
@@ -827,6 +833,7 @@ class ScorePage(RoutablePageMixin, Page):
             item_link.save()
 
             return render(request, "main/score_page_download.html", {
+                'self': self,
                 'page': self,
             })
         else:
@@ -838,12 +845,14 @@ class ScorePage(RoutablePageMixin, Page):
         if request.method == 'POST':
             in_cart = toggle_score_in_cart(request, self.pk)
             return render(request, "main/score_page.html", {
+                'self': self,
                 'page': self,
                 'in_cart': in_cart,
                 'cart_page': cart_page
             })
         else:
             return render(request, "main/score_page.html", {
+                'self': self,
                 'page': self,
                 'in_cart': score_in_cart(request, self.pk),
                 'cart_page': cart_page
@@ -933,6 +942,7 @@ class ShoppingCartPage(RoutablePageMixin, Page):
                     _('If any orders exist for this email address, an email has been sent with links to your purchased scores.')  # NOQA: E501
                 )
             ctx = {
+                'self': self,
                 'page': self,
                 'form': form
             }
@@ -940,6 +950,7 @@ class ShoppingCartPage(RoutablePageMixin, Page):
                 request, "main/shopping_cart_retrieve.html", ctx)
         else:
             ctx = {
+                'self': self,
                 'page': self,
                 'form': OrderRetrievalForm()
             }
