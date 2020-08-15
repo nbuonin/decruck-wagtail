@@ -111,7 +111,7 @@ class MessageAdmin(ModelAdmin):
     permission_helper_class = ProtectModelPermissionHelper
     menu_label = 'Contact Form Messages'
     menu_icon = 'form'
-    menu_order = 400
+    menu_order = 230
     list_display = ('created', 'name', 'email')
     search_fields = (
         'name', 'email', 'message',
@@ -120,6 +120,28 @@ class MessageAdmin(ModelAdmin):
 
 
 modeladmin_register(MessageAdmin)
+
+
+class OrderAdmin(ModelAdmin):
+    model = Order
+    permission_helper_class = ProtectModelPermissionHelper
+    menu_label = 'Orders'
+    menu_icon = 'form'
+    menu_order = 220
+    list_display = (
+        'order_number', 'total', 'full_name', 'email', 'created', 'modified',
+        'status', 'items_ordered',
+    )
+    search_fields = (
+        'first_name', 'last_name', 'email',
+    )
+    list_filter = (
+        'status',
+    )
+    inspect_view_enabled = True
+
+
+modeladmin_register(OrderAdmin)
 
 
 def generate_score_preview(instance, image_model):
@@ -216,6 +238,7 @@ def process_order(sender, **kwargs):
         )
 
 
+# Report Pages
 @hooks.register('register_reports_menu_item')
 def register_composition_report_menu_item():
     return MenuItem(
