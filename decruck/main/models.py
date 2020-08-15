@@ -8,7 +8,7 @@ from django.db.models import (
     CharField, DecimalField, DurationField, FileField, ForeignKey, Model,
     PROTECT, URLField, DateField, CASCADE, PositiveSmallIntegerField,
     ImageField, DateTimeField, EmailField, UUIDField, GenericIPAddressField,
-    TextField, BooleanField
+    TextField, BooleanField, ManyToManyField
 )
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -313,11 +313,11 @@ class CompositionPage(Page):
         blank=True,
         features=['bold', 'italic']
     )
-    genre = ForeignKey(
+    genre = ManyToManyField(
         Genre,
         null=True,
         blank=True,
-        on_delete=PROTECT
+        related_name='compositions'
     )
     instrumentation = ParentalManyToManyField(
         'Instrument',
@@ -479,7 +479,10 @@ class CompositionPage(Page):
         index.SearchField('collaborator'),
         index.SearchField('manuscript_status'),
         index.SearchField('recording'),
-        index.FilterField('genre'),
+        index.RelatedFields('genre', [
+            index.SearchField('genre_en'),
+            index.SearchField('genre_fr'),
+        ]),
         index.RelatedFields('instrumentation', [
             index.SearchField('instrument_en'),
             index.SearchField('instrument_fr'),
@@ -770,11 +773,11 @@ class ScorePage(RoutablePageMixin, Page):
     )
     preview_score_checked = False
     preview_score_updated = False
-    genre = ForeignKey(
+    genre = ManyToManyField(
         Genre,
         null=True,
         blank=True,
-        on_delete=PROTECT
+        related_name='scores'
     )
     date = CharField(
         max_length=256,

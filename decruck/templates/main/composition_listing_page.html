@@ -132,7 +132,11 @@
                         {% for composition in compositions %}
                         <tr>
                             <td class="composition-search-table__cell composition-search-table__genre-cell">
-                                {{ composition.genre }}
+                                {% if composition.genre.all %}
+                                    {% for g in composition.genre.all %}
+                                    <div>{{ g }}</div>
+                                    {% endfor %}
+                                {% endif %}
                             </td>
                             <td class="composition-search-table__cell">
                                 <a href="{% pageurl composition %}">{{ composition.title }}</a>

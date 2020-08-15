@@ -19,10 +19,12 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    {% if page.genre %}
+                    {% if page.genre.all %}
                     <h2 class="score-page__label">Genre</h2>
                     <div class="score-page__description-item">
-                        {{ page.genre }}
+                        {% for g in page.genre.all %}
+                        <div>{{ g }}</div>
+                        {% endfor %}
                     </div>
                     {% endif %}
 

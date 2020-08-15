@@ -113,9 +113,14 @@ class Command(BaseCommand):
                 parent.add_child(instance=comp)
                 comp.save_revision().publish()
 
+                # Add Genre
+                if genre:
+                    comp.genre.add(genre)
+
                 # Add instruments
                 for i in instruments:
                     comp.instrumentation.add(i)
+
                 comp.save_revision().publish()
 
                 # Add EDTF Date

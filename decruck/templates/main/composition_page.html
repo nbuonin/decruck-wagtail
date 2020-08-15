@@ -35,10 +35,12 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            {% if page.genre %}
+            {% if page.genre.all %}
             <div class="composition-attr">
                 <h2>{% trans "Genre" %}</h2>
-                {{ page.genre }}
+                {% for g in page.genre.all %}
+                <div>{{ g }}</div>
+                {% endfor %}
             </div>
             {% endif %}
 
