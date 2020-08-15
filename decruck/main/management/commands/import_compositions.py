@@ -104,7 +104,6 @@ class Command(BaseCommand):
                     collaborator=row.get('Collaborator?'),
                     manuscript_status_en=row.get('Manuscript Status English'),
                     manuscript_status_fr=row.get('Manuscript Status French'),
-                    published_work_link=None,
                     recording=recording,
                     information_up_to_date=True if row.get('Information Up-to-Date', False) else False,  # noqa
                     scanned=True if row.get('Scanned', False) else False,  # noqa

@@ -354,11 +354,6 @@ class CompositionPage(Page):
         features=['bold', 'italic'],
         help_text='Notes about the location and condition of the manuscript.'
     )
-    published_work_link = URLField(
-        null=True,
-        blank=True,
-        help_text='A URL to the published score.'
-    )
     recording = StreamField([
         ('rich_text', RichTextBlock()),
         ('image', ImageChooserBlock())
@@ -468,7 +463,6 @@ class CompositionPage(Page):
         FieldPanel('text_source'),
         FieldPanel('collaborator'),
         FieldPanel('manuscript_status'),
-        FieldPanel('published_work_link'),
         FieldPanel('information_up_to_date'),
         FieldPanel('scanned'),
         FieldPanel('preview_score'),

@@ -118,22 +118,10 @@
             {% include_block page.description%}
             {% endif %}
 
-            {% if page.published_work_link %}
-            <a class="btn composition-link" href="{{ page.published_work_link }}">
-                {% trans "Available for Download "%}
-            </a>
-            {% endif %}
-
             {% if page.recording %}
             <div class="composition-attr">
                 <h2>{% trans "Recording" %}</h2>
                 {% include_block page.recording %}
-            </div>
-            {% endif %}
-
-            {% if page.recording_link %}
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/{{ page.recording_link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             {% endif %}
         </div>
