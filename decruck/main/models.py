@@ -311,7 +311,7 @@ class CompositionPage(Page):
     ], blank=True)
     location = RichTextField(
         blank=True,
-        features=['bold', 'italic']
+        features=['bold', 'italic', 'link', 'document-link'],
     )
     genre = ManyToManyField(
         Genre,
@@ -337,21 +337,21 @@ class CompositionPage(Page):
     )
     dedicatee = RichTextField(
         blank=True,
-        features=['bold', 'italic']
+        features=['bold', 'italic', 'link', 'document-link'],
     )
     text_source = RichTextField(
         blank=True,
-        features=['bold', 'italic'],
+        features=['bold', 'italic', 'link', 'document-link'],
         help_text='The source of the text used in the compostition.'
     )
     collaborator = RichTextField(
         blank=True,
-        features=['bold', 'italic'],
+        features=['bold', 'italic', 'link', 'document-link'],
         help_text='Others that Decruck collaborated with.'
     )
     manuscript_status = RichTextField(
         blank=True,
-        features=['bold', 'italic'],
+        features=['bold', 'italic', 'link', 'document-link'],
         help_text='Notes about the location and condition of the manuscript.'
     )
     recording = StreamField([
@@ -362,7 +362,7 @@ class CompositionPage(Page):
     scanned = BooleanField(default=False)
     premiere = RichTextField(
         blank=True,
-        features=['bold', 'italic']
+        features=['bold', 'italic', 'link', 'document-link'],
     )
 
     # For preview score
@@ -790,7 +790,7 @@ class ScorePage(RoutablePageMixin, Page):
     price = DecimalField(max_digits=6, decimal_places=2)
     materials = RichTextField(
         blank=True,
-        features=['bold', 'italic'],
+        features=['bold', 'italic', 'link', 'document-link'],
         help_text='The materials sent in the PDF file.'
     )
 
