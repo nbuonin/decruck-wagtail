@@ -373,6 +373,7 @@ class CompositionPage(Page):
     # For preview score
     preview_score = FileField(
         upload_to='composition_preview_scores/',
+        blank=True,
         null=True,
         validators=[
             FileExtensionValidator(
@@ -424,6 +425,10 @@ class CompositionPage(Page):
         return ctx
 
     def save(self, *args, **kwargs):
+        # If there's no preview score file, then just save the model
+        if not self.preview_score:
+            return super().save(*args, **kwargs)
+
         if self.preview_score_checked:
             # This was the cause of a subtle bug. Because this method can be
             # called multiple times during model creation, leaving this flag
