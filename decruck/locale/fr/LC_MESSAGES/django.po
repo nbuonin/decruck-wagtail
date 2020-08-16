@@ -60,7 +60,7 @@ msgstr "Mot-clé"
 
 #: decruck/templates/main/composition_listing_page.html:50
 msgid "Start Year"
-msgstr "Année de départ"
+msgstr "Ann. de départ"
 
 #: decruck/templates/main/composition_listing_page.html:55
 msgid "End Year"
