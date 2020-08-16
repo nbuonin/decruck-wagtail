@@ -7,7 +7,7 @@ from six import iteritems
 
 
 try:
-    from django.urls import resolve
+    from django.urls import resolve, Resolver404
 except ImportError:
     from django.core.urlresolvers import resolve
 
@@ -31,7 +31,11 @@ def change_lang(context, lang=None, page=None, *args, **kwargs):
 
     if 'request' in context and lang and current_language:
         request = context['request']
-        match = resolve(unquote(request.path, errors='strict'))
+        try:
+            match = resolve(unquote(request.path, errors='strict'))
+        except Resolver404:
+            return ''
+
         non_prefixed_path = re.sub(current_language + '/', '', request.path, count=1)
 
         # means that is an wagtail page object
