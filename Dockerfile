@@ -22,4 +22,4 @@ CMD pipenv run ./manage.py collectstatic --noinput --settings=decruck.settings.p
     pipenv run ./manage.py migrate --noinput && \
 	pipenv run ./manage.py sync_page_translation_fields && \
 	pipenv run ./manage.py update_translation_fields && \
-    pipenv run gunicorn --bind 0.0.0.0:8000 --workers 1 --forwarded-allow-ips="*" decruck.wsgi:application
+    pipenv run gunicorn --bind 0.0.0.0:8000 --workers 2 --timeout 90 --forwarded-allow-ips="*" decruck.wsgi:application
