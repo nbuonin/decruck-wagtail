@@ -6,3 +6,7 @@ def language_host_names(request):
         'EN_HOST': '{}://{}'.format(request.scheme, settings.EN_HOST),
         'FR_HOST': '{}://{}'.format(request.scheme, settings.FR_HOST),
     }
+
+
+def ga_tracking_id(request):
+    return {'GA_TRACKING_ID': getattr(settings, 'GA_TRACKING_ID', None)}
