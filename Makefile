@@ -45,6 +45,9 @@ test: $(PY_SENTINAL)
 webpack: $(JS_SENTINAL)
 	npm run dev 
 
+webpack-prod: $(JS_SENTINAL)
+	npm run build 
+
 docker-image:
 	docker build -t nbuonin/decruck:`git log -n 1 --pretty="%h"` .
 
