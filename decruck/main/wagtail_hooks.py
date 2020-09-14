@@ -50,7 +50,7 @@ class CompositionPageAdmin(ModelAdmin):
     menu_label = 'Compositions'
     menu_icon = 'doc-full-inverse'
     menu_order = 200
-    list_display = ('genre', 'title', 'year', 'instrument_list')
+    list_display = ('genres', 'title', 'year', 'instrument_list')
     list_filter = (
         'information_up_to_date', 'scanned', 'genre', 'instrumentation')
     search_fields = (
@@ -61,6 +61,9 @@ class CompositionPageAdmin(ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.order_by('title')
+
+    def genres(self, obj):
+        return ', '.join([i.genre for i in obj.genre.all()])
 
     def instrument_list(self, obj):
         return ', '.join([i.instrument for i in obj.instrumentation.all()])
