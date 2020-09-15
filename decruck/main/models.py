@@ -1,7 +1,7 @@
 from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, TooManyFieldsSent
 from django.core.mail import send_mail
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
@@ -539,6 +539,10 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
         if request.method == 'POST':
             form = ContactForm(request.POST)
             if form.is_valid():
+                # honeypot field
+                if form.cleaned_data.get('msg'):
+                    raise TooManyFieldsSent()
+
                 recipients = [
                     el['value'] for el in self.message_recipients.stream_data]
                 name = form.cleaned_data.get('name')

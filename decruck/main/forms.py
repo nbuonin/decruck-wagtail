@@ -2,7 +2,7 @@
 from django.forms import (
     Form, CharField, IntegerField, ChoiceField, MultipleChoiceField,
     ValidationError, RadioSelect, CheckboxSelectMultiple, EmailField,
-    Textarea
+    Textarea, HiddenInput
 )
 from django.utils.translation import gettext as _
 from decruck.main.models import Genre, Instrument
@@ -78,6 +78,8 @@ class ContactForm(Form):
     name = CharField(max_length=64)
     email_address = EmailField()
     message = CharField(widget=Textarea)
+    # honeypot field
+    msg = CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

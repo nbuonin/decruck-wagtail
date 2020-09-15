@@ -79,6 +79,18 @@ class ContactPageTest(TestCase):
         self.assertEqual(1, Message.objects.count())
         self.assertEqual(len(mail.outbox), 1)
 
+    def test_form_honeypot(self):
+        response = self.client.post(
+            ContactFormPage.objects.first().url,
+            {
+                'name': 'Maurice Decruck',
+                'email_address': 'maurice@decruck.com',
+                'message': 'I like to play the bass.',
+                'msg': 'I am a robot'
+            }
+        )
+        self.assertEqual(response.status_code, 400)
+
 
 class ScorePageTest(TestCase):
     @classmethod
