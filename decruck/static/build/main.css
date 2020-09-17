@@ -7703,6 +7703,9 @@ main {
 #contact-form-msg {
   display: none; }
 
+.grecaptcha-badge {
+  z-index: 1000; }
+
 @use "sass:color";
 html {
   letter-spacing: 0.02em; }

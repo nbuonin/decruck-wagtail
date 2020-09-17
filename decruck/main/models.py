@@ -23,6 +23,7 @@ import hashlib
 from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from paypal.standard.forms import PayPalPaymentsForm
 from paypal.standard.ipn.models import PayPalIPN
+import requests
 import uuid
 from wagtail.admin.edit_handlers import (
     StreamFieldPanel, FieldPanel, InlinePanel
@@ -542,6 +543,21 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                 # honeypot field
                 if form.cleaned_data.get('msg'):
                     raise TooManyFieldsSent()
+
+                # Captcha validation
+                if getattr(settings, 'CAPTCHA_SECRET_KEY', None):
+                    response = requests.post(
+                        'https://www.google.com/recaptcha/api/siteverify',
+                        data={
+                            'secret': getattr(
+                                settings, 'CAPTCHA_SECRET_KEY', None),
+                            'response': request.POST.get(
+                                'g-recaptcha-response'),
+                            'remoteip': request.META.get('REMOTE_ADDR')
+                        }
+                    )
+                    if not response.json().get('success', False):
+                        raise TooManyFieldsSent()
 
                 recipients = [
                     el['value'] for el in self.message_recipients.stream_data]

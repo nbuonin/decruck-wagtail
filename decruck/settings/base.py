@@ -92,6 +92,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'decruck.context_processors.language_host_names',
                 'decruck.context_processors.ga_tracking_id',
+                'decruck.context_processors.captcha_site_key',
             ],
         },
     },

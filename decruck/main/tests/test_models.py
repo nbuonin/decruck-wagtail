@@ -10,7 +10,7 @@ from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
 from django.core import mail
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.utils import override_settings
 from django.utils import timezone
 from os.path import join
@@ -64,7 +64,7 @@ class CompositionPageTest(TestCase):
         self.assertEquals(self.composition.preview_score_images.count(), 2)
 
 
-
+@override_settings(CAPTCHA_SITE_KEY='', CAPTCHA_SECRET_KEY='')
 class ContactPageTest(TestCase):
     def test_form_submission(self):
         self.assertEqual(0, Message.objects.count())
