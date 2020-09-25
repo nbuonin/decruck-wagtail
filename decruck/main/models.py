@@ -216,7 +216,7 @@ class CompositionListingPage(Page, MenuPageMixin):
         if request.method == 'GET':
             if len(request.GET.keys()) > 0:
                 form = CompositionListingForm(request.GET)
-                compositions = CompositionPage.objects.all()
+                compositions = CompositionPage.objects.live()
                 if form.is_valid():
                     # Implement search functionality here and
                     # assign to compositions
@@ -229,12 +229,13 @@ class CompositionListingPage(Page, MenuPageMixin):
                     'sort_by': '',
                     'sort_dir': '',
                     'start_year': 1925}
-                    (Pdb)
                     """
 
                     if form.cleaned_data['keyword']:
-                        kw_results = compositions.search(
+                        sb = get_search_backend()
+                        kw_results = sb.autocomplete(
                             form.cleaned_data['keyword'],
+                            compositions
                         )
                         # Because of a bug in how dates are extracted in
                         # Wagtail's search, we requery the db based on the
@@ -416,7 +417,6 @@ class CompositionPage(Page):
                 ctx['next_url'] = next_url
                 ctx['comp_search_qs'] = request.\
                     session.get('comp_search_qs', '')
-                print(ctx)
         except KeyError:
             pass
 
@@ -473,21 +473,21 @@ class CompositionPage(Page):
     ]
 
     search_fields = Page.search_fields + [
-        index.SearchField('description'),
-        index.SearchField('location'),
-        index.SearchField('dedicatee'),
-        index.SearchField('premiere'),
-        index.SearchField('text_source'),
-        index.SearchField('collaborator'),
-        index.SearchField('manuscript_status'),
-        index.SearchField('recording'),
+        index.SearchField('description', partial_match=True),
+        index.SearchField('location', partial_match=True),
+        index.SearchField('dedicatee', partial_match=True),
+        index.SearchField('premiere', partial_match=True),
+        index.SearchField('text_source', partial_match=True),
+        index.SearchField('collaborator', partial_match=True),
+        index.SearchField('manuscript_status', partial_match=True),
+        index.SearchField('recording', partial_match=True),
         index.RelatedFields('genre', [
-            index.SearchField('genre_en'),
-            index.SearchField('genre_fr'),
+            index.SearchField('genre_en', partial_match=True),
+            index.SearchField('genre_fr', partial_match=True),
         ]),
         index.RelatedFields('instrumentation', [
-            index.SearchField('instrument_en'),
-            index.SearchField('instrument_fr'),
+            index.SearchField('instrument_en', partial_match=True),
+            index.SearchField('instrument_fr', partial_match=True),
         ]),
     ]
 
