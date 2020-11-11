@@ -1,7 +1,7 @@
 from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import ValidationError, TooManyFieldsSent
+from django.core.exceptions import ValidationError, SuspiciousOperation
 from django.core.mail import send_mail
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
@@ -542,7 +542,7 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
             if form.is_valid():
                 # honeypot field
                 if form.cleaned_data.get('msg'):
-                    raise TooManyFieldsSent()
+                    raise SuspiciousOperation()
 
                 # Captcha validation
                 if getattr(settings, 'CAPTCHA_SECRET_KEY', None):
@@ -557,7 +557,7 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                         }
                     )
                     if not response.json().get('success', False):
-                        raise TooManyFieldsSent()
+                        raise SuspiciousOperation()
 
                 recipients = [
                     el['value'] for el in self.message_recipients.stream_data]
