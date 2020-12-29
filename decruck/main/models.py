@@ -317,9 +317,8 @@ class CompositionPage(Page):
         blank=True,
         features=['bold', 'italic', 'link', 'document-link'],
     )
-    genre = ManyToManyField(
+    genre = ParentalManyToManyField(
         Genre,
-        null=True,
         blank=True,
         related_name='compositions'
     )
@@ -798,9 +797,8 @@ class ScorePage(RoutablePageMixin, Page):
     )
     preview_score_checked = False
     preview_score_updated = False
-    genre = ManyToManyField(
+    genre = ParentalManyToManyField(
         Genre,
-        null=True,
         blank=True,
         related_name='scores'
     )
