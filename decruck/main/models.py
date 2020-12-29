@@ -216,7 +216,8 @@ class CompositionListingPage(Page, MenuPageMixin):
         if request.method == 'GET':
             if len(request.GET.keys()) > 0:
                 form = CompositionListingForm(request.GET)
-                compositions = CompositionPage.objects.live()
+                compositions = CompositionPage.objects.live()\
+                    .prefetch_related('genre', 'instrumentation')
                 if form.is_valid():
                     # Implement search functionality here and
                     # assign to compositions
@@ -240,9 +241,11 @@ class CompositionListingPage(Page, MenuPageMixin):
                         # Because of a bug in how dates are extracted in
                         # Wagtail's search, we requery the db based on the
                         # pk's found with the initial keyword search
-                        compositions = CompositionPage.objects.filter(
-                            pk__in=[c.pk for c in kw_results]
-                        )
+                        compositions = CompositionPage.objects\
+                            .prefetch_related('genre', 'instrumentation')\
+                            .filter(
+                                pk__in=[c.pk for c in kw_results]
+                            )
 
                     if form.cleaned_data['start_year']:
                         compositions = compositions.filter(
@@ -286,8 +289,9 @@ class CompositionListingPage(Page, MenuPageMixin):
 
             # Else return an empty form
             form = CompositionListingForm()
-            compositions = CompositionPage.objects.live().order_by(
-                'date__lower_strict')
+            compositions = CompositionPage.objects.live()\
+                .prefetch_related('genre', 'instrumentation')\
+                .order_by('date__lower_strict')
             request.session['comp_search_index'] = [
                 comp.pk for comp in compositions]
             return render(request, "main/composition_listing_page.html", {
