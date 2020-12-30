@@ -23,7 +23,7 @@
     "mini-css-extract-plugin": "^0.8.2",
     "mocha": "~6.2.2",
     "node-sass": "^4.13.1",
-    "postcss-loader": "^3.0.0",
+    "postcss-loader": "^4.1.0",
     "requirejs": "~2.3.2",
     "sass-loader": "^8.0.0",
     "sinon": "~7.5.0",
