@@ -26,7 +26,7 @@ from paypal.standard.ipn.models import PayPalIPN
 import requests
 import uuid
 from wagtail.admin.edit_handlers import (
-    StreamFieldPanel, FieldPanel, InlinePanel
+    StreamFieldPanel, FieldPanel, InlinePanel, MultiFieldPanel
 )
 from wagtail.search.backends import get_search_backend
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
@@ -390,6 +390,27 @@ class CompositionPage(Page):
     preview_score_checked = False
     preview_score_updated = False
 
+    # Extended Date Time Format
+    nat_lang_edtf_string = CharField(
+        verbose_name='Natural Language Date',
+        help_text=('The EDTF date in natural language. This field is help '
+                   'users who aren\'t familiar with the EDTF. It does not '
+                   'change how the date is represented.'),
+        blank=True,
+        max_length=256)
+    edtf_string = CharField(
+        verbose_name='EDTF Date',
+        help_text=mark_safe(
+            'A date in the <a href="https://www.loc.gov/standards/datetime/" '
+            'target="_blank"><strong>Extended Date Time Format</strong></a>'),
+        blank=True,
+        max_length=256)
+    lower_fuzzy = DateField(editable=False, null=True, blank=True)
+    upper_fuzzy = DateField(editable=False, null=True, blank=True)
+    lower_strict = DateField(editable=False, null=True, blank=True)
+    upper_strict = DateField(editable=False, null=True, blank=True)
+    nat_lang_year = CharField(editable=False, max_length=9, blank=True)
+
     def nat_lang_date(self):
         return self.date.first() if self.date else ''
 
@@ -425,6 +446,36 @@ class CompositionPage(Page):
 
         return ctx
 
+    def clean(self):
+        super().clean()
+        # Per Django docs: validate and modify values in Model.clean()
+        # https://docs.djangoproject.com/en/3.1/ref/models/instances/#django.db.models.Model.clean
+
+        # Check that nat_lang_edtf_string and edtf_string are either both set, or both unset
+        if (self.nat_lang_edtf_string and not self.edtf_string) or (not self.nat_lang_edtf_string and self.edtf_string):
+            raise ValidationError('If setting a date on a composition, an EDTF string and a natural language EDTF string must be provided.')
+
+        # Validate edtf_string
+        try:
+            e = parse_edtf(self.edtf_string)
+        except EDTFParseException:
+            raise ValidationError(
+                {'edtf_string': '{} is not a valid EDTF string'.
+                                format(self.edtf_string)})
+
+        self.lower_fuzzy = struct_time_to_date(e.lower_fuzzy())
+        self.upper_fuzzy = struct_time_to_date(e.upper_fuzzy())
+        self.lower_strict = struct_time_to_date(e.lower_strict())
+        self.upper_strict = struct_time_to_date(e.upper_strict())
+
+        if self.lower_strict.year != self.upper_strict.year:
+            self.nat_lang_year = '{}-{}'.format(
+                self.lower_strict.year,
+                self.upper_strict.year
+            )
+        else:
+            self.nat_lang_year = str(self.lower_strict.year)
+
     def save(self, *args, **kwargs):
         # If there's no preview score file, then just save the model
         if not self.preview_score:
@@ -458,6 +509,14 @@ class CompositionPage(Page):
             label='Date',
             help_text='Enter a date in the LOC Extended Date Time Format',
             max_num=1
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel('edtf_string'),
+                FieldPanel('nat_lang_edtf_string')
+            ],
+            help_text='Enter a date in the LOC Extended Date Time Format',
+            heading='Date'
         ),
         FieldPanel('location'),
         FieldPanel('instrumentation'),
