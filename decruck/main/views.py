@@ -6,9 +6,10 @@ class CompositionReportView(PageReportView):
     title = 'Compositions'
     list_export = [
         'information_up_to_date', 'genre', 'composition_title', 'description',
-        'nat_lang_date', 'location', 'instrumentation_list', 'orchestration',
-        'duration', 'manuscript_status_en', 'manuscript_status_fr',
-        'collaborator', 'text_source', 'dedicatee', 'premiere', 'scanned'
+        'nat_lang_edtf_string', 'location', 'instrumentation_list',
+        'orchestration', 'duration', 'manuscript_status_en',
+        'manuscript_status_fr', 'collaborator', 'text_source', 'dedicatee',
+        'premiere', 'scanned'
     ]
     header_icon = 'doc-empty-inverse'
 

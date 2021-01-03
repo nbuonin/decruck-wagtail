@@ -1,11 +1,12 @@
 import random
 import string
-from datetime import timedelta
+from datetime import date, timedelta
 from decimal import Decimal
 from decruck.main.models import (
     Order, OrderItemLink, ScorePage, ScoreListingPage, ShoppingCartPage,
     ContactFormPage, Message, CompositionListingPage, CompositionPage
 )
+from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
@@ -40,7 +41,7 @@ class CompositionPageTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Sample score page
-        parent = CompositionListingPage.objects.first()
+        cls.parent = CompositionListingPage.objects.first()
         with open(join(settings.BASE_DIR, 'data/pdf_example.pdf'), 'rb') as f:
             pdf_file = InMemoryUploadedFile(
                 file=f,
@@ -56,12 +57,57 @@ class CompositionPageTest(TestCase):
                 composition_title='Example Composition with preview score',
                 preview_score=pdf_file
             )
-            parent.add_child(instance=composition)
+            cls.parent.add_child(instance=composition)
             composition.save_revision().publish()
             cls.composition = composition
 
     def test_create_preview_score_images(self):
         self.assertEquals(self.composition.preview_score_images.count(), 2)
+
+    def test_edtf_string_validation(self):
+        # Test that the model validated the EDTF string
+        with self.assertRaises(ValidationError):
+            composition = CompositionPage(
+                title='Invalid Composition',
+                composition_title='Composition',
+                edtf_string='Foo'
+            )
+            self.parent.add_child(instance=composition)
+            composition.save_revision().publish()
+
+        # Test that both edtf and nat_lang strings are given on creation
+        with self.assertRaises(ValidationError):
+            composition = CompositionPage(
+                title='Invalid Composition',
+                composition_title='Composition',
+                edtf_string='2020'
+            )
+            self.parent.add_child(instance=composition)
+            composition.save_revision().publish()
+
+        with self.assertRaises(ValidationError):
+            composition = CompositionPage(
+                title='Invalid Composition',
+                composition_title='Composition',
+                nat_lang_edtf_string='2020'
+            )
+            self.parent.add_child(instance=composition)
+            composition.save_revision().publish()
+
+    def test_edtf(self):
+        # Test that the edtf fields are populated as expected
+        composition = CompositionPage(
+            title='Invalid Composition',
+            composition_title='Composition',
+            edtf_string='2020?',
+            nat_lang_edtf_string='Possibly in 2020'
+        )
+        self.parent.add_child(instance=composition)
+        composition.save_revision().publish()
+        self.assertEqual(composition.lower_fuzzy, date(2019, 1, 1))
+        self.assertEqual(composition.upper_fuzzy, date(2021, 12, 31))
+        self.assertEqual(composition.lower_strict, date(2020, 1, 1))
+        self.assertEqual(composition.upper_strict, date(2020, 12, 31))
 
 
 @override_settings(CAPTCHA_SITE_KEY='', CAPTCHA_SECRET_KEY='')

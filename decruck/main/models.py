@@ -249,11 +249,11 @@ class CompositionListingPage(Page, MenuPageMixin):
 
                     if form.cleaned_data['start_year']:
                         compositions = compositions.filter(
-                            date__lower_strict__year__gte=form.cleaned_data['start_year'])  # NOQA: E501
+                            lower_strict__year__gte=form.cleaned_data['start_year'])  # NOQA: E501
 
                     if form.cleaned_data['end_year']:
                         compositions = compositions.filter(
-                            date__upper_strict__year__lte=form.cleaned_data['end_year'])  # NOQA: E501
+                            upper_strict__year__lte=form.cleaned_data['end_year'])  # NOQA: E501
 
                     if form.cleaned_data['genre']:
                         compositions = compositions.filter(
@@ -271,11 +271,11 @@ class CompositionListingPage(Page, MenuPageMixin):
                         if sort_dir == 'ASC':
                             # Order by start year
                             compositions = compositions.order_by(
-                                'date__lower_strict')
+                                'lower_strict')
                         else:
                             # Order by end year
                             compositions = compositions.order_by(
-                                '-date__upper_strict')
+                                '-upper_strict')
 
                 request.session['comp_search_index'] = [
                     comp.pk for comp in compositions]
@@ -291,7 +291,7 @@ class CompositionListingPage(Page, MenuPageMixin):
             form = CompositionListingForm()
             compositions = CompositionPage.objects.live()\
                 .prefetch_related('genre', 'instrumentation')\
-                .order_by('date__lower_strict')
+                .order_by('lower_strict')
             request.session['comp_search_index'] = [
                 comp.pk for comp in compositions]
             return render(request, "main/composition_listing_page.html", {
@@ -411,9 +411,6 @@ class CompositionPage(Page):
     upper_strict = DateField(editable=False, null=True, blank=True)
     nat_lang_year = CharField(editable=False, max_length=9, blank=True)
 
-    def nat_lang_date(self):
-        return self.date.first() if self.date else ''
-
     def instrumentation_list(self):
         return ', '.join([str(i) for i in self.instrumentation.all()])
 
@@ -456,25 +453,26 @@ class CompositionPage(Page):
             raise ValidationError('If setting a date on a composition, an EDTF string and a natural language EDTF string must be provided.')
 
         # Validate edtf_string
-        try:
-            e = parse_edtf(self.edtf_string)
-        except EDTFParseException:
-            raise ValidationError(
-                {'edtf_string': '{} is not a valid EDTF string'.
-                                format(self.edtf_string)})
+        if self.edtf_string and self.nat_lang_edtf_string:
+            try:
+                e = parse_edtf(self.edtf_string)
+            except EDTFParseException:
+                raise ValidationError(
+                    {'edtf_string': '{} is not a valid EDTF string'.
+                                    format(self.edtf_string)})
 
-        self.lower_fuzzy = struct_time_to_date(e.lower_fuzzy())
-        self.upper_fuzzy = struct_time_to_date(e.upper_fuzzy())
-        self.lower_strict = struct_time_to_date(e.lower_strict())
-        self.upper_strict = struct_time_to_date(e.upper_strict())
+            self.lower_fuzzy = struct_time_to_date(e.lower_fuzzy())
+            self.upper_fuzzy = struct_time_to_date(e.upper_fuzzy())
+            self.lower_strict = struct_time_to_date(e.lower_strict())
+            self.upper_strict = struct_time_to_date(e.upper_strict())
 
-        if self.lower_strict.year != self.upper_strict.year:
-            self.nat_lang_year = '{}-{}'.format(
-                self.lower_strict.year,
-                self.upper_strict.year
-            )
-        else:
-            self.nat_lang_year = str(self.lower_strict.year)
+            if self.lower_strict.year != self.upper_strict.year:
+                self.nat_lang_year = '{}-{}'.format(
+                    self.lower_strict.year,
+                    self.upper_strict.year
+                )
+            else:
+                self.nat_lang_year = str(self.lower_strict.year)
 
     def save(self, *args, **kwargs):
         # If there's no preview score file, then just save the model
@@ -504,12 +502,6 @@ class CompositionPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('composition_title'),
         StreamFieldPanel('description'),
-        InlinePanel(
-            'date',
-            label='Date',
-            help_text='Enter a date in the LOC Extended Date Time Format',
-            max_num=1
-        ),
         MultiFieldPanel(
             [
                 FieldPanel('edtf_string'),

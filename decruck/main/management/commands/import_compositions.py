@@ -90,6 +90,13 @@ class Command(BaseCommand):
                 if premiere:
                     premiere = [('rich_text', RichText(premiere))]
 
+                # Add EDTF Date
+                nat_lang = row.get('Natural Language Date', None)
+                edtf = row.get('EDTF Date', None)
+                if edtf:
+                    nat_lang_edtf_string = nat_lang.strip()
+                    edtf_string = edtf.strip()
+
                 comp = CompositionPage(
                     # If there's no Title, let it throw a KeyError
                     title=row['Title'],
@@ -98,8 +105,9 @@ class Command(BaseCommand):
                     location=row.get('Where'),
                     orchestration=row.get('Orchestration'),
                     duration=duration,
+                    edtf_string=edtf_string,
+                    nat_lang_edtf_string=nat_lang_edtf_string,
                     dedicatee=row.get('Dedication'),
-                    genre=genre,
                     text_source=row.get('Text Source'),
                     collaborator=row.get('Collaborator?'),
                     manuscript_status_en=row.get('Manuscript Status English'),
@@ -121,16 +129,3 @@ class Command(BaseCommand):
                     comp.instrumentation.add(i)
 
                 comp.save_revision().publish()
-
-                # Add EDTF Date
-                nat_lang = row.get('Natural Language Date', None)
-                edtf = row.get('EDTF Date', None)
-                if edtf:
-                    nat_lang = nat_lang.strip()
-                    edtf = edtf.strip()
-                    edtf_obj = CompositionEDTF(
-                        nat_lang_edtf_string=nat_lang,
-                        edtf_string=edtf,
-                        composition=comp
-                    )
-                    edtf_obj.save()
