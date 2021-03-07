@@ -21,6 +21,10 @@ runserver: $(PY_SENTINAL)
 migrate: $(PY_SENTINAL)
 	pipenv run ./manage.py migrate --noinput
 
+pre-deploy: $(PY_SENTINAL)
+	pipenv run ./manage.py collectstatic --noinput --settings=decruck.settings.local
+	pipenv run ./manage.py migrate --settings=decruck.settings.local
+
 makemigrations: $(PY_SENTINAL)
 	pipenv run ./manage.py makemigrations
 
