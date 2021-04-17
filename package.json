@@ -14,7 +14,7 @@
     "@babel/preset-env": "^7.7.6",
     "@fortawesome/fontawesome-free": "^5.12.0",
     "autoprefixer": "^9.8.6",
-    "babel-loader": "^8.0.6",
+    "babel-loader": "^8.2.2",
     "css-loader": "^3.3.2",
     "eslint": "~6.7.2",
     "eslint-plugin-no-unsafe-innerhtml": "~1.0.16",
