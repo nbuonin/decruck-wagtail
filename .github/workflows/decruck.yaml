@@ -9,9 +9,9 @@ jobs:
       db_service:
         image: postgres
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: nick
+          POSTGRES_DB: decruck
+          POSTGRES_PASSWORD: ''
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -32,14 +32,8 @@ jobs:
       - id: cache-pipenv
         uses: actions/cache@v1
         with:
-          path: ~/.local/share/virtualenvs
+          path: /home/runner/work/decruck-wagtail/decruck-wagtail/.venv
           key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
       - name: Run tests
         run: |
           make test
-        env:
-          TEST_DB_HOST: localhost
-          TEST_DB_NAME: postgres
-          TEST_DB_PASS: postgres
-          TEST_DB_PORT: 5432
-          TEST_DB_USER: postgres
