@@ -597,13 +597,13 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
             if form.is_valid():
                 # Get time from session and bounce the request
                 # if it comes in too fast
-                MIN_TIME = 5
                 start = request.session.get('contact_form_GET_time', None)
                 if not start:
                     raise SuspiciousOperation('Suspicious Operation')
 
+                MIN_SECONDS = 5
                 diff = int(time.time()) - start
-                if diff < MIN_TIME:
+                if diff < MIN_SECONDS:
                     raise SuspiciousOperation('Suspicious Operation')
 
                 # honeypot field
