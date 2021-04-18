@@ -11,7 +11,7 @@ jobs:
         env:
           POSTGRES_USER: nick
           POSTGRES_DB: decruck
-          POSTGRES_PASSWORD: ''
+          POSTGRES_PASSWORD: decruck
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
