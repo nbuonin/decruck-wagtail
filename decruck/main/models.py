@@ -24,6 +24,7 @@ from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from paypal.standard.forms import PayPalPaymentsForm
 from paypal.standard.ipn.models import PayPalIPN
 import requests
+import time
 import uuid
 from wagtail.admin.edit_handlers import (
     StreamFieldPanel, FieldPanel, InlinePanel, MultiFieldPanel
@@ -594,9 +595,20 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
         if request.method == 'POST':
             form = ContactForm(request.POST)
             if form.is_valid():
+                # Get time from session and bounce the request
+                # if it comes in too fast
+                MIN_TIME = 5
+                start = request.session.get('contact_form_GET_time', None)
+                if not start:
+                    raise SuspiciousOperation('Suspicious Operation')
+
+                diff = int(time.time()) - start
+                if diff < MIN_TIME:
+                    raise SuspiciousOperation('Suspicious Operation')
+
                 # honeypot field
                 if form.cleaned_data.get('msg'):
-                    raise SuspiciousOperation()
+                    raise SuspiciousOperation('Suspicious Operation')
 
                 # Captcha validation
                 if getattr(settings, 'CAPTCHA_SECRET_KEY', None):
@@ -643,6 +655,9 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                     messages.INFO,
                     _('Thank you for your message.')
                 )
+
+                # set current time in session
+                request.session['contact_form_GET_time'] = int(time.time())
                 ctx = {
                     'self': self,
                     'page': self,
@@ -651,6 +666,8 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                 return render(request, "main/contact_form_page.html", ctx)
 
             else:
+                # set current time in session
+                request.session['contact_form_GET_time'] = int(time.time())
                 ctx = {
                     'self': self,
                     'page': self,
@@ -658,6 +675,8 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                 }
                 return render(request, "main/contact_form_page.html", ctx)
         else:
+            # set current time in session
+            request.session['contact_form_GET_time'] = int(time.time())
             ctx = {
                 'self': self,
                 'page': self,
