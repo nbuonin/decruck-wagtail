@@ -1,6 +1,7 @@
 PY_SENTINAL = .venv/sentinal
 JS_SENTINAL = node_modules/sentinal
 PIPFILE = Pipfile
+export PIPENV_VENV_IN_PROJECT = true
 
 $(PY_SENTINAL): $(PIPFILE)
 	-rm -rf .venv
