@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 wagtail = "==2.12.3"
-wagtail-autocomplete = "==0.3.1"
+wagtail-autocomplete = "==0.6.3"
 faker = "==2.0.1"
 factory-boy = "==3.2.0"
 wagtail-factories = "==2.0.1"
