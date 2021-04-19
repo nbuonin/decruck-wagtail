@@ -8,7 +8,7 @@ $(PY_SENTINAL): $(PIPFILE)
 	pipenv sync 
 	touch $@
 
-$(JS_SENTINAL):
+$(JS_SENTINAL): package.json
 	-rm -rf node_modules
 	npm install
 	touch $@
