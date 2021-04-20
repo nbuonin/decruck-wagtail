@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "960f21190593523e9c14ffb514736ba2544607f5c28162c7001330d5b36e8ee5"
+            "sha256": "5950e229933fc4d07a7a0761a8f63e15a320534ecf6ebf8d90591fb82bf0d668"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -62,10 +62,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:d5e70d17b91c9b5867be7d6de0caa7dde9ed789bed62f03ea9b60718dc9350bf",
-                "sha256:e303500c4e80f6a706602da53daa6f751cfa8f491665c99a24ee732ab6321573"
+                "sha256:20a864fc6570ba11d52532c72c3ccabab5c71a9b4a9418601a313d56f1d2ce5b",
+                "sha256:37ec76ea2df8609540ba6cb0fe360ae1c589d2e1ee91eb642fd767823f3fcedd"
             ],
-            "version": "==1.20.53"
+            "version": "==1.20.54"
         },
         "certifi": {
             "hashes": [
@@ -736,11 +736,11 @@
         },
         "wagtail-metadata": {
             "hashes": [
-                "sha256:1b710fcd6c96f2405db0d9f12ea3055a4532f3e4a43bcb2793700cde714841f1",
-                "sha256:e3ef0776d3a429239dce4d164ac40c779f5d8ac958c630e0ab7442c25c54692e"
+                "sha256:4d94e3de715d5cb07cb05005f949428b8c68d33a5cd324b8eca10565ed5d0046",
+                "sha256:a17b1b545446f092ec4074a1c5734931a1af0c68a9a56be1732158753df36746"
             ],
             "index": "pypi",
-            "version": "==2.0.1"
+            "version": "==3.4.0"
         },
         "wagtail-modeltranslation": {
             "hashes": [
