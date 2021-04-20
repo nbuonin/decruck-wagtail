@@ -19,8 +19,8 @@ def instrument_choices():
 class CompositionListingForm(Form):
     """Composition Listing Form"""
     sort_by_choices = (
-        ('year', 'Year'),
-        ('title', 'Title'),
+        ('year', _('Year')),
+        ('title', _('Title')),
     )
 
     keyword = CharField(
@@ -61,8 +61,8 @@ class CompositionListingForm(Form):
         end_year = cleaned_data.get('end_year')
         if start_year and end_year:
             if start_year > end_year:
-                raise ValidationError(
-                    'The starting year can not be greater than the end year.')
+                raise ValidationError(_(
+                    'The starting year can not be greater than the end year.'))
 
 
 class OrderRetrievalForm(Form):
