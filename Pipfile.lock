@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b53e55f8a42cd933d75cdda06824b4ac3372f04937c70f937ed2b137ccf87c44"
+            "sha256": "d9f0925700c7030c6c0bfb6a3029a301e53dd9435e29aaa98acc583d53b0bf7b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -54,18 +54,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:1d26f6e7ae3c940cb07119077ac42485dcf99164350da0ab50d0f5ad345800cd",
-                "sha256:3bf3305571f3c8b738a53e9e7dcff59137dffe94670046c084a17f9fa4599ff3"
+                "sha256:9caec835fdf9c3336068a28004bb6a6ffab14a75d2466dfe6e279946f409fe8f"
             ],
             "index": "pypi",
-            "version": "==1.17.53"
+            "version": "==1.17.56"
         },
         "botocore": {
             "hashes": [
-                "sha256:20a864fc6570ba11d52532c72c3ccabab5c71a9b4a9418601a313d56f1d2ce5b",
-                "sha256:37ec76ea2df8609540ba6cb0fe360ae1c589d2e1ee91eb642fd767823f3fcedd"
+                "sha256:134a7b1d21030b6323b6094226d0cc898a8f2a2b5d27e1e5c0a0071372eab68d",
+                "sha256:367a7eaee80fdf7718f50461432ac2c4bd73363835a1ad011f99fdc592ba775d"
             ],
-            "version": "==1.20.54"
+            "version": "==1.20.56"
         },
         "certifi": {
             "hashes": [
@@ -259,11 +258,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:19192b88d959336bfa6bdaaaef99aeafec179eca19c47c804e555703ee5f07ef",
-                "sha256:2e881981c9748d7282b374b68e759c87745c25427b67ecf0cc67fb6637a1bff9"
+                "sha256:8c501196e49fb9df5df43833bdb1e4328f64847763ec8a50703148b73784d581",
+                "sha256:d7eb1dea6d6a6086f8be21784cc9e3bcfa55872b52309bc5fad53a8ea444465d"
             ],
             "markers": "python_version < '3.8'",
-            "version": "==4.0.0"
+            "version": "==4.0.1"
         },
         "ipython": {
             "hashes": [
@@ -600,10 +599,10 @@
         },
         "s3transfer": {
             "hashes": [
-                "sha256:35627b86af8ff97e7ac27975fe0a98a312814b46c6333d8a6b889627bcd80994",
-                "sha256:efa5bd92a897b6a8d5c1383828dca3d52d0790e0756d49740563a3fb6ed03246"
+                "sha256:9b3752887a2880690ce628bc263d6d13a3864083aeacff4890c1c9839a5eb0bc",
+                "sha256:cb022f4b16551edebbb31a377d3f09600dbada7363d8c5db7976e7f47732e1b2"
             ],
-            "version": "==0.3.7"
+            "version": "==0.4.2"
         },
         "sentry-sdk": {
             "hashes": [
@@ -794,10 +793,10 @@
         },
         "xlsxwriter": {
             "hashes": [
-                "sha256:e74dca4f2e946a117a541ca3153c06466190a88bb67fcdbd1cba2c1ea7f1fd76",
-                "sha256:eca2e737d0b8df3cd72520fadcda9f48c3581282639965125a86ea8cd04620cf"
+                "sha256:1a6dd98892e8010d3e089d1cb61385baa8f76fa547598df2c221cc37238c72d3",
+                "sha256:82be5a58c09bdc2ff8afc25acc815c465275239ddfc56d6e7b2a7e6c5d2e213b"
             ],
-            "version": "==1.3.9"
+            "version": "==1.4.0"
         },
         "xlwt": {
             "hashes": [
