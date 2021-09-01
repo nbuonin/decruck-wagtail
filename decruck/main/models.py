@@ -439,7 +439,7 @@ class CompositionPage(Page):
                 ctx['next_url'] = next_url
                 ctx['comp_search_qs'] = request.\
                     session.get('comp_search_qs', '')
-        except KeyError:
+        except (KeyError, ValueError):
             pass
 
         return ctx
