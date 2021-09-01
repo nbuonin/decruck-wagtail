@@ -1,7 +1,7 @@
 from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import ValidationError, SuspiciousOperation
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.validators import FileExtensionValidator
 from django.db.models import (
@@ -10,7 +10,7 @@ from django.db.models import (
     ImageField, DateTimeField, EmailField, UUIDField, GenericIPAddressField,
     TextField, BooleanField, ManyToManyField
 )
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template
 from django.urls import reverse
@@ -599,16 +599,16 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                 # if it comes in too fast
                 start = request.session.get('contact_form_GET_time', None)
                 if not start:
-                    raise SuspiciousOperation('Suspicious Operation')
+                    return HttpResponseForbidden()
 
                 MIN_SECONDS = 5
                 diff = int(time.time()) - start
                 if diff < MIN_SECONDS:
-                    raise SuspiciousOperation('Suspicious Operation')
+                    return HttpResponseForbidden()
 
                 # honeypot field
                 if form.cleaned_data.get('msg'):
-                    raise SuspiciousOperation('Suspicious Operation')
+                    return HttpResponseForbidden()
 
                 # Captcha validation
                 if getattr(settings, 'CAPTCHA_SECRET_KEY', None):
@@ -623,7 +623,7 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                         }
                     )
                     if not response.json().get('success', False):
-                        raise SuspiciousOperation()
+                        return HttpResponseForbidden()
 
                 recipients = [
                     el['value'] for el in self.message_recipients.stream_data]

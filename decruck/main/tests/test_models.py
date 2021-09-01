@@ -146,7 +146,7 @@ class ContactPageTest(TestCase):
         )
         self.assertEqual(0, Message.objects.count())
         self.assertEqual(len(mail.outbox), 0)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
 
     def test_form_honeypot(self):
         response = self.client.post(
@@ -158,7 +158,7 @@ class ContactPageTest(TestCase):
                 'msg': 'I am a robot'
             }
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
 
 
 class ScorePageTest(TestCase):
