@@ -50,7 +50,7 @@ class CompositionPageAdmin(ModelAdmin):
     menu_label = 'Compositions'
     menu_icon = 'doc-full-inverse'
     menu_order = 200
-    list_display = ('genres', 'title', 'year', 'instrument_list')
+    list_display = ('genres', 'title', 'year', 'location', 'instrument_list')
     list_filter = (
         'information_up_to_date', 'scanned', 'genre', 'instrumentation')
     search_fields = (
