@@ -601,7 +601,7 @@ class ContactFormPage(RoutablePageMixin, Page, MenuPageMixin):
                 if not start:
                     return HttpResponseForbidden()
 
-                MIN_SECONDS = 5
+                MIN_SECONDS = 15
                 diff = int(time.time()) - start
                 if diff < MIN_SECONDS:
                     return HttpResponseForbidden()
