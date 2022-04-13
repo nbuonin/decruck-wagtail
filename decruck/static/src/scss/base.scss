@@ -6,6 +6,12 @@ body {
             padding-top: 1em;
         }
     }
+
+    .block-image img, .block-rich_text img, {
+        width: unset;
+        height: unset;
+        max-width: 100%;
+    }
 }
 main {
     padding-bottom: calc(74px + 2em); // Footer height + extra spacing

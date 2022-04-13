@@ -9965,6 +9965,11 @@ body {
     padding-top: 1em;
   }
 }
+body .block-image img, body .block-rich_text img {
+  width: unset;
+  height: unset;
+  max-width: 100%;
+}
 
 main {
   padding-bottom: calc(74px + 2em);
