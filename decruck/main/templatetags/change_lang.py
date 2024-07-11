@@ -33,7 +33,7 @@ def change_lang(context, lang=None, page=None, *args, **kwargs):
         request = context['request']
         try:
             match = resolve(unquote(request.path, errors='strict'))
-        except Resolver404:
+        except (Resolver404, UnicodeDecodeError):
             return ''
 
         non_prefixed_path = re.sub(current_language + '/', '', request.path, count=1)
